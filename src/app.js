@@ -27,6 +27,7 @@ function api(path, opts) {
 
 function sessionToken() { try { return localStorage.getItem('st_session'); } catch (e) { return null; } }
 function sessionUser() { try { return JSON.parse(localStorage.getItem('st_user') || 'null'); } catch (e) { return null; } }
+function authHeaders() { return { 'Authorization': 'Bearer ' + (sessionToken() || '') }; }
 
 function signOut(silent) {
   var tok = sessionToken();
@@ -568,7 +569,7 @@ function analyzePhoto(url) {
   out.innerHTML = '<div class="dim" style="margin-top:10px">Analyzing handwriting… this takes a few seconds.</div>';
   fetch('/api/parse', {
     method: 'POST', credentials: 'same-origin',
-    headers: { 'Content-Type': 'application/json' },
+    headers: Object.assign(authHeaders(), { 'Content-Type': 'application/json' }),
     body: JSON.stringify({ image: url }),
   }).then(function (r) { return r.json().then(function (d) { return { status: r.status, body: d }; }); })
     .then(function (res) {
@@ -744,7 +745,7 @@ function saveDraft() {
   };
   fetch('/api/workouts', {
     method: 'POST', credentials: 'same-origin',
-    headers: { 'Content-Type': 'application/json' },
+    headers: Object.assign(authHeaders(), { 'Content-Type': 'application/json' }),
     body: JSON.stringify(payload),
   }).then(function (r) { return r.json().then(function (d) { return { status: r.status, body: d }; }); })
     .then(function (res) {
@@ -771,7 +772,7 @@ function askCoach(id, btn, out) {
   btn.disabled = true; btn.textContent = 'Thinking…';
   fetch('/api/coach', {
     method: 'POST', credentials: 'same-origin',
-    headers: { 'Content-Type': 'application/json' },
+    headers: Object.assign(authHeaders(), { 'Content-Type': 'application/json' }),
     body: JSON.stringify({ workout_id: id }),
   }).then(function (r) { return r.json().then(function (d) { return { status: r.status, body: d }; }); })
     .then(function (res) {
