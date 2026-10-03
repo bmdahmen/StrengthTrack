@@ -205,14 +205,67 @@ def merge_incline(name):
     return "Incline" if name in _INCLINE_NAMES else name
 
 
+# User-approved exercise merges 2026-10-03: fewer, broader exercises.
+# (Supersedes the earlier grip-split for the exercises listed here.)
+FINAL_MERGES = {
+    # pull
+    "Pull-Up (Wide Grip)": "Pull-Up",
+    "Pull-Up (Neutral Grip)": "Pull-Up",
+    "Weighted Pullup": "Pull-Up",
+    "Weighted Pullup (Wide Grip)": "Pull-Up",
+    "EZ Bar Preacher Curl": "Preacher Curl",
+    "DB Preacher Curl": "Preacher Curl",
+    "DB Hammer Preacher": "Preacher Curl",
+    "Cable Preacher Curl": "Preacher Curl",
+    "Concentration Preacher Curl": "Preacher Curl",
+    "Seated DB Hammer Curl": "DB Hammer Curl",
+    "Seated Incline DB Hammer Curl": "DB Hammer Curl",
+    "Row": "Barbell Row",
+    "Cambered Row": "Barbell Row",  # user: cambered rows are just rows (2026-10-03)
+    "45° Cambered Row": "Barbell Row",
+    "EZ Bar Curl": "Barbell Curl",
+    # push
+    "Bench Press (Wide Grip)": "Bench Press",
+    "Close Grip Bench Press": "Bench Press",
+    "Slow eccentric DB Bench": "DB Bench Press",
+    "Barbell Overhead Press": "Overhead Press",
+    "DB Shoulder Press": "Overhead Press",
+    "DB Lateral Raise": "Lateral Raise",
+    "Chest Supported Lat Raise": "Lateral Raise",
+    "Slow Stretch DB Fly": "DB Fly",
+    "Cable Crossover": "DB Fly",
+    "Rope Triceps Pushdown": "Triceps Pushdown",
+    "One-Handed Cable Triceps Pushdown": "Triceps Pushdown",
+    "Overhead One-Handed Cable Triceps Pushdown": "Triceps Pushdown",
+    "Flared Rope Tricep Extension": "Triceps Pushdown",
+    "DB Overhead Triceps Extension": "Triceps Extension",
+    "DB Skull Crusher": "Skull Crusher",
+    "EZ Bar Skull Crusher": "Skull Crusher",
+    "Weighted Dips": "Dips",
+    # legs
+    "Barbell Squat": "Squat",
+    "Deep Squat": "Squat",
+    "DB Squat": "Squat",
+    "DB Romanian Deadlift": "Romanian Deadlift",
+    "Hex RDL": "Romanian Deadlift",
+    "Hex Deadlift": "Deadlift",
+    "DB Calf Raise": "Calf Raise",
+    "DB Lunge": "Lunge",
+}
+
+
+def final_name(name):
+    return FINAL_MERGES.get(name, name)
+
+
 def canon_name(raw, prefixes=()):
     # Backwards-compatible wrapper: single name for a whole block (used by --list-names).
     base = canon_base(raw)
     for p in prefixes:
         gs = grip_suffix(base, p)
         if gs:
-            return base + gs
-    return base
+            return final_name(merge_incline(base + gs))
+    return final_name(merge_incline(base))
 
 
 def qstr(v):
@@ -409,7 +462,7 @@ def do_insert():
                 gs = grip_suffix(base, s.get("prefix"))
                 parts.setdefault(gs, []).append(s)
             for gs, ssets in parts.items():
-                cn = merge_incline(base + gs)
+                cn = final_name(merge_incline(base + gs))
                 unit, per_hand = infer_unit_and_hands(cn, raw)
                 for i, s in enumerate(ssets):
                     sid += 1

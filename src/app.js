@@ -283,22 +283,47 @@ function vExercise(name) {
     prog.forEach(function (p) {
       p.sets.forEach(function (s) { if (s.one_rm != null && s.set_index + 1 > maxSets) maxSets = s.set_index + 1; });
     });
-    var series = [];
-    for (var si = 0; si < maxSets; si++) {
-      var pts = [];
-      prog.forEach(function (p) {
-        var s = p.sets[si];
-        if (s && s.one_rm != null) pts.push({ x: p.date, y: s.one_rm, first: !!p.first_of_day });
+    // Implement filter: DB (kg) vs barbell (lb). Shown only when both exist.
+    var impl = 'all', hiddenSets = {}, hasDB = false, hasBB = false;
+    prog.forEach(function (p) {
+      p.sets.forEach(function (s) {
+        if (s.unit === 'kg') hasDB = true;
+        if (s.unit === 'lb') hasBB = true;
       });
-      if (pts.length) series.push({ label: 'Set ' + (si + 1), color: SET_COLORS[si % SET_COLORS.length], hidden: si >= 3, points: pts });
+    });
+    function setOK(s) {
+      if (impl === 'db') return s.unit === 'kg';
+      if (impl === 'bb') return s.unit === 'lb';
+      return true;
     }
+    var series = [];
+    function buildSeries() {
+      series = [];
+      for (var si = 0; si < maxSets; si++) {
+        var pts = [];
+        prog.forEach(function (p) {
+          var s = p.sets[si];
+          if (s && s.one_rm != null && setOK(s)) pts.push({ x: p.date, y: s.one_rm, first: !!p.first_of_day });
+        });
+        if (pts.length) series.push({
+          label: 'Set ' + (si + 1), si: si, color: SET_COLORS[si % SET_COLORS.length],
+          hidden: hiddenSets[si] !== undefined ? hiddenSets[si] : si >= 3, points: pts
+        });
+      }
+    }
+    buildSeries();
     var h = '<a href="#/" class="dim small" style="text-decoration:none">‹ Exercises</a>' +
       '<div class="card"><div class="wdate" style="font-size:18px">' + esc(d.name) + '</div>' +
       '<div class="wmeta">' + prog.length + ' sessions · est. 1RM via Epley (w × (1 + reps/30))' +
       '<br>Bodyweight moves use that day\u2019s body weight as the load.</div></div>';
     if (series.length) {
-      h += '<div class="card"><div class="small dim" style="margin-bottom:6px">Estimated 1RM over time — tap a set in the legend to show/hide it</div>' +
-        '<div id="exchart"></div></div>';
+      h += '<div class="card"><div class="row" style="margin-bottom:6px"><div class="grow small dim">' +
+        'Estimated 1RM over time — tap a set in the legend to show/hide it</div>';
+      if (hasDB && hasBB) {
+        h += '<div class="seg" id="implseg"><span data-impl="all" class="on">All</span>' +
+          '<span data-impl="db">DB</span><span data-impl="bb">Barbell</span></div>';
+      }
+      h += '</div><div id="exchart"></div></div>';
     }
     h += '<div class="card"><table><tr><th>Date</th><th>Set</th><th>Load × Reps</th><th class="num">Est 1RM</th></tr>' +
       prog.slice().reverse().map(function (p) {
@@ -321,21 +346,31 @@ function vExercise(name) {
     if (series.length) {
       var yFmt = function (y) { return Math.round(y) + ''; };
       var cel = document.getElementById('exchart');
-      var paint = function () { cel.innerHTML = multiChart(series, yFmt); };
+      var paint = function () { buildSeries(); cel.innerHTML = multiChart(series, yFmt); };
       paint();
       cel.addEventListener('click', function (ev) {
         var t = ev.target;
         var lg = t.closest ? t.closest('.lg') : null;
         var mn = t.closest ? t.closest('.mini') : null;
         if (lg && cel.contains(lg)) {
-          var i = +lg.getAttribute('data-i');
-          series[i].hidden = !series[i].hidden;
+          var si = series[+lg.getAttribute('data-i')].si;
+          hiddenSets[si] = !(hiddenSets[si] !== undefined ? hiddenSets[si] : si >= 3);
           paint();
         } else if (mn && cel.contains(mn)) {
           var first3 = mn.getAttribute('data-act') === 'first3';
-          series.forEach(function (s, j) { s.hidden = first3 ? j >= 3 : false; });
+          for (var k = 0; k < maxSets; k++) hiddenSets[k] = first3 ? k >= 3 : false;
           paint();
         }
+      });
+      var seg = document.getElementById('implseg');
+      if (seg) seg.addEventListener('click', function (ev) {
+        var t = ev.target.closest ? ev.target.closest('[data-impl]') : null;
+        if (!t || !seg.contains(t)) return;
+        impl = t.getAttribute('data-impl');
+        seg.querySelectorAll('[data-impl]').forEach(function (el) {
+          el.classList.toggle('on', el === t);
+        });
+        paint();
       });
     }
   }).catch(function (e) { v.innerHTML = '<div class="err">' + esc(e.message) + '</div>'; });
