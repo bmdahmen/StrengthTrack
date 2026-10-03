@@ -44,19 +44,21 @@ function setDisplay(s) {
 var SET_COLORS = ['#5eb1ff', '#ff9d5c', '#7ddb8a', '#d18bff', '#ffd35c', '#ff7d9c'];
 
 function multiChart(series, yFmt) {
-  // series: [{label, color, points:[{x:'2026-10-03', y:1.2, first:true}]}]
+  // series: [{label, color, hidden, points:[{x:'2026-10-03', y:1.2, first:true}]}]
+  // Legend entries are clickable toggles (caller wires up .lg / .mini clicks).
+  var vis = series.filter(function (s) { return !s.hidden; });
   var W = 360, H = 230, L = 42, R = 10, T = 14, B = 30;
   var iw = W - L - R, ih = H - T - B;
   var dates = [], seen = {};
-  series.forEach(function (s) {
+  vis.forEach(function (s) {
     s.points.forEach(function (p) {
       if (!seen[p.x]) { seen[p.x] = 1; dates.push(p.x); }
     });
   });
   dates.sort();
   var allY = [];
-  series.forEach(function (s) { s.points.forEach(function (p) { allY.push(p.y); }); });
-  if (!allY.length) return '<div class="dim">No data.</div>';
+  vis.forEach(function (s) { s.points.forEach(function (p) { allY.push(p.y); }); });
+  if (!allY.length) return '<div class="dim">All sets hidden — tap the legend to show a line.</div>';
   var lo = Math.min.apply(null, allY), hi = Math.max.apply(null, allY);
   if (lo === hi) { lo -= 1; hi += 1; }
   var pad = (hi - lo) * 0.15; lo -= pad; hi += pad;
@@ -74,7 +76,7 @@ function multiChart(series, yFmt) {
     svg += '<text x="' + xPos[dates[i]].toFixed(1) + '" y="' + (H - 10) + '" font-size="10" fill="#9aa4b2" text-anchor="middle">' +
       esc(shortDate(dates[i])) + '</text>';
   });
-  series.forEach(function (s) {
+  vis.forEach(function (s) {
     var pts = s.points.slice().sort(function (a, b) { return a.x < b.x ? -1 : 1; });
     var line = pts.map(function (p) { return xPos[p.x].toFixed(1) + ',' + Y(p.y).toFixed(1); }).join(' ');
     svg += '<polyline points="' + line + '" fill="none" stroke="' + s.color + '" stroke-width="2" opacity="0.9"/>';
@@ -85,13 +87,16 @@ function multiChart(series, yFmt) {
         '<title>' + esc(s.label + ' · ' + p.x + ': ' + yFmt(p.y)) + (p.first ? ' · first exercise' : '') + '</title></circle>';
     });
   });
-  var legend = series.map(function (s) {
-    return '<span style="margin-right:12px; font-size:12px; color:#9aa4b2">' +
+  var legend = series.map(function (s, i) {
+    return '<span class="lg' + (s.hidden ? ' off' : '') + '" data-i="' + i + '">' +
       '<span style="display:inline-block; width:10px; height:10px; border-radius:50%; background:' + s.color + '; margin-right:5px"></span>' +
-      esc(s.label) + '</span>';
+      '<span class="lbl">' + esc(s.label) + '</span></span>';
   }).join('');
   return '<div style="margin-bottom:8px">' + legend +
-    '<span style="font-size:12px; color:#9aa4b2">○ = first exercise of the day</span></div>' +
+    '<span style="font-size:12px; color:#9aa4b2; margin-left:6px">○ = first of day</span>' +
+    '<span style="float:right; font-size:12px"><span class="mini" data-act="all">All</span>' +
+    ' <span class="dim">·</span> <span class="mini" data-act="first3">1–3</span></span></div>' +
+    '<div style="clear:both"></div>' +
     '<svg class="chart" viewBox="0 0 ' + W + ' ' + H + '">' + svg + '</svg>';
 }
 
@@ -136,17 +141,21 @@ function nav() {
   var h = location.hash || '#/';
   document.querySelectorAll('[data-nav]').forEach(function (a) {
     var href = a.getAttribute('href');
-    a.classList.toggle('on', href === '#/' ? (h === '#/' || h.indexOf('#/w/') === 0) : h.indexOf(href) === 0);
+    var on = false;
+    if (href === '#/') on = (h === '#/' || h === '#/ex' || h.indexOf('#/ex/') === 0);
+    else if (href === '#/wo') on = (h === '#/wo' || h.indexOf('#/w/') === 0);
+    else on = h.indexOf(href) === 0;
+    a.classList.toggle('on', on);
   });
-  if (h === '#/' || h === '') return vWorkouts();
+  if (h === '#/' || h === '' || h === '#/ex') return vExercises('');
   var m = h.match(/^#\/w\/(\d+)$/);
   if (m) return vWorkout(m[1]);
-  if (h === '#/ex') return vExercises('');
+  if (h === '#/wo') return vWorkouts();
   m = h.match(/^#\/ex\/(.+)$/);
   if (m) return vExercise(decodeURIComponent(m[1]));
   if (h === '#/wt') return vWeight();
   if (h === '#/notes') return vNotes();
-  return vWorkouts();
+  return vExercises('');
 }
 
 function vWorkouts() {
@@ -181,7 +190,7 @@ function vWorkout(id) {
       if (!seen[s.exercise]) { seen[s.exercise] = []; groups.push({ name: s.exercise, sets: seen[s.exercise] }); }
       seen[s.exercise].push(s);
     });
-    var h = '<a href="#/" class="dim small" style="text-decoration:none">‹ All workouts</a>' +
+    var h = '<a href="#/wo" class="dim small" style="text-decoration:none">‹ All workouts</a>' +
       '<div class="card"><div class="row"><div class="grow">' +
       '<div class="wdate" style="font-size:19px">' + fmtDateFull(w.date) + '</div>' +
       '<div class="wmeta">' +
@@ -215,18 +224,39 @@ function vWorkout(id) {
   }).catch(function (e) { v.innerHTML = '<div class="err">' + esc(e.message) + '</div>'; });
 }
 
+var GROUP_OVERRIDES = {
+  'Chest Supported Lat Raise': 'push',  // lateral-raise variant, not a lat pull
+  'DB Hammer Preacher': 'pull'          // hammer curl on preacher bench
+};
+function muscleGroup(name) {
+  if (GROUP_OVERRIDES[name]) return GROUP_OVERRIDES[name];
+  var n = name.toLowerCase();
+  if (/(squat|deadlift|\brdl\b|lunge|calf|hip thrust)/.test(n)) return 'legs';
+  if (/(bench|press|fly|crossover|\bdips?\b|tricep|skull crusher|lateral raise|trap raise)/.test(n)) return 'push';
+  if (/(pull-?up|pulldown|row|curl|face pull|lat prayer|shrug|wrist)/.test(n)) return 'pull';
+  return 'other';
+}
+var GROUP_LABELS = [['push', 'Push'], ['pull', 'Pull'], ['legs', 'Legs'], ['other', 'Other']];
+
 function vExercises(q) {
   var v = $('#view');
   function draw(list) {
-    v.innerHTML = '<input type="search" id="q" placeholder="Search exercises…" value="' + esc(q) + '">' +
-      '<div id="list">' + list.map(function (e) {
-        return '<a class="wo" href="#/ex/' + encodeURIComponent(e.name) + '"><div class="card"><div class="row">' +
-          '<div class="grow"><div class="wdate" style="font-size:15px">' + esc(e.name) + '</div>' +
-          '<div class="wmeta">' + e.workouts + ' workouts · ' + e.sets + ' sets</div></div>' +
-          '<div class="dim">›</div></div></div></a>';
-      }).join('') + '</div>';
+    var html = '<input type="search" id="q" placeholder="Search exercises…" value="' + esc(q) + '">';
+    GROUP_LABELS.forEach(function (g) {
+      var items = list.filter(function (e) { return muscleGroup(e.name) === g[0]; });
+      if (!items.length) return;
+      html += '<div class="grphead">' + g[1].toUpperCase() + ' <span class="dim">· ' + items.length + '</span></div>' +
+        '<div class="exgrid">' + items.map(function (e) {
+          return '<a class="exblock" href="#/ex/' + encodeURIComponent(e.name) + '">' +
+            '<div class="n">' + esc(e.name) + '</div>' +
+            '<div class="m">' + e.workouts + ' workouts · ' + e.sets + ' sets</div></a>';
+        }).join('') + '</div>';
+    });
+    if (!list.length) html += '<div class="dim" style="margin-top:12px">No matches.</div>';
+    v.innerHTML = html;
     $('#q').addEventListener('input', function (ev) {
-      var s = ev.target.value.toLowerCase();
+      q = ev.target.value;
+      var s = q.toLowerCase();
       draw(cache.exercises.filter(function (e) { return e.name.toLowerCase().indexOf(s) >= 0; }));
       var nq = $('#q'); nq.focus(); nq.setSelectionRange(nq.value.length, nq.value.length);
     });
@@ -260,15 +290,15 @@ function vExercise(name) {
         var s = p.sets[si];
         if (s && s.one_rm != null) pts.push({ x: p.date, y: s.one_rm, first: !!p.first_of_day });
       });
-      if (pts.length) series.push({ label: 'Set ' + (si + 1), color: SET_COLORS[si % SET_COLORS.length], points: pts });
+      if (pts.length) series.push({ label: 'Set ' + (si + 1), color: SET_COLORS[si % SET_COLORS.length], hidden: si >= 3, points: pts });
     }
-    var h = '<a href="#/ex" class="dim small" style="text-decoration:none">‹ Exercises</a>' +
+    var h = '<a href="#/" class="dim small" style="text-decoration:none">‹ Exercises</a>' +
       '<div class="card"><div class="wdate" style="font-size:18px">' + esc(d.name) + '</div>' +
       '<div class="wmeta">' + prog.length + ' sessions · est. 1RM via Epley (w × (1 + reps/30))' +
       '<br>Bodyweight moves use that day\u2019s body weight as the load.</div></div>';
     if (series.length) {
-      h += '<div class="card"><div class="small dim" style="margin-bottom:6px">Estimated 1RM over time — one line per set number</div>' +
-        multiChart(series, function (y) { return Math.round(y) + ''; }) + '</div>';
+      h += '<div class="card"><div class="small dim" style="margin-bottom:6px">Estimated 1RM over time — tap a set in the legend to show/hide it</div>' +
+        '<div id="exchart"></div></div>';
     }
     h += '<div class="card"><table><tr><th>Date</th><th>Set</th><th>Load × Reps</th><th class="num">Est 1RM</th></tr>' +
       prog.slice().reverse().map(function (p) {
@@ -288,6 +318,26 @@ function vExercise(name) {
         }).join('');
       }).join('') + '</table></div>';
     v.innerHTML = h;
+    if (series.length) {
+      var yFmt = function (y) { return Math.round(y) + ''; };
+      var cel = document.getElementById('exchart');
+      var paint = function () { cel.innerHTML = multiChart(series, yFmt); };
+      paint();
+      cel.addEventListener('click', function (ev) {
+        var t = ev.target;
+        var lg = t.closest ? t.closest('.lg') : null;
+        var mn = t.closest ? t.closest('.mini') : null;
+        if (lg && cel.contains(lg)) {
+          var i = +lg.getAttribute('data-i');
+          series[i].hidden = !series[i].hidden;
+          paint();
+        } else if (mn && cel.contains(mn)) {
+          var first3 = mn.getAttribute('data-act') === 'first3';
+          series.forEach(function (s, j) { s.hidden = first3 ? j >= 3 : false; });
+          paint();
+        }
+      });
+    }
   }).catch(function (e) { v.innerHTML = '<div class="err">' + esc(e.message) + '</div>'; });
 }
 
