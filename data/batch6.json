@@ -1,0 +1,2524 @@
+{
+ "batch": 6,
+ "images": [
+  {
+   "file": "f8ffa6b0d5f37673cd3634fe0ff7c21eac2939851a74b3175be946460ab831fa.jpg",
+   "pages": [
+    {
+     "body_weight_lb": null,
+     "calories": null,
+     "cardio": [
+      {
+       "distance_mi": 3.1069,
+       "duration_min": 26.45,
+       "kind": "run",
+       "note": "5k"
+      }
+     ],
+     "date": "2026-05-11",
+     "duration_min": null,
+     "exercises": [
+      {
+       "name": "Deep Squat",
+       "sets": [
+        {
+         "added_weight": null,
+         "bodyweight": false,
+         "note": "",
+         "prefix": "",
+         "reps": 10,
+         "to_failure": false,
+         "weight": 165
+        },
+        {
+         "added_weight": null,
+         "bodyweight": false,
+         "note": "",
+         "prefix": "",
+         "reps": 9,
+         "to_failure": false,
+         "weight": 165
+        },
+        {
+         "added_weight": null,
+         "bodyweight": false,
+         "note": "",
+         "prefix": "",
+         "reps": 10,
+         "to_failure": false,
+         "weight": 165
+        },
+        {
+         "added_weight": null,
+         "bodyweight": false,
+         "note": "",
+         "prefix": "",
+         "reps": 6,
+         "to_failure": false,
+         "weight": 165
+        }
+       ]
+      },
+      {
+       "name": "DB One Leg Lunge",
+       "sets": [
+        {
+         "added_weight": null,
+         "bodyweight": false,
+         "note": "kg per dumbbell",
+         "prefix": "",
+         "reps": 7,
+         "to_failure": false,
+         "weight": 12.5
+        },
+        {
+         "added_weight": null,
+         "bodyweight": false,
+         "note": "kg per dumbbell",
+         "prefix": "",
+         "reps": 7,
+         "to_failure": false,
+         "weight": 12.5
+        },
+        {
+         "added_weight": null,
+         "bodyweight": false,
+         "note": "kg per dumbbell",
+         "prefix": "",
+         "reps": 9,
+         "to_failure": false,
+         "weight": 12.5
+        },
+        {
+         "added_weight": null,
+         "bodyweight": false,
+         "note": "kg per dumbbell",
+         "prefix": "",
+         "reps": 11,
+         "to_failure": false,
+         "weight": 12.5
+        }
+       ]
+      },
+      {
+       "name": "Straight Leg Deadlift",
+       "sets": [
+        {
+         "added_weight": null,
+         "bodyweight": false,
+         "note": "",
+         "prefix": "",
+         "reps": 8,
+         "to_failure": false,
+         "weight": 155
+        },
+        {
+         "added_weight": null,
+         "bodyweight": false,
+         "note": "warmup set (w.u), weight not recorded",
+         "prefix": "",
+         "reps": 7,
+         "to_failure": false,
+         "weight": null
+        },
+        {
+         "added_weight": null,
+         "bodyweight": false,
+         "note": "warmup set, weight not recorded (bracketed with w.u set)",
+         "prefix": "",
+         "reps": 6,
+         "to_failure": false,
+         "weight": null
+        },
+        {
+         "added_weight": null,
+         "bodyweight": false,
+         "note": "warmup set, weight not recorded (bracketed with w.u set)",
+         "prefix": "",
+         "reps": 8,
+         "to_failure": false,
+         "weight": null
+        }
+       ]
+      },
+      {
+       "name": "DB Squat",
+       "sets": [
+        {
+         "added_weight": null,
+         "bodyweight": false,
+         "note": "kg per dumbbell",
+         "prefix": "",
+         "reps": 10,
+         "to_failure": false,
+         "weight": 20
+        },
+        {
+         "added_weight": null,
+         "bodyweight": false,
+         "note": "kg per dumbbell",
+         "prefix": "",
+         "reps": 7,
+         "to_failure": false,
+         "weight": 20
+        },
+        {
+         "added_weight": null,
+         "bodyweight": false,
+         "note": "kg per dumbbell",
+         "prefix": "",
+         "reps": 7,
+         "to_failure": false,
+         "weight": 20
+        }
+       ]
+      }
+     ],
+     "notes": "",
+     "page_type": "workout",
+     "side": "top",
+     "steps": null,
+     "title": ""
+    },
+    {
+     "body_weight_lb": null,
+     "calories": null,
+     "cardio": [],
+     "date": "2026-05-13",
+     "duration_min": null,
+     "exercises": [
+      {
+       "name": "Pullups",
+       "sets": [
+        {
+         "added_weight": null,
+         "bodyweight": true,
+         "note": "",
+         "prefix": "",
+         "reps": 15,
+         "to_failure": false,
+         "weight": null
+        },
+        {
+         "added_weight": null,
+         "bodyweight": true,
+         "note": "",
+         "prefix": "",
+         "reps": 10,
+         "to_failure": false,
+         "weight": null
+        },
+        {
+         "added_weight": null,
+         "bodyweight": true,
+         "note": "",
+         "prefix": "",
+         "reps": 6,
+         "to_failure": false,
+         "weight": null
+        },
+        {
+         "added_weight": null,
+         "bodyweight": true,
+         "note": "",
+         "prefix": "",
+         "reps": 7,
+         "to_failure": false,
+         "weight": null
+        }
+       ]
+      },
+      {
+       "name": "Curl",
+       "sets": [
+        {
+         "added_weight": null,
+         "bodyweight": false,
+         "note": "weight written over a scribbled 35; read as 75x8",
+         "prefix": "",
+         "reps": 8,
+         "to_failure": false,
+         "weight": 75
+        },
+        {
+         "added_weight": null,
+         "bodyweight": false,
+         "note": "",
+         "prefix": "",
+         "reps": 10,
+         "to_failure": false,
+         "weight": 75
+        },
+        {
+         "added_weight": null,
+         "bodyweight": false,
+         "note": "negatives",
+         "prefix": "",
+         "reps": 5,
+         "to_failure": false,
+         "weight": 75
+        },
+        {
+         "added_weight": null,
+         "bodyweight": false,
+         "note": "negatives",
+         "prefix": "",
+         "reps": 5,
+         "to_failure": false,
+         "weight": 75
+        }
+       ]
+      },
+      {
+       "name": "Rope Tricep Pulldown",
+       "sets": [
+        {
+         "added_weight": null,
+         "bodyweight": false,
+         "note": "",
+         "prefix": "",
+         "reps": 8,
+         "to_failure": false,
+         "weight": 50
+        },
+        {
+         "added_weight": null,
+         "bodyweight": false,
+         "note": "",
+         "prefix": "",
+         "reps": 8,
+         "to_failure": false,
+         "weight": 50
+        },
+        {
+         "added_weight": null,
+         "bodyweight": false,
+         "note": "",
+         "prefix": "",
+         "reps": 11,
+         "to_failure": false,
+         "weight": 50
+        },
+        {
+         "added_weight": null,
+         "bodyweight": false,
+         "note": "",
+         "prefix": "",
+         "reps": 9,
+         "to_failure": false,
+         "weight": 50
+        }
+       ]
+      },
+      {
+       "name": "DB Curl",
+       "sets": [
+        {
+         "added_weight": null,
+         "bodyweight": false,
+         "note": "kg per dumbbell",
+         "prefix": "",
+         "reps": 10,
+         "to_failure": false,
+         "weight": 12.5
+        },
+        {
+         "added_weight": null,
+         "bodyweight": false,
+         "note": "kg per dumbbell",
+         "prefix": "",
+         "reps": 10,
+         "to_failure": false,
+         "weight": 12.5
+        },
+        {
+         "added_weight": null,
+         "bodyweight": false,
+         "note": "kg per dumbbell",
+         "prefix": "",
+         "reps": 7,
+         "to_failure": false,
+         "weight": 12.5
+        },
+        {
+         "added_weight": null,
+         "bodyweight": false,
+         "note": "kg per dumbbell",
+         "prefix": "",
+         "reps": 8,
+         "to_failure": false,
+         "weight": 12.5
+        }
+       ]
+      }
+     ],
+     "notes": "26:36 (bare time); BF 22% circled on page",
+     "page_type": "workout",
+     "side": "bottom",
+     "steps": null,
+     "title": ""
+    }
+   ]
+  },
+  {
+   "file": "55f9bbea0febdab330156fa701d6a7af9fe9fb0ec0c2b8bc52c40b7b0746c4ca.jpg",
+   "pages": [
+    {
+     "body_weight_lb": null,
+     "calories": null,
+     "cardio": [
+      {
+       "distance_mi": 3.1069,
+       "duration_min": 23.27,
+       "kind": "run",
+       "note": "5k"
+      },
+      {
+       "distance_mi": 3.1069,
+       "duration_min": 25.23,
+       "kind": "run",
+       "note": "5k"
+      }
+     ],
+     "date": "2026-05-09",
+     "duration_min": null,
+     "exercises": [],
+     "notes": "Last 5k (Stop Between 2k)",
+     "page_type": "cardio_only",
+     "side": "top",
+     "steps": null,
+     "title": ""
+    },
+    {
+     "body_weight_lb": null,
+     "calories": null,
+     "cardio": [],
+     "date": "2026-05-10",
+     "duration_min": null,
+     "exercises": [
+      {
+       "name": "Bench",
+       "sets": [
+        {
+         "added_weight": null,
+         "bodyweight": false,
+         "note": "175x6=216 style volume math ignored on 170x6",
+         "prefix": "",
+         "reps": 6,
+         "to_failure": false,
+         "weight": 170
+        },
+        {
+         "added_weight": null,
+         "bodyweight": false,
+         "note": "",
+         "prefix": "",
+         "reps": 6,
+         "to_failure": false,
+         "weight": 160
+        },
+        {
+         "added_weight": null,
+         "bodyweight": false,
+         "note": "",
+         "prefix": "",
+         "reps": 6,
+         "to_failure": false,
+         "weight": 155
+        },
+        {
+         "added_weight": null,
+         "bodyweight": false,
+         "note": "Wrist Pain",
+         "prefix": "",
+         "reps": 5,
+         "to_failure": false,
+         "weight": 145
+        }
+       ]
+      },
+      {
+       "name": "DB Row",
+       "sets": [
+        {
+         "added_weight": null,
+         "bodyweight": false,
+         "note": "kg per dumbbell",
+         "prefix": "",
+         "reps": 10,
+         "to_failure": false,
+         "weight": 32.5
+        },
+        {
+         "added_weight": null,
+         "bodyweight": false,
+         "note": "kg per dumbbell, ditto mark",
+         "prefix": "",
+         "reps": 10,
+         "to_failure": false,
+         "weight": 32.5
+        },
+        {
+         "added_weight": null,
+         "bodyweight": false,
+         "note": "kg per dumbbell, ditto mark",
+         "prefix": "",
+         "reps": 10,
+         "to_failure": false,
+         "weight": 32.5
+        },
+        {
+         "added_weight": null,
+         "bodyweight": false,
+         "note": "kg per dumbbell, ditto mark",
+         "prefix": "",
+         "reps": 10,
+         "to_failure": false,
+         "weight": 32.5
+        }
+       ]
+      }
+     ],
+     "notes": "DB Bench header written with no sets underneath",
+     "page_type": "workout",
+     "side": "bottom",
+     "steps": null,
+     "title": ""
+    }
+   ]
+  },
+  {
+   "file": "4d653d7d5d87023ebaab881677c41b4091196d50bd251a921aee0875b9c27563.jpg",
+   "pages": [
+    {
+     "body_weight_lb": null,
+     "calories": null,
+     "cardio": [
+      {
+       "distance_mi": null,
+       "duration_min": 30.93,
+       "kind": "row",
+       "note": "5k Row"
+      }
+     ],
+     "date": "2026-05-05",
+     "duration_min": null,
+     "exercises": [],
+     "notes": "",
+     "page_type": "cardio_only",
+     "side": "top",
+     "steps": null,
+     "title": ""
+    },
+    {
+     "body_weight_lb": null,
+     "calories": null,
+     "cardio": [],
+     "date": "2026-05-06",
+     "duration_min": null,
+     "exercises": [
+      {
+       "name": "Pullups",
+       "sets": [
+        {
+         "added_weight": null,
+         "bodyweight": true,
+         "note": "",
+         "prefix": "",
+         "reps": 14,
+         "to_failure": false,
+         "weight": null
+        },
+        {
+         "added_weight": null,
+         "bodyweight": true,
+         "note": "",
+         "prefix": "",
+         "reps": 8,
+         "to_failure": false,
+         "weight": null
+        },
+        {
+         "added_weight": null,
+         "bodyweight": true,
+         "note": "",
+         "prefix": "",
+         "reps": 7,
+         "to_failure": false,
+         "weight": null
+        },
+        {
+         "added_weight": null,
+         "bodyweight": true,
+         "note": "",
+         "prefix": "",
+         "reps": 6,
+         "to_failure": false,
+         "weight": null
+        }
+       ]
+      },
+      {
+       "name": "Bar Curl",
+       "sets": [
+        {
+         "added_weight": null,
+         "bodyweight": false,
+         "note": "",
+         "prefix": "",
+         "reps": 8,
+         "to_failure": false,
+         "weight": 80
+        },
+        {
+         "added_weight": null,
+         "bodyweight": false,
+         "note": "",
+         "prefix": "",
+         "reps": 6,
+         "to_failure": false,
+         "weight": 80
+        },
+        {
+         "added_weight": null,
+         "bodyweight": false,
+         "note": "",
+         "prefix": "",
+         "reps": 7,
+         "to_failure": false,
+         "weight": 75
+        },
+        {
+         "added_weight": null,
+         "bodyweight": false,
+         "note": "",
+         "prefix": "",
+         "reps": 8,
+         "to_failure": false,
+         "weight": 75
+        }
+       ]
+      },
+      {
+       "name": "Tri Pulldown",
+       "sets": [
+        {
+         "added_weight": null,
+         "bodyweight": false,
+         "note": "",
+         "prefix": "",
+         "reps": 12,
+         "to_failure": false,
+         "weight": 60
+        },
+        {
+         "added_weight": null,
+         "bodyweight": false,
+         "note": "",
+         "prefix": "",
+         "reps": 12,
+         "to_failure": false,
+         "weight": 70
+        },
+        {
+         "added_weight": null,
+         "bodyweight": false,
+         "note": "weight has a scribble/correction; read as 75x9",
+         "prefix": "",
+         "reps": 9,
+         "to_failure": false,
+         "weight": 75
+        },
+        {
+         "added_weight": null,
+         "bodyweight": false,
+         "note": "",
+         "prefix": "",
+         "reps": 6,
+         "to_failure": false,
+         "weight": 75
+        },
+        {
+         "added_weight": null,
+         "bodyweight": false,
+         "note": "",
+         "prefix": "",
+         "reps": 5,
+         "to_failure": false,
+         "weight": 75
+        }
+       ]
+      },
+      {
+       "name": "DB Curl Incline",
+       "sets": [
+        {
+         "added_weight": null,
+         "bodyweight": false,
+         "note": "kg per dumbbell",
+         "prefix": "",
+         "reps": 4,
+         "to_failure": false,
+         "weight": 15
+        },
+        {
+         "added_weight": null,
+         "bodyweight": false,
+         "note": "kg per dumbbell",
+         "prefix": "",
+         "reps": 9,
+         "to_failure": false,
+         "weight": 12.5
+        },
+        {
+         "added_weight": null,
+         "bodyweight": false,
+         "note": "kg per dumbbell",
+         "prefix": "",
+         "reps": 8,
+         "to_failure": false,
+         "weight": 12.5
+        },
+        {
+         "added_weight": null,
+         "bodyweight": false,
+         "note": "kg per dumbbell",
+         "prefix": "",
+         "reps": 7,
+         "to_failure": false,
+         "weight": 12.5
+        },
+        {
+         "added_weight": null,
+         "bodyweight": false,
+         "note": "kg per dumbbell",
+         "prefix": "",
+         "reps": 6,
+         "to_failure": false,
+         "weight": 12.5
+        }
+       ]
+      },
+      {
+       "name": "DB Skull Crusher",
+       "sets": [
+        {
+         "added_weight": null,
+         "bodyweight": false,
+         "note": "kg per dumbbell",
+         "prefix": "",
+         "reps": 8,
+         "to_failure": false,
+         "weight": 12.5
+        },
+        {
+         "added_weight": null,
+         "bodyweight": false,
+         "note": "kg per dumbbell, ditto mark; reps ambiguous, read as 8",
+         "prefix": "",
+         "reps": 8,
+         "to_failure": false,
+         "weight": 12.5
+        },
+        {
+         "added_weight": null,
+         "bodyweight": false,
+         "note": "kg per dumbbell, ditto mark",
+         "prefix": "",
+         "reps": 5,
+         "to_failure": false,
+         "weight": 12.5
+        },
+        {
+         "added_weight": null,
+         "bodyweight": false,
+         "note": "kg per dumbbell, ditto mark",
+         "prefix": "",
+         "reps": 5,
+         "to_failure": false,
+         "weight": 12.5
+        }
+       ]
+      },
+      {
+       "name": "Concentration Curl",
+       "sets": [
+        {
+         "added_weight": null,
+         "bodyweight": false,
+         "note": "kg per dumbbell",
+         "prefix": "",
+         "reps": 8,
+         "to_failure": false,
+         "weight": 12.5
+        },
+        {
+         "added_weight": null,
+         "bodyweight": false,
+         "note": "kg per dumbbell",
+         "prefix": "",
+         "reps": 12,
+         "to_failure": false,
+         "weight": 12.5
+        },
+        {
+         "added_weight": null,
+         "bodyweight": false,
+         "note": "kg per dumbbell",
+         "prefix": "",
+         "reps": 12,
+         "to_failure": false,
+         "weight": 12.5
+        },
+        {
+         "added_weight": null,
+         "bodyweight": false,
+         "note": "kg per dumbbell, written '125x12'",
+         "prefix": "",
+         "reps": 12,
+         "to_failure": false,
+         "weight": 12.5
+        }
+       ]
+      }
+     ],
+     "notes": "25:56 (bare time)",
+     "page_type": "workout",
+     "side": "bottom",
+     "steps": null,
+     "title": ""
+    }
+   ]
+  },
+  {
+   "file": "8f815da7dc078528cea8e4783222f743488b2d4070d9aaf25b7f4a0195a97775.jpg",
+   "pages": [
+    {
+     "body_weight_lb": null,
+     "calories": null,
+     "cardio": [],
+     "date": "2026-05-07",
+     "duration_min": null,
+     "exercises": [
+      {
+       "name": "DB Press",
+       "sets": [
+        {
+         "added_weight": null,
+         "bodyweight": false,
+         "note": "kg per dumbbell",
+         "prefix": "",
+         "reps": 12,
+         "to_failure": false,
+         "weight": 22.5
+        },
+        {
+         "added_weight": null,
+         "bodyweight": false,
+         "note": "kg per dumbbell, ditto mark",
+         "prefix": "",
+         "reps": 11,
+         "to_failure": false,
+         "weight": 22.5
+        },
+        {
+         "added_weight": null,
+         "bodyweight": false,
+         "note": "kg per dumbbell, ditto mark",
+         "prefix": "",
+         "reps": 11,
+         "to_failure": false,
+         "weight": 22.5
+        },
+        {
+         "added_weight": null,
+         "bodyweight": false,
+         "note": "kg per dumbbell, ditto mark",
+         "prefix": "",
+         "reps": 8,
+         "to_failure": false,
+         "weight": 22.5
+        }
+       ]
+      },
+      {
+       "name": "DB Row",
+       "sets": [
+        {
+         "added_weight": null,
+         "bodyweight": false,
+         "note": "kg per dumbbell, slow",
+         "prefix": "",
+         "reps": 10,
+         "to_failure": false,
+         "weight": 22.5
+        },
+        {
+         "added_weight": null,
+         "bodyweight": false,
+         "note": "kg per dumbbell, fast",
+         "prefix": "",
+         "reps": 20,
+         "to_failure": false,
+         "weight": 22.5
+        },
+        {
+         "added_weight": null,
+         "bodyweight": false,
+         "note": "kg per dumbbell, fast",
+         "prefix": "",
+         "reps": 20,
+         "to_failure": false,
+         "weight": 22.5
+        }
+       ]
+      },
+      {
+       "name": "Trap Raises",
+       "sets": [
+        {
+         "added_weight": null,
+         "bodyweight": false,
+         "note": "",
+         "prefix": "",
+         "reps": 10,
+         "to_failure": false,
+         "weight": 75
+        },
+        {
+         "added_weight": null,
+         "bodyweight": false,
+         "note": "",
+         "prefix": "",
+         "reps": 9,
+         "to_failure": false,
+         "weight": 75
+        },
+        {
+         "added_weight": null,
+         "bodyweight": false,
+         "note": "",
+         "prefix": "",
+         "reps": 9,
+         "to_failure": false,
+         "weight": 75
+        },
+        {
+         "added_weight": null,
+         "bodyweight": false,
+         "note": "",
+         "prefix": "",
+         "reps": 6,
+         "to_failure": false,
+         "weight": 75
+        }
+       ]
+      }
+     ],
+     "notes": "25:10 (bare time)",
+     "page_type": "workout",
+     "side": "top",
+     "steps": null,
+     "title": ""
+    },
+    {
+     "body_weight_lb": null,
+     "calories": null,
+     "cardio": [
+      {
+       "distance_mi": 3.1069,
+       "duration_min": 24.65,
+       "kind": "run",
+       "note": "5k"
+      }
+     ],
+     "date": "2026-05-08",
+     "duration_min": null,
+     "exercises": [],
+     "notes": "",
+     "page_type": "cardio_only",
+     "side": "bottom",
+     "steps": null,
+     "title": ""
+    }
+   ]
+  },
+  {
+   "file": "e8480817f9c9bc5e088c7e0cf16dfd4d7b4e46a45ff5af920ec74aca1f8472fc.jpg",
+   "pages": [
+    {
+     "body_weight_lb": null,
+     "calories": null,
+     "cardio": [
+      {
+       "distance_mi": null,
+       "duration_min": 22.47,
+       "kind": "row",
+       "note": "5k Row"
+      }
+     ],
+     "date": "2026-05-03",
+     "duration_min": null,
+     "exercises": [
+      {
+       "name": "Bench",
+       "sets": [
+        {
+         "added_weight": null,
+         "bodyweight": false,
+         "note": "'=222' is his volume math, ignored",
+         "prefix": "",
+         "reps": 8,
+         "to_failure": false,
+         "weight": 175
+        },
+        {
+         "added_weight": null,
+         "bodyweight": false,
+         "note": "",
+         "prefix": "",
+         "reps": 7,
+         "to_failure": true,
+         "weight": 165
+        },
+        {
+         "added_weight": null,
+         "bodyweight": false,
+         "note": "",
+         "prefix": "",
+         "reps": 4,
+         "to_failure": false,
+         "weight": 165
+        },
+        {
+         "added_weight": null,
+         "bodyweight": false,
+         "note": "",
+         "prefix": "",
+         "reps": 6,
+         "to_failure": false,
+         "weight": 155
+        }
+       ]
+      },
+      {
+       "name": "Incline Bench",
+       "sets": [
+        {
+         "added_weight": null,
+         "bodyweight": false,
+         "note": "",
+         "prefix": "",
+         "reps": 7,
+         "to_failure": false,
+         "weight": 135
+        },
+        {
+         "added_weight": null,
+         "bodyweight": false,
+         "note": "",
+         "prefix": "",
+         "reps": 4,
+         "to_failure": false,
+         "weight": 135
+        },
+        {
+         "added_weight": null,
+         "bodyweight": false,
+         "note": "",
+         "prefix": "",
+         "reps": 7,
+         "to_failure": false,
+         "weight": 115
+        },
+        {
+         "added_weight": null,
+         "bodyweight": false,
+         "note": "",
+         "prefix": "",
+         "reps": 7,
+         "to_failure": false,
+         "weight": 115
+        }
+       ]
+      },
+      {
+       "name": "DB Incline",
+       "sets": [
+        {
+         "added_weight": null,
+         "bodyweight": false,
+         "note": "kg per dumbbell",
+         "prefix": "",
+         "reps": 6,
+         "to_failure": false,
+         "weight": 22.5
+        },
+        {
+         "added_weight": null,
+         "bodyweight": false,
+         "note": "kg per dumbbell",
+         "prefix": "",
+         "reps": 5,
+         "to_failure": false,
+         "weight": 22.5
+        },
+        {
+         "added_weight": null,
+         "bodyweight": false,
+         "note": "kg per dumbbell",
+         "prefix": "",
+         "reps": 5,
+         "to_failure": false,
+         "weight": 22.5
+        },
+        {
+         "added_weight": null,
+         "bodyweight": false,
+         "note": "kg per dumbbell",
+         "prefix": "",
+         "reps": 4,
+         "to_failure": false,
+         "weight": 22.5
+        }
+       ]
+      },
+      {
+       "name": "DB Fly",
+       "sets": [
+        {
+         "added_weight": null,
+         "bodyweight": false,
+         "note": "kg per dumbbell",
+         "prefix": "",
+         "reps": 6,
+         "to_failure": false,
+         "weight": 12.5
+        },
+        {
+         "added_weight": null,
+         "bodyweight": false,
+         "note": "kg per dumbbell",
+         "prefix": "",
+         "reps": 4,
+         "to_failure": false,
+         "weight": 12.5
+        },
+        {
+         "added_weight": null,
+         "bodyweight": false,
+         "note": "ILLEGIBLE: third DB Fly set written as '12.5x' with reps obscured/unreadable",
+         "prefix": "",
+         "reps": null,
+         "to_failure": false,
+         "weight": 12.5
+        }
+       ]
+      }
+     ],
+     "notes": "",
+     "page_type": "workout",
+     "side": "top",
+     "steps": null,
+     "title": ""
+    },
+    {
+     "body_weight_lb": null,
+     "calories": null,
+     "cardio": [
+      {
+       "distance_mi": 3.1069,
+       "duration_min": 26.43,
+       "kind": "run",
+       "note": "5k"
+      }
+     ],
+     "date": "2026-05-04",
+     "duration_min": null,
+     "exercises": [
+      {
+       "name": "Squat",
+       "sets": [
+        {
+         "added_weight": null,
+         "bodyweight": false,
+         "note": "",
+         "prefix": "",
+         "reps": 10,
+         "to_failure": false,
+         "weight": 155
+        },
+        {
+         "added_weight": null,
+         "bodyweight": false,
+         "note": "",
+         "prefix": "",
+         "reps": 9,
+         "to_failure": false,
+         "weight": 165
+        },
+        {
+         "added_weight": null,
+         "bodyweight": false,
+         "note": "",
+         "prefix": "",
+         "reps": 8,
+         "to_failure": false,
+         "weight": 165
+        },
+        {
+         "added_weight": null,
+         "bodyweight": false,
+         "note": "",
+         "prefix": "",
+         "reps": 9,
+         "to_failure": true,
+         "weight": 165
+        }
+       ]
+      },
+      {
+       "name": "Romanian Deadlift",
+       "sets": [
+        {
+         "added_weight": null,
+         "bodyweight": false,
+         "note": "",
+         "prefix": "",
+         "reps": 6,
+         "to_failure": false,
+         "weight": 135
+        },
+        {
+         "added_weight": null,
+         "bodyweight": false,
+         "note": "",
+         "prefix": "",
+         "reps": 7,
+         "to_failure": false,
+         "weight": 135
+        },
+        {
+         "added_weight": null,
+         "bodyweight": false,
+         "note": "",
+         "prefix": "",
+         "reps": 6,
+         "to_failure": false,
+         "weight": 135
+        },
+        {
+         "added_weight": null,
+         "bodyweight": false,
+         "note": "",
+         "prefix": "",
+         "reps": 6,
+         "to_failure": false,
+         "weight": 135
+        }
+       ]
+      },
+      {
+       "name": "One Leg Raised Lunge",
+       "sets": [
+        {
+         "added_weight": null,
+         "bodyweight": true,
+         "note": "",
+         "prefix": "",
+         "reps": 10,
+         "to_failure": false,
+         "weight": null
+        },
+        {
+         "added_weight": null,
+         "bodyweight": true,
+         "note": "ditto mark",
+         "prefix": "",
+         "reps": 12,
+         "to_failure": false,
+         "weight": null
+        },
+        {
+         "added_weight": null,
+         "bodyweight": true,
+         "note": "ditto mark",
+         "prefix": "",
+         "reps": 10,
+         "to_failure": false,
+         "weight": null
+        },
+        {
+         "added_weight": null,
+         "bodyweight": true,
+         "note": "ditto mark",
+         "prefix": "",
+         "reps": 10,
+         "to_failure": false,
+         "weight": null
+        }
+       ]
+      }
+     ],
+     "notes": "Right leg is weaker, start there",
+     "page_type": "workout",
+     "side": "bottom",
+     "steps": null,
+     "title": ""
+    }
+   ]
+  },
+  {
+   "file": "1e003330dc5721373a8228ad87f491839b6b11fb7a7df00811ce939003ea3fcd.jpg",
+   "pages": [
+    {
+     "body_weight_lb": null,
+     "calories": null,
+     "cardio": [
+      {
+       "distance_mi": null,
+       "duration_min": 55.98,
+       "kind": "row",
+       "note": "Slow 10k Row"
+      }
+     ],
+     "date": "2026-04-28",
+     "duration_min": null,
+     "exercises": [],
+     "notes": "",
+     "page_type": "cardio_only",
+     "side": "top",
+     "steps": null,
+     "title": ""
+    },
+    {
+     "body_weight_lb": null,
+     "calories": null,
+     "cardio": [],
+     "date": "2026-04-29",
+     "duration_min": null,
+     "exercises": [
+      {
+       "name": "Pullups",
+       "sets": [
+        {
+         "added_weight": null,
+         "bodyweight": true,
+         "note": "Full Extension",
+         "prefix": "",
+         "reps": 12,
+         "to_failure": false,
+         "weight": null
+        },
+        {
+         "added_weight": null,
+         "bodyweight": true,
+         "note": "Full Extension",
+         "prefix": "",
+         "reps": 7,
+         "to_failure": false,
+         "weight": null
+        },
+        {
+         "added_weight": null,
+         "bodyweight": true,
+         "note": "Full Extension",
+         "prefix": "",
+         "reps": 6,
+         "to_failure": false,
+         "weight": null
+        }
+       ]
+      },
+      {
+       "name": "Curl Bar",
+       "sets": [
+        {
+         "added_weight": null,
+         "bodyweight": false,
+         "note": "",
+         "prefix": "",
+         "reps": 9,
+         "to_failure": false,
+         "weight": 80
+        },
+        {
+         "added_weight": null,
+         "bodyweight": false,
+         "note": "",
+         "prefix": "",
+         "reps": 6,
+         "to_failure": false,
+         "weight": 80
+        },
+        {
+         "added_weight": null,
+         "bodyweight": false,
+         "note": "",
+         "prefix": "",
+         "reps": 6,
+         "to_failure": false,
+         "weight": 80
+        },
+        {
+         "added_weight": null,
+         "bodyweight": false,
+         "note": "",
+         "prefix": "",
+         "reps": 7,
+         "to_failure": false,
+         "weight": 75
+        }
+       ]
+      },
+      {
+       "name": "Skull Crusher",
+       "sets": [
+        {
+         "added_weight": null,
+         "bodyweight": false,
+         "note": "",
+         "prefix": "",
+         "reps": 15,
+         "to_failure": false,
+         "weight": 40
+        },
+        {
+         "added_weight": null,
+         "bodyweight": false,
+         "note": "ditto mark",
+         "prefix": "",
+         "reps": 12,
+         "to_failure": false,
+         "weight": 40
+        },
+        {
+         "added_weight": null,
+         "bodyweight": false,
+         "note": "ditto mark",
+         "prefix": "",
+         "reps": 10,
+         "to_failure": false,
+         "weight": 40
+        },
+        {
+         "added_weight": null,
+         "bodyweight": false,
+         "note": "ditto mark",
+         "prefix": "",
+         "reps": 12,
+         "to_failure": false,
+         "weight": 40
+        }
+       ]
+      },
+      {
+       "name": "Tricep Pulldown",
+       "sets": [
+        {
+         "added_weight": null,
+         "bodyweight": false,
+         "note": "",
+         "prefix": "",
+         "reps": 20,
+         "to_failure": false,
+         "weight": 50
+        },
+        {
+         "added_weight": null,
+         "bodyweight": false,
+         "note": "",
+         "prefix": "",
+         "reps": 14,
+         "to_failure": false,
+         "weight": 60
+        },
+        {
+         "added_weight": null,
+         "bodyweight": false,
+         "note": "",
+         "prefix": "",
+         "reps": 10,
+         "to_failure": false,
+         "weight": 65
+        },
+        {
+         "added_weight": null,
+         "bodyweight": false,
+         "note": "",
+         "prefix": "",
+         "reps": 9,
+         "to_failure": false,
+         "weight": 65
+        }
+       ]
+      },
+      {
+       "name": "DB Curl",
+       "sets": [
+        {
+         "added_weight": null,
+         "bodyweight": false,
+         "note": "kg per dumbbell",
+         "prefix": "",
+         "reps": 5,
+         "to_failure": false,
+         "weight": 17.5
+        },
+        {
+         "added_weight": null,
+         "bodyweight": false,
+         "note": "kg per dumbbell",
+         "prefix": "",
+         "reps": 7,
+         "to_failure": false,
+         "weight": 15
+        },
+        {
+         "added_weight": null,
+         "bodyweight": false,
+         "note": "kg per dumbbell",
+         "prefix": "",
+         "reps": 7,
+         "to_failure": false,
+         "weight": 15
+        },
+        {
+         "added_weight": null,
+         "bodyweight": false,
+         "note": "kg per dumbbell",
+         "prefix": "",
+         "reps": 6,
+         "to_failure": false,
+         "weight": 12.5
+        },
+        {
+         "added_weight": null,
+         "bodyweight": false,
+         "note": "kg per dumbbell, ditto mark",
+         "prefix": "",
+         "reps": 6,
+         "to_failure": false,
+         "weight": 12.5
+        }
+       ]
+      },
+      {
+       "name": "Bench Dips",
+       "sets": [
+        {
+         "added_weight": null,
+         "bodyweight": true,
+         "note": "written as '34x'",
+         "prefix": "",
+         "reps": 34,
+         "to_failure": false,
+         "weight": null
+        },
+        {
+         "added_weight": null,
+         "bodyweight": true,
+         "note": "written as '22x'",
+         "prefix": "",
+         "reps": 22,
+         "to_failure": false,
+         "weight": null
+        },
+        {
+         "added_weight": null,
+         "bodyweight": true,
+         "note": "written as '30x'",
+         "prefix": "",
+         "reps": 30,
+         "to_failure": false,
+         "weight": null
+        }
+       ]
+      }
+     ],
+     "notes": "Slow 21:02",
+     "page_type": "workout",
+     "side": "bottom",
+     "steps": null,
+     "title": ""
+    }
+   ]
+  },
+  {
+   "file": "247f59fe670570cca63aa49fa72a3fe24f4de4d382f01f60736b913b520cd3ed.jpg",
+   "pages": [
+    {
+     "body_weight_lb": null,
+     "calories": null,
+     "cardio": [
+      {
+       "distance_mi": 3.1069,
+       "duration_min": 28.2,
+       "kind": "run",
+       "note": "5k"
+      }
+     ],
+     "date": "2026-04-30",
+     "duration_min": null,
+     "exercises": [
+      {
+       "name": "DB Press",
+       "sets": [
+        {
+         "added_weight": null,
+         "bodyweight": false,
+         "note": "ILLEGIBLE: first DB Press set reps scribbled out ('22.5x' with unreadable reps); kg per dumbbell",
+         "prefix": "",
+         "reps": null,
+         "to_failure": false,
+         "weight": 22.5
+        },
+        {
+         "added_weight": null,
+         "bodyweight": false,
+         "note": "kg per dumbbell, ditto mark",
+         "prefix": "",
+         "reps": 8,
+         "to_failure": false,
+         "weight": 22.5
+        },
+        {
+         "added_weight": null,
+         "bodyweight": false,
+         "note": "kg per dumbbell, ditto mark",
+         "prefix": "",
+         "reps": 6,
+         "to_failure": false,
+         "weight": 22.5
+        },
+        {
+         "added_weight": null,
+         "bodyweight": false,
+         "note": "kg per dumbbell, ditto mark",
+         "prefix": "",
+         "reps": 6,
+         "to_failure": false,
+         "weight": 22.5
+        }
+       ]
+      },
+      {
+       "name": "DB Row",
+       "sets": [
+        {
+         "added_weight": null,
+         "bodyweight": false,
+         "note": "kg per dumbbell",
+         "prefix": "",
+         "reps": 11,
+         "to_failure": false,
+         "weight": 22.5
+        },
+        {
+         "added_weight": null,
+         "bodyweight": false,
+         "note": "kg per dumbbell",
+         "prefix": "",
+         "reps": 8,
+         "to_failure": false,
+         "weight": 22.5
+        },
+        {
+         "added_weight": null,
+         "bodyweight": false,
+         "note": "ILLEGIBLE: written as ''x25 \u2014 ambiguous, possibly miswritten; weight assumed 22.5 by ditto",
+         "prefix": "",
+         "reps": 25,
+         "to_failure": false,
+         "weight": 22.5
+        },
+        {
+         "added_weight": null,
+         "bodyweight": false,
+         "note": "ILLEGIBLE: written as bare 'x20', weight not recorded",
+         "prefix": "",
+         "reps": 20,
+         "to_failure": false,
+         "weight": null
+        }
+       ]
+      },
+      {
+       "name": "Trap Raises",
+       "sets": [
+        {
+         "added_weight": null,
+         "bodyweight": false,
+         "note": "",
+         "prefix": "",
+         "reps": 6,
+         "to_failure": false,
+         "weight": 75
+        },
+        {
+         "added_weight": null,
+         "bodyweight": false,
+         "note": "",
+         "prefix": "",
+         "reps": 8,
+         "to_failure": false,
+         "weight": 75
+        },
+        {
+         "added_weight": null,
+         "bodyweight": false,
+         "note": "",
+         "prefix": "",
+         "reps": 10,
+         "to_failure": false,
+         "weight": 75
+        }
+       ]
+      }
+     ],
+     "notes": "",
+     "page_type": "workout",
+     "side": "top",
+     "steps": null,
+     "title": ""
+    },
+    {
+     "body_weight_lb": null,
+     "calories": null,
+     "cardio": [
+      {
+       "distance_mi": null,
+       "duration_min": 25.8,
+       "kind": "row",
+       "note": "5k Row"
+      },
+      {
+       "distance_mi": 3.1069,
+       "duration_min": 25.25,
+       "kind": "run",
+       "note": "5k"
+      }
+     ],
+     "date": "2026-05-02",
+     "duration_min": null,
+     "exercises": [
+      {
+       "name": "Curls",
+       "sets": [
+        {
+         "added_weight": null,
+         "bodyweight": false,
+         "note": "",
+         "prefix": "",
+         "reps": 10,
+         "to_failure": false,
+         "weight": 25
+        },
+        {
+         "added_weight": null,
+         "bodyweight": false,
+         "note": "ditto mark",
+         "prefix": "",
+         "reps": 9,
+         "to_failure": false,
+         "weight": 25
+        },
+        {
+         "added_weight": null,
+         "bodyweight": false,
+         "note": "ditto mark",
+         "prefix": "",
+         "reps": 8,
+         "to_failure": false,
+         "weight": 25
+        },
+        {
+         "added_weight": null,
+         "bodyweight": false,
+         "note": "ditto mark",
+         "prefix": "",
+         "reps": 10,
+         "to_failure": false,
+         "weight": 25
+        },
+        {
+         "added_weight": null,
+         "bodyweight": false,
+         "note": "written as bare 'x8'; weight assumed 25 by ditto",
+         "prefix": "",
+         "reps": 8,
+         "to_failure": false,
+         "weight": 25
+        },
+        {
+         "added_weight": null,
+         "bodyweight": false,
+         "note": "written as bare 'x7'; weight assumed 25 by ditto",
+         "prefix": "",
+         "reps": 7,
+         "to_failure": false,
+         "weight": 25
+        }
+       ]
+      },
+      {
+       "name": "DB Curls",
+       "sets": [
+        {
+         "added_weight": null,
+         "bodyweight": false,
+         "note": "kg per dumbbell",
+         "prefix": "",
+         "reps": 8,
+         "to_failure": false,
+         "weight": 15
+        },
+        {
+         "added_weight": null,
+         "bodyweight": false,
+         "note": "kg per dumbbell",
+         "prefix": "",
+         "reps": 7,
+         "to_failure": false,
+         "weight": 15
+        },
+        {
+         "added_weight": null,
+         "bodyweight": false,
+         "note": "kg per dumbbell",
+         "prefix": "",
+         "reps": 7,
+         "to_failure": false,
+         "weight": 15
+        },
+        {
+         "added_weight": null,
+         "bodyweight": false,
+         "note": "kg per dumbbell",
+         "prefix": "",
+         "reps": 7,
+         "to_failure": false,
+         "weight": 15
+        },
+        {
+         "added_weight": null,
+         "bodyweight": false,
+         "note": "ILLEGIBLE: written as '15x?' with unreadable reps; kg per dumbbell",
+         "prefix": "",
+         "reps": null,
+         "to_failure": false,
+         "weight": 15
+        },
+        {
+         "added_weight": null,
+         "bodyweight": false,
+         "note": "ILLEGIBLE: written as '15x?' with unreadable reps; kg per dumbbell",
+         "prefix": "",
+         "reps": null,
+         "to_failure": false,
+         "weight": 15
+        }
+       ]
+      },
+      {
+       "name": "DB Tricep",
+       "sets": [
+        {
+         "added_weight": null,
+         "bodyweight": false,
+         "note": "kg per dumbbell",
+         "prefix": "",
+         "reps": 30,
+         "to_failure": false,
+         "weight": 15
+        }
+       ]
+      }
+     ],
+     "notes": "",
+     "page_type": "workout",
+     "side": "bottom",
+     "steps": null,
+     "title": ""
+    }
+   ]
+  },
+  {
+   "file": "d08ad772bfcbc919020f6c1c61e9f4c3b9fade5f90ff0bfdd55e5d779429776d.jpg",
+   "pages": [
+    {
+     "body_weight_lb": null,
+     "calories": null,
+     "cardio": [],
+     "date": "2026-04-26",
+     "duration_min": null,
+     "exercises": [
+      {
+       "name": "Bench",
+       "sets": [
+        {
+         "added_weight": null,
+         "bodyweight": false,
+         "note": "'=210' is his volume math, ignored",
+         "prefix": "",
+         "reps": 6,
+         "to_failure": false,
+         "weight": 175
+        },
+        {
+         "added_weight": null,
+         "bodyweight": false,
+         "note": "",
+         "prefix": "",
+         "reps": 6,
+         "to_failure": false,
+         "weight": 165
+        },
+        {
+         "added_weight": null,
+         "bodyweight": false,
+         "note": "",
+         "prefix": "",
+         "reps": 6,
+         "to_failure": false,
+         "weight": 155
+        },
+        {
+         "added_weight": null,
+         "bodyweight": false,
+         "note": "",
+         "prefix": "",
+         "reps": 6,
+         "to_failure": false,
+         "weight": 155
+        }
+       ]
+      },
+      {
+       "name": "Incline Bench",
+       "sets": [
+        {
+         "added_weight": null,
+         "bodyweight": false,
+         "note": "",
+         "prefix": "",
+         "reps": 6,
+         "to_failure": false,
+         "weight": 135
+        },
+        {
+         "added_weight": null,
+         "bodyweight": false,
+         "note": "",
+         "prefix": "",
+         "reps": 7,
+         "to_failure": false,
+         "weight": 135
+        },
+        {
+         "added_weight": null,
+         "bodyweight": false,
+         "note": "",
+         "prefix": "",
+         "reps": 6,
+         "to_failure": false,
+         "weight": 135
+        },
+        {
+         "added_weight": null,
+         "bodyweight": false,
+         "note": "",
+         "prefix": "",
+         "reps": 5,
+         "to_failure": false,
+         "weight": 135
+        }
+       ]
+      },
+      {
+       "name": "DB Incline",
+       "sets": [
+        {
+         "added_weight": null,
+         "bodyweight": false,
+         "note": "kg per dumbbell, written '20kg'",
+         "prefix": "",
+         "reps": 5,
+         "to_failure": false,
+         "weight": 20
+        },
+        {
+         "added_weight": null,
+         "bodyweight": false,
+         "note": "kg per dumbbell, ditto mark",
+         "prefix": "",
+         "reps": 9,
+         "to_failure": false,
+         "weight": 20
+        },
+        {
+         "added_weight": null,
+         "bodyweight": false,
+         "note": "kg per dumbbell, ditto mark",
+         "prefix": "",
+         "reps": 8,
+         "to_failure": false,
+         "weight": 20
+        },
+        {
+         "added_weight": null,
+         "bodyweight": false,
+         "note": "kg per dumbbell, ditto mark",
+         "prefix": "",
+         "reps": 8,
+         "to_failure": false,
+         "weight": 20
+        }
+       ]
+      },
+      {
+       "name": "DB Fly",
+       "sets": [
+        {
+         "added_weight": null,
+         "bodyweight": false,
+         "note": "kg per dumbbell",
+         "prefix": "",
+         "reps": 5,
+         "to_failure": false,
+         "weight": 10
+        },
+        {
+         "added_weight": null,
+         "bodyweight": false,
+         "note": "kg per dumbbell",
+         "prefix": "",
+         "reps": 7,
+         "to_failure": false,
+         "weight": 10
+        }
+       ]
+      }
+     ],
+     "notes": "24:57 (bare time)",
+     "page_type": "workout",
+     "side": "top",
+     "steps": null,
+     "title": ""
+    },
+    {
+     "body_weight_lb": null,
+     "calories": null,
+     "cardio": [
+      {
+       "distance_mi": null,
+       "duration_min": 24.98,
+       "kind": "row",
+       "note": "5k Row"
+      }
+     ],
+     "date": "2026-04-27",
+     "duration_min": null,
+     "exercises": [
+      {
+       "name": "Squat",
+       "sets": [
+        {
+         "added_weight": null,
+         "bodyweight": false,
+         "note": "",
+         "prefix": "",
+         "reps": 12,
+         "to_failure": false,
+         "weight": 135
+        },
+        {
+         "added_weight": null,
+         "bodyweight": false,
+         "note": "",
+         "prefix": "",
+         "reps": 11,
+         "to_failure": false,
+         "weight": 145
+        },
+        {
+         "added_weight": null,
+         "bodyweight": false,
+         "note": "",
+         "prefix": "",
+         "reps": 9,
+         "to_failure": false,
+         "weight": 155
+        },
+        {
+         "added_weight": null,
+         "bodyweight": false,
+         "note": "",
+         "prefix": "",
+         "reps": 8,
+         "to_failure": false,
+         "weight": 155
+        }
+       ]
+      },
+      {
+       "name": "DB One Leg Lunge",
+       "sets": [
+        {
+         "added_weight": null,
+         "bodyweight": false,
+         "note": "kg per dumbbell, written '20kg'",
+         "prefix": "",
+         "reps": 4,
+         "to_failure": false,
+         "weight": 20
+        },
+        {
+         "added_weight": null,
+         "bodyweight": false,
+         "note": "kg per dumbbell, ditto mark",
+         "prefix": "",
+         "reps": 6,
+         "to_failure": false,
+         "weight": 20
+        },
+        {
+         "added_weight": null,
+         "bodyweight": false,
+         "note": "kg per dumbbell, ditto mark",
+         "prefix": "",
+         "reps": 6,
+         "to_failure": false,
+         "weight": 20
+        },
+        {
+         "added_weight": null,
+         "bodyweight": false,
+         "note": "kg per dumbbell, ditto mark",
+         "prefix": "",
+         "reps": 4,
+         "to_failure": false,
+         "weight": 20
+        }
+       ]
+      },
+      {
+       "name": "DB Squat",
+       "sets": [
+        {
+         "added_weight": null,
+         "bodyweight": false,
+         "note": "kg per dumbbell, written '20kg'",
+         "prefix": "",
+         "reps": 9,
+         "to_failure": false,
+         "weight": 20
+        },
+        {
+         "added_weight": null,
+         "bodyweight": false,
+         "note": "kg per dumbbell, ditto mark",
+         "prefix": "",
+         "reps": 9,
+         "to_failure": false,
+         "weight": 20
+        },
+        {
+         "added_weight": null,
+         "bodyweight": false,
+         "note": "kg per dumbbell, ditto mark",
+         "prefix": "",
+         "reps": 8,
+         "to_failure": false,
+         "weight": 20
+        },
+        {
+         "added_weight": null,
+         "bodyweight": false,
+         "note": "kg per dumbbell, ditto mark",
+         "prefix": "",
+         "reps": 4,
+         "to_failure": false,
+         "weight": 20
+        }
+       ]
+      },
+      {
+       "name": "Straight Leg DB Deadlift",
+       "sets": [
+        {
+         "added_weight": null,
+         "bodyweight": false,
+         "note": "kg per dumbbell, written '20kg'",
+         "prefix": "",
+         "reps": 7,
+         "to_failure": false,
+         "weight": 20
+        },
+        {
+         "added_weight": null,
+         "bodyweight": false,
+         "note": "kg per dumbbell, ditto mark",
+         "prefix": "",
+         "reps": 10,
+         "to_failure": false,
+         "weight": 20
+        }
+       ]
+      }
+     ],
+     "notes": "",
+     "page_type": "workout",
+     "side": "bottom",
+     "steps": null,
+     "title": ""
+    }
+   ]
+  },
+  {
+   "file": "d92bc8e6b4d746c5659e98639df7ae906d49ff7ad7181dc52de1a7896405dc78.jpg",
+   "pages": [
+    {
+     "body_weight_lb": null,
+     "calories": null,
+     "cardio": [
+      {
+       "distance_mi": null,
+       "duration_min": 24.25,
+       "kind": "row",
+       "note": "5k m Row"
+      }
+     ],
+     "date": "2026-04-23",
+     "duration_min": null,
+     "exercises": [
+      {
+       "name": "Prison Curls",
+       "sets": [
+        {
+         "added_weight": null,
+         "bodyweight": false,
+         "note": "written '10kg x 12'; kg implied",
+         "prefix": "",
+         "reps": 12,
+         "to_failure": false,
+         "weight": 10
+        },
+        {
+         "added_weight": null,
+         "bodyweight": false,
+         "note": "kg implied",
+         "prefix": "",
+         "reps": 10,
+         "to_failure": false,
+         "weight": 10
+        },
+        {
+         "added_weight": null,
+         "bodyweight": false,
+         "note": "kg implied",
+         "prefix": "",
+         "reps": 7,
+         "to_failure": false,
+         "weight": 10
+        },
+        {
+         "added_weight": null,
+         "bodyweight": false,
+         "note": "kg implied",
+         "prefix": "",
+         "reps": 9,
+         "to_failure": false,
+         "weight": 10
+        }
+       ]
+      }
+     ],
+     "notes": "no date written on page; faces the 04/23 page (first entry in notebook) so assumed same date. no date written on page",
+     "page_type": "workout",
+     "side": "top",
+     "steps": null,
+     "title": ""
+    },
+    {
+     "body_weight_lb": null,
+     "calories": null,
+     "cardio": [
+      {
+       "distance_mi": null,
+       "duration_min": 24.77,
+       "kind": "row",
+       "note": "5k Row"
+      }
+     ],
+     "date": "2026-04-23",
+     "duration_min": null,
+     "exercises": [
+      {
+       "name": "DB Press",
+       "sets": [
+        {
+         "added_weight": null,
+         "bodyweight": false,
+         "note": "kg per dumbbell",
+         "prefix": "",
+         "reps": 13,
+         "to_failure": false,
+         "weight": 15
+        },
+        {
+         "added_weight": null,
+         "bodyweight": false,
+         "note": "kg per dumbbell",
+         "prefix": "",
+         "reps": 10,
+         "to_failure": false,
+         "weight": 20
+        },
+        {
+         "added_weight": null,
+         "bodyweight": false,
+         "note": "kg per dumbbell",
+         "prefix": "",
+         "reps": 7,
+         "to_failure": false,
+         "weight": 22.5
+        },
+        {
+         "added_weight": null,
+         "bodyweight": false,
+         "note": "kg per dumbbell, ditto mark",
+         "prefix": "",
+         "reps": 6,
+         "to_failure": false,
+         "weight": 22.5
+        }
+       ]
+      },
+      {
+       "name": "DB Row",
+       "sets": [
+        {
+         "added_weight": null,
+         "bodyweight": false,
+         "note": "kg per dumbbell",
+         "prefix": "",
+         "reps": 11,
+         "to_failure": false,
+         "weight": 22.5
+        },
+        {
+         "added_weight": null,
+         "bodyweight": false,
+         "note": "kg per dumbbell",
+         "prefix": "",
+         "reps": 9,
+         "to_failure": false,
+         "weight": 30
+        },
+        {
+         "added_weight": null,
+         "bodyweight": false,
+         "note": "kg per dumbbell",
+         "prefix": "",
+         "reps": 10,
+         "to_failure": false,
+         "weight": 30
+        },
+        {
+         "added_weight": null,
+         "bodyweight": false,
+         "note": "kg per dumbbell",
+         "prefix": "",
+         "reps": 12,
+         "to_failure": false,
+         "weight": 30
+        }
+       ]
+      },
+      {
+       "name": "Cable Lat Pulldown",
+       "sets": [
+        {
+         "added_weight": null,
+         "bodyweight": false,
+         "note": "",
+         "prefix": "",
+         "reps": 11,
+         "to_failure": false,
+         "weight": 65
+        },
+        {
+         "added_weight": null,
+         "bodyweight": false,
+         "note": "",
+         "prefix": "",
+         "reps": 14,
+         "to_failure": false,
+         "weight": 75
+        },
+        {
+         "added_weight": null,
+         "bodyweight": false,
+         "note": "",
+         "prefix": "",
+         "reps": 11,
+         "to_failure": false,
+         "weight": 75
+        },
+        {
+         "added_weight": null,
+         "bodyweight": false,
+         "note": "",
+         "prefix": "",
+         "reps": 8,
+         "to_failure": false,
+         "weight": 75
+        }
+       ]
+      },
+      {
+       "name": "DB Raises",
+       "sets": [
+        {
+         "added_weight": null,
+         "bodyweight": false,
+         "note": "kg per dumbbell",
+         "prefix": "",
+         "reps": 10,
+         "to_failure": false,
+         "weight": 7.5
+        },
+        {
+         "added_weight": null,
+         "bodyweight": false,
+         "note": "kg per dumbbell",
+         "prefix": "",
+         "reps": 5,
+         "to_failure": false,
+         "weight": 10
+        },
+        {
+         "added_weight": null,
+         "bodyweight": false,
+         "note": "kg per dumbbell",
+         "prefix": "",
+         "reps": 6,
+         "to_failure": false,
+         "weight": 10
+        },
+        {
+         "added_weight": null,
+         "bodyweight": false,
+         "note": "kg per dumbbell",
+         "prefix": "",
+         "reps": 6,
+         "to_failure": false,
+         "weight": 10
+        }
+       ]
+      }
+     ],
+     "notes": "",
+     "page_type": "workout",
+     "side": "bottom",
+     "steps": null,
+     "title": "Shoulder Back"
+    }
+   ]
+  },
+  {
+   "file": "81f436d6ee46b57291eca471d9e083f96e4bae89e71b155b5cc0c27c38473b12.jpg",
+   "pages": [
+    {
+     "body_weight_lb": null,
+     "calories": null,
+     "cardio": [
+      {
+       "distance_mi": null,
+       "duration_min": 25.72,
+       "kind": "row",
+       "note": "5k Row"
+      }
+     ],
+     "date": "2026-04-24",
+     "duration_min": null,
+     "exercises": [
+      {
+       "name": "Wide Pullup",
+       "sets": [
+        {
+         "added_weight": null,
+         "bodyweight": true,
+         "note": "written '3x Wide Pullup'",
+         "prefix": "",
+         "reps": 3,
+         "to_failure": false,
+         "weight": null
+        }
+       ]
+      }
+     ],
+     "notes": "",
+     "page_type": "workout",
+     "side": "top",
+     "steps": null,
+     "title": ""
+    },
+    {
+     "body_weight_lb": null,
+     "calories": null,
+     "cardio": [
+      {
+       "distance_mi": null,
+       "duration_min": 24.67,
+       "kind": "row",
+       "note": "5k Row"
+      }
+     ],
+     "date": "2026-04-25",
+     "duration_min": null,
+     "exercises": [
+      {
+       "name": "Pull Up",
+       "sets": [
+        {
+         "added_weight": null,
+         "bodyweight": true,
+         "note": "",
+         "prefix": "",
+         "reps": 11,
+         "to_failure": false,
+         "weight": null
+        },
+        {
+         "added_weight": null,
+         "bodyweight": true,
+         "note": "",
+         "prefix": "",
+         "reps": 8,
+         "to_failure": false,
+         "weight": null
+        },
+        {
+         "added_weight": null,
+         "bodyweight": true,
+         "note": "",
+         "prefix": "",
+         "reps": 12,
+         "to_failure": false,
+         "weight": null
+        }
+       ]
+      }
+     ],
+     "notes": "",
+     "page_type": "workout",
+     "side": "bottom",
+     "steps": null,
+     "title": ""
+    }
+   ]
+  }
+ ]
+}

@@ -1,0 +1,16 @@
+name = "workouts"
+main = "dist/worker.js"
+compatibility_date = "2026-06-01"
+
+# Built by `python3 build.py` (embeds src/app.html + src/app.js into the worker).
+# The deploy workflow runs the build before `wrangler deploy`.
+
+[[d1_databases]]
+binding = "DB"
+database_name = "workout-log"
+database_id = "ff8e23d2-1340-4f7a-9d7b-8ec86fb8b0e8"
+
+[[d1_databases]]
+binding = "CAL"
+database_name = "calorie"
+database_id = "ce1b81ad-050f-4ea2-9b66-974881099f89"

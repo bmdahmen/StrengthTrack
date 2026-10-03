@@ -1,0 +1,3767 @@
+{
+ "batch": 3,
+ "images": [
+  {
+   "file": "98b55dacf7afde29e2b4a7352bda319291a900a1735f9c0ec844679d073fcab8.jpg",
+   "pages": [
+    {
+     "body_weight_lb": 150,
+     "calories": null,
+     "cardio": [],
+     "date": "2026-08-04",
+     "duration_min": null,
+     "exercises": [
+      {
+       "name": "Incline Bench Press",
+       "sets": [
+        {
+         "added_weight": null,
+         "bodyweight": false,
+         "note": "",
+         "prefix": "",
+         "reps": 11,
+         "to_failure": true,
+         "weight": 150
+        },
+        {
+         "added_weight": null,
+         "bodyweight": false,
+         "note": "",
+         "prefix": "",
+         "reps": 9,
+         "to_failure": true,
+         "weight": 140
+        },
+        {
+         "added_weight": null,
+         "bodyweight": false,
+         "note": "",
+         "prefix": "",
+         "reps": 12,
+         "to_failure": true,
+         "weight": 130
+        },
+        {
+         "added_weight": null,
+         "bodyweight": false,
+         "note": "",
+         "prefix": "",
+         "reps": 12,
+         "to_failure": true,
+         "weight": 120
+        },
+        {
+         "added_weight": null,
+         "bodyweight": false,
+         "note": "",
+         "prefix": "wc",
+         "reps": 11,
+         "to_failure": false,
+         "weight": 110
+        },
+        {
+         "added_weight": null,
+         "bodyweight": false,
+         "note": "",
+         "prefix": "wc",
+         "reps": 11,
+         "to_failure": false,
+         "weight": 100
+        },
+        {
+         "added_weight": null,
+         "bodyweight": false,
+         "note": "",
+         "prefix": "NG",
+         "reps": 14,
+         "to_failure": false,
+         "weight": 90
+        },
+        {
+         "added_weight": null,
+         "bodyweight": false,
+         "note": "",
+         "prefix": "NG",
+         "reps": 12,
+         "to_failure": false,
+         "weight": 90
+        },
+        {
+         "added_weight": null,
+         "bodyweight": false,
+         "note": "",
+         "prefix": "NG",
+         "reps": 10,
+         "to_failure": false,
+         "weight": 90
+        }
+       ]
+      },
+      {
+       "name": "Tricep Pushdown",
+       "sets": [
+        {
+         "added_weight": null,
+         "bodyweight": false,
+         "note": "",
+         "prefix": "",
+         "reps": 14,
+         "to_failure": false,
+         "weight": 65
+        },
+        {
+         "added_weight": null,
+         "bodyweight": false,
+         "note": "",
+         "prefix": "",
+         "reps": 14,
+         "to_failure": false,
+         "weight": 65
+        },
+        {
+         "added_weight": null,
+         "bodyweight": false,
+         "note": "",
+         "prefix": "",
+         "reps": 12,
+         "to_failure": false,
+         "weight": 65
+        }
+       ]
+      },
+      {
+       "name": "DB Fly",
+       "sets": [
+        {
+         "added_weight": null,
+         "bodyweight": false,
+         "note": "",
+         "prefix": "",
+         "reps": 11,
+         "to_failure": false,
+         "weight": 12.5
+        },
+        {
+         "added_weight": null,
+         "bodyweight": false,
+         "note": "",
+         "prefix": "",
+         "reps": 17,
+         "to_failure": false,
+         "weight": 12.5
+        },
+        {
+         "added_weight": null,
+         "bodyweight": false,
+         "note": "",
+         "prefix": "",
+         "reps": 8,
+         "to_failure": false,
+         "weight": 12.5
+        }
+       ]
+      },
+      {
+       "name": "Dips",
+       "note": "doodles only, no sets written",
+       "sets": []
+      }
+     ],
+     "notes": "Header also shows '1405' (possibly time 14:05).",
+     "page_type": "workout",
+     "side": "top",
+     "steps": null,
+     "title": ""
+    },
+    {
+     "body_weight_lb": 149.6,
+     "calories": null,
+     "cardio": [],
+     "date": "2026-08-05",
+     "duration_min": null,
+     "exercises": [
+      {
+       "name": "Squat",
+       "sets": [
+        {
+         "added_weight": null,
+         "bodyweight": false,
+         "note": "",
+         "prefix": "",
+         "reps": 14,
+         "to_failure": false,
+         "weight": 180
+        },
+        {
+         "added_weight": null,
+         "bodyweight": false,
+         "note": "",
+         "prefix": "",
+         "reps": 11,
+         "to_failure": false,
+         "weight": 140
+        },
+        {
+         "added_weight": null,
+         "bodyweight": false,
+         "note": "",
+         "prefix": "",
+         "reps": 7,
+         "to_failure": false,
+         "weight": 140
+        },
+        {
+         "added_weight": null,
+         "bodyweight": false,
+         "note": "",
+         "prefix": "",
+         "reps": 7,
+         "to_failure": false,
+         "weight": 140
+        },
+        {
+         "added_weight": null,
+         "bodyweight": false,
+         "note": "",
+         "prefix": "",
+         "reps": 7,
+         "to_failure": false,
+         "weight": 140
+        },
+        {
+         "added_weight": null,
+         "bodyweight": false,
+         "note": "",
+         "prefix": "",
+         "reps": 5,
+         "to_failure": false,
+         "weight": 200
+        }
+       ]
+      },
+      {
+       "name": "RDL",
+       "sets": [
+        {
+         "added_weight": null,
+         "bodyweight": false,
+         "note": "",
+         "prefix": "",
+         "reps": 9,
+         "to_failure": false,
+         "weight": 80
+        },
+        {
+         "added_weight": null,
+         "bodyweight": false,
+         "note": "",
+         "prefix": "",
+         "reps": 8,
+         "to_failure": false,
+         "weight": 80
+        }
+       ]
+      }
+     ],
+     "notes": "Header also shows '23:93' and '27:09' (unclear).",
+     "page_type": "workout",
+     "side": "bottom",
+     "steps": null,
+     "title": ""
+    }
+   ]
+  },
+  {
+   "file": "f37f68bb6c0da5850d4411a0a93bb85c0d2365ec83d413f396eca2896e1621fe.jpg",
+   "pages": [
+    {
+     "body_weight_lb": 148,
+     "calories": null,
+     "cardio": [],
+     "date": "2026-08-01",
+     "duration_min": null,
+     "exercises": [
+      {
+       "name": "Bulgarian Split Squat",
+       "sets": [
+        {
+         "added_weight": null,
+         "bodyweight": false,
+         "note": "",
+         "prefix": "",
+         "reps": 15,
+         "to_failure": false,
+         "weight": 12.5
+        },
+        {
+         "added_weight": null,
+         "bodyweight": false,
+         "note": "",
+         "prefix": "",
+         "reps": 15,
+         "to_failure": false,
+         "weight": 12.5
+        },
+        {
+         "added_weight": null,
+         "bodyweight": false,
+         "note": "",
+         "prefix": "",
+         "reps": 12,
+         "to_failure": false,
+         "weight": 12.5
+        }
+       ]
+      },
+      {
+       "name": "Calf Raises",
+       "sets": [
+        {
+         "added_weight": null,
+         "bodyweight": false,
+         "note": "",
+         "prefix": "",
+         "reps": 13,
+         "to_failure": false,
+         "weight": 20
+        },
+        {
+         "added_weight": null,
+         "bodyweight": false,
+         "note": "",
+         "prefix": "",
+         "reps": 13,
+         "to_failure": false,
+         "weight": 20
+        },
+        {
+         "added_weight": null,
+         "bodyweight": false,
+         "note": "",
+         "prefix": "",
+         "reps": 17,
+         "to_failure": false,
+         "weight": 20
+        },
+        {
+         "added_weight": null,
+         "bodyweight": false,
+         "note": "",
+         "prefix": "",
+         "reps": 15,
+         "to_failure": false,
+         "weight": 20
+        }
+       ]
+      },
+      {
+       "name": "Goblet Squat",
+       "sets": [
+        {
+         "added_weight": null,
+         "bodyweight": false,
+         "note": "single DB in kg, held with both hands",
+         "prefix": "",
+         "reps": 15,
+         "to_failure": false,
+         "weight": 12.5
+        },
+        {
+         "added_weight": null,
+         "bodyweight": false,
+         "note": "single DB in kg, held with both hands",
+         "prefix": "",
+         "reps": 15,
+         "to_failure": false,
+         "weight": 20
+        },
+        {
+         "added_weight": null,
+         "bodyweight": false,
+         "note": "single DB in kg, held with both hands",
+         "prefix": "",
+         "reps": 15,
+         "to_failure": false,
+         "weight": 20
+        }
+       ]
+      },
+      {
+       "name": "DB RDL",
+       "sets": [
+        {
+         "added_weight": null,
+         "bodyweight": false,
+         "note": "",
+         "prefix": "",
+         "reps": 20,
+         "to_failure": false,
+         "weight": 20
+        },
+        {
+         "added_weight": null,
+         "bodyweight": false,
+         "note": "",
+         "prefix": "",
+         "reps": 18,
+         "to_failure": false,
+         "weight": 20
+        },
+        {
+         "added_weight": null,
+         "bodyweight": false,
+         "note": "",
+         "prefix": "",
+         "reps": 12,
+         "to_failure": false,
+         "weight": 20
+        }
+       ]
+      }
+     ],
+     "notes": "Header also shows '25:40', '22:14', '2:55pm' (unclear).",
+     "page_type": "workout",
+     "side": "top",
+     "steps": null,
+     "title": ""
+    },
+    {
+     "body_weight_lb": 148.9,
+     "calories": null,
+     "cardio": [],
+     "date": "2026-08-02",
+     "duration_min": null,
+     "exercises": [
+      {
+       "name": "Preacher Curl",
+       "sets": [
+        {
+         "added_weight": null,
+         "bodyweight": false,
+         "note": "",
+         "prefix": "",
+         "reps": 12,
+         "to_failure": false,
+         "weight": 65
+        },
+        {
+         "added_weight": null,
+         "bodyweight": false,
+         "note": "",
+         "prefix": "",
+         "reps": 12,
+         "to_failure": false,
+         "weight": 60
+        },
+        {
+         "added_weight": null,
+         "bodyweight": false,
+         "note": "",
+         "prefix": "",
+         "reps": 11,
+         "to_failure": false,
+         "weight": 55
+        },
+        {
+         "added_weight": null,
+         "bodyweight": false,
+         "note": "",
+         "prefix": "",
+         "reps": 12,
+         "to_failure": false,
+         "weight": 50
+        },
+        {
+         "added_weight": null,
+         "bodyweight": false,
+         "note": "",
+         "prefix": "",
+         "reps": 16,
+         "to_failure": false,
+         "weight": 45
+        },
+        {
+         "added_weight": null,
+         "bodyweight": false,
+         "note": "",
+         "prefix": "",
+         "reps": 15,
+         "to_failure": false,
+         "weight": 45
+        }
+       ]
+      },
+      {
+       "name": "Barbell Row",
+       "sets": [
+        {
+         "added_weight": null,
+         "bodyweight": false,
+         "note": "",
+         "prefix": "",
+         "reps": 12,
+         "to_failure": false,
+         "weight": 100
+        },
+        {
+         "added_weight": null,
+         "bodyweight": false,
+         "note": "",
+         "prefix": "",
+         "reps": 10,
+         "to_failure": false,
+         "weight": 100
+        },
+        {
+         "added_weight": null,
+         "bodyweight": false,
+         "note": "",
+         "prefix": "",
+         "reps": 11,
+         "to_failure": false,
+         "weight": 90
+        },
+        {
+         "added_weight": null,
+         "bodyweight": false,
+         "note": "",
+         "prefix": "",
+         "reps": 9,
+         "to_failure": false,
+         "weight": 90
+        }
+       ]
+      },
+      {
+       "name": "WG Pullup",
+       "sets": [
+        {
+         "added_weight": null,
+         "bodyweight": true,
+         "note": "",
+         "prefix": "",
+         "reps": 9,
+         "to_failure": false,
+         "weight": null
+        },
+        {
+         "added_weight": null,
+         "bodyweight": true,
+         "note": "",
+         "prefix": "",
+         "reps": 7,
+         "to_failure": false,
+         "weight": null
+        },
+        {
+         "added_weight": null,
+         "bodyweight": true,
+         "note": "",
+         "prefix": "",
+         "reps": 8,
+         "to_failure": false,
+         "weight": null
+        },
+        {
+         "added_weight": null,
+         "bodyweight": true,
+         "note": "",
+         "prefix": "",
+         "reps": 6,
+         "to_failure": false,
+         "weight": null
+        }
+       ]
+      },
+      {
+       "name": "DB Hammer Curl",
+       "sets": [
+        {
+         "added_weight": null,
+         "bodyweight": false,
+         "note": "",
+         "prefix": "",
+         "reps": 10,
+         "to_failure": false,
+         "weight": 12.5
+        },
+        {
+         "added_weight": null,
+         "bodyweight": false,
+         "note": "",
+         "prefix": "",
+         "reps": 10,
+         "to_failure": false,
+         "weight": 12.5
+        },
+        {
+         "added_weight": null,
+         "bodyweight": false,
+         "note": "",
+         "prefix": "",
+         "reps": 11,
+         "to_failure": false,
+         "weight": 10
+        }
+       ]
+      },
+      {
+       "name": "Cable Lat Crossover",
+       "sets": [
+        {
+         "added_weight": null,
+         "bodyweight": false,
+         "note": "",
+         "prefix": "",
+         "reps": 9,
+         "to_failure": false,
+         "weight": 45
+        },
+        {
+         "added_weight": null,
+         "bodyweight": false,
+         "note": "",
+         "prefix": "",
+         "reps": 10,
+         "to_failure": false,
+         "weight": 45
+        }
+       ]
+      }
+     ],
+     "notes": "Header also shows '26:43', '27:25', '11:15am' (unclear).",
+     "page_type": "workout",
+     "side": "bottom",
+     "steps": null,
+     "title": ""
+    }
+   ]
+  },
+  {
+   "file": "db6ec1a062c8b8a71ddd44ebe42e10034e225db7e8540149183c9144b6f2c2a7.jpg",
+   "pages": [
+    {
+     "body_weight_lb": 151,
+     "calories": null,
+     "cardio": [
+      {
+       "distance_mi": 3.1069,
+       "duration_min": 26.07,
+       "kind": "run",
+       "note": "5k 26:04"
+      },
+      {
+       "distance_mi": 3.1069,
+       "duration_min": 27.2,
+       "kind": "run",
+       "note": "5k 27:12, second 5k time as written"
+      }
+     ],
+     "date": "2026-07-22",
+     "duration_min": null,
+     "exercises": [
+      {
+       "name": "Incline Bench",
+       "sets": [
+        {
+         "added_weight": null,
+         "bodyweight": false,
+         "note": "",
+         "prefix": "",
+         "reps": 9,
+         "to_failure": true,
+         "weight": 150
+        },
+        {
+         "added_weight": null,
+         "bodyweight": false,
+         "note": "",
+         "prefix": "",
+         "reps": 9,
+         "to_failure": true,
+         "weight": 140
+        },
+        {
+         "added_weight": null,
+         "bodyweight": false,
+         "note": "",
+         "prefix": "",
+         "reps": 9,
+         "to_failure": true,
+         "weight": 130
+        },
+        {
+         "added_weight": null,
+         "bodyweight": false,
+         "note": "",
+         "prefix": "",
+         "reps": 9,
+         "to_failure": false,
+         "weight": 130
+        },
+        {
+         "added_weight": null,
+         "bodyweight": false,
+         "note": "",
+         "prefix": "wc",
+         "reps": 8,
+         "to_failure": false,
+         "weight": 130
+        },
+        {
+         "added_weight": null,
+         "bodyweight": false,
+         "note": "",
+         "prefix": "wc",
+         "reps": 10,
+         "to_failure": false,
+         "weight": 120
+        }
+       ]
+      },
+      {
+       "name": "Tricep Pushdown",
+       "sets": [
+        {
+         "added_weight": null,
+         "bodyweight": false,
+         "note": "",
+         "prefix": "",
+         "reps": 14,
+         "to_failure": false,
+         "weight": 70
+        },
+        {
+         "added_weight": null,
+         "bodyweight": false,
+         "note": "",
+         "prefix": "",
+         "reps": 12,
+         "to_failure": false,
+         "weight": 70
+        },
+        {
+         "added_weight": null,
+         "bodyweight": false,
+         "note": "",
+         "prefix": "",
+         "reps": 10,
+         "to_failure": false,
+         "weight": 70
+        },
+        {
+         "added_weight": null,
+         "bodyweight": false,
+         "note": "",
+         "prefix": "",
+         "reps": 12,
+         "to_failure": false,
+         "weight": 70
+        },
+        {
+         "added_weight": null,
+         "bodyweight": false,
+         "note": "",
+         "prefix": "",
+         "reps": 11,
+         "to_failure": false,
+         "weight": 70
+        }
+       ]
+      },
+      {
+       "name": "DB Bench",
+       "sets": [
+        {
+         "added_weight": null,
+         "bodyweight": false,
+         "note": "",
+         "prefix": "",
+         "reps": 13,
+         "to_failure": true,
+         "weight": 25
+        },
+        {
+         "added_weight": null,
+         "bodyweight": false,
+         "note": "",
+         "prefix": "",
+         "reps": 11,
+         "to_failure": true,
+         "weight": 25
+        },
+        {
+         "added_weight": null,
+         "bodyweight": false,
+         "note": "",
+         "prefix": "",
+         "reps": 7,
+         "to_failure": false,
+         "weight": 25
+        }
+       ]
+      },
+      {
+       "name": "Dips",
+       "sets": [
+        {
+         "added_weight": null,
+         "bodyweight": true,
+         "note": "",
+         "prefix": "",
+         "reps": 17,
+         "to_failure": false,
+         "weight": null
+        },
+        {
+         "added_weight": null,
+         "bodyweight": true,
+         "note": "",
+         "prefix": "",
+         "reps": 17,
+         "to_failure": false,
+         "weight": null
+        },
+        {
+         "added_weight": null,
+         "bodyweight": true,
+         "note": "",
+         "prefix": "",
+         "reps": 12,
+         "to_failure": false,
+         "weight": null
+        }
+       ]
+      }
+     ],
+     "notes": "Header also shows '11:17am'.",
+     "page_type": "workout",
+     "side": "top",
+     "steps": null,
+     "title": ""
+    },
+    {
+     "body_weight_lb": 150.1,
+     "calories": null,
+     "cardio": [],
+     "date": "2026-07-28",
+     "duration_min": null,
+     "exercises": [
+      {
+       "name": "Squat",
+       "sets": [
+        {
+         "added_weight": null,
+         "bodyweight": false,
+         "note": "",
+         "prefix": "",
+         "reps": 25,
+         "to_failure": false,
+         "weight": 150
+        },
+        {
+         "added_weight": null,
+         "bodyweight": false,
+         "note": "",
+         "prefix": "",
+         "reps": 19,
+         "to_failure": false,
+         "weight": 150
+        },
+        {
+         "added_weight": null,
+         "bodyweight": false,
+         "note": "",
+         "prefix": "",
+         "reps": 13,
+         "to_failure": false,
+         "weight": 150
+        },
+        {
+         "added_weight": null,
+         "bodyweight": false,
+         "note": "",
+         "prefix": "",
+         "reps": 10,
+         "to_failure": false,
+         "weight": 150
+        }
+       ]
+      },
+      {
+       "name": "RDL",
+       "sets": [
+        {
+         "added_weight": null,
+         "bodyweight": false,
+         "note": "",
+         "prefix": "",
+         "reps": 19,
+         "to_failure": false,
+         "weight": 180
+        },
+        {
+         "added_weight": null,
+         "bodyweight": false,
+         "note": "",
+         "prefix": "",
+         "reps": 13,
+         "to_failure": false,
+         "weight": 180
+        },
+        {
+         "added_weight": null,
+         "bodyweight": false,
+         "note": "",
+         "prefix": "",
+         "reps": 8,
+         "to_failure": false,
+         "weight": 180
+        }
+       ]
+      }
+     ],
+     "notes": "Header also shows '9:15pm', '26:43', '28:12' (unclear).",
+     "page_type": "workout",
+     "side": "bottom",
+     "steps": null,
+     "title": ""
+    }
+   ]
+  },
+  {
+   "file": "62314ea5a2e0a3e1427cb5790cd32f0262680c048b75f51d03f5506f746bab10.jpg",
+   "pages": [
+    {
+     "body_weight_lb": 149.6,
+     "calories": null,
+     "cardio": [],
+     "date": "2026-07-29",
+     "duration_min": 56,
+     "exercises": [
+      {
+       "name": "Weighted Pullup",
+       "sets": [
+        {
+         "added_weight": 35,
+         "bodyweight": true,
+         "note": "",
+         "prefix": "",
+         "reps": 12,
+         "to_failure": false,
+         "weight": null
+        },
+        {
+         "added_weight": 35,
+         "bodyweight": true,
+         "note": "",
+         "prefix": "",
+         "reps": 9,
+         "to_failure": true,
+         "weight": null
+        },
+        {
+         "added_weight": 35,
+         "bodyweight": true,
+         "note": "",
+         "prefix": "",
+         "reps": 7,
+         "to_failure": false,
+         "weight": null
+        }
+       ]
+      },
+      {
+       "name": "Preacher Curl",
+       "sets": [
+        {
+         "added_weight": null,
+         "bodyweight": false,
+         "note": "",
+         "prefix": "",
+         "reps": 9,
+         "to_failure": false,
+         "weight": 75
+        },
+        {
+         "added_weight": null,
+         "bodyweight": false,
+         "note": "",
+         "prefix": "",
+         "reps": 11,
+         "to_failure": true,
+         "weight": 65
+        },
+        {
+         "added_weight": null,
+         "bodyweight": false,
+         "note": "",
+         "prefix": "",
+         "reps": 12,
+         "to_failure": true,
+         "weight": 55
+        },
+        {
+         "added_weight": null,
+         "bodyweight": false,
+         "note": "",
+         "prefix": "",
+         "reps": 12,
+         "to_failure": false,
+         "weight": 50
+        }
+       ]
+      },
+      {
+       "name": "Incline Curl",
+       "sets": [
+        {
+         "added_weight": null,
+         "bodyweight": false,
+         "note": "",
+         "prefix": "",
+         "reps": 13,
+         "to_failure": false,
+         "weight": 10
+        },
+        {
+         "added_weight": null,
+         "bodyweight": false,
+         "note": "",
+         "prefix": "",
+         "reps": 11,
+         "to_failure": false,
+         "weight": 10
+        },
+        {
+         "added_weight": null,
+         "bodyweight": false,
+         "note": "",
+         "prefix": "",
+         "reps": 9,
+         "to_failure": false,
+         "weight": 10
+        }
+       ]
+      },
+      {
+       "name": "Lat Prayer",
+       "sets": [
+        {
+         "added_weight": null,
+         "bodyweight": false,
+         "note": "",
+         "prefix": "",
+         "reps": 12,
+         "to_failure": false,
+         "weight": 45
+        },
+        {
+         "added_weight": null,
+         "bodyweight": false,
+         "note": "",
+         "prefix": "",
+         "reps": 12,
+         "to_failure": false,
+         "weight": 45
+        },
+        {
+         "added_weight": null,
+         "bodyweight": false,
+         "note": "",
+         "prefix": "",
+         "reps": 11,
+         "to_failure": false,
+         "weight": 45
+        },
+        {
+         "added_weight": null,
+         "bodyweight": false,
+         "note": "",
+         "prefix": "",
+         "reps": 10,
+         "to_failure": false,
+         "weight": 42
+        }
+       ]
+      },
+      {
+       "name": "Cable Lat Crossover",
+       "sets": [
+        {
+         "added_weight": null,
+         "bodyweight": false,
+         "note": "",
+         "prefix": "",
+         "reps": 12,
+         "to_failure": false,
+         "weight": 45
+        },
+        {
+         "added_weight": null,
+         "bodyweight": false,
+         "note": "",
+         "prefix": "",
+         "reps": 10,
+         "to_failure": false,
+         "weight": 45
+        },
+        {
+         "added_weight": null,
+         "bodyweight": false,
+         "note": "",
+         "prefix": "",
+         "reps": 12,
+         "to_failure": false,
+         "weight": 45
+        }
+       ]
+      },
+      {
+       "name": "DB Hammer Curl",
+       "sets": [
+        {
+         "added_weight": null,
+         "bodyweight": false,
+         "note": "",
+         "prefix": "",
+         "reps": 15,
+         "to_failure": false,
+         "weight": 10
+        },
+        {
+         "added_weight": null,
+         "bodyweight": false,
+         "note": "",
+         "prefix": "",
+         "reps": 15,
+         "to_failure": false,
+         "weight": 10
+        },
+        {
+         "added_weight": null,
+         "bodyweight": false,
+         "note": "",
+         "prefix": "",
+         "reps": 11,
+         "to_failure": false,
+         "weight": 10
+        }
+       ]
+      }
+     ],
+     "notes": "Header also shows '12:20', '56min', '26:23', '27:50' (unclear).",
+     "page_type": "workout",
+     "side": "top",
+     "steps": null,
+     "title": ""
+    },
+    {
+     "body_weight_lb": 149.2,
+     "calories": null,
+     "cardio": [],
+     "date": "2026-07-31",
+     "duration_min": null,
+     "exercises": [
+      {
+       "name": "Bench",
+       "sets": [
+        {
+         "added_weight": null,
+         "bodyweight": false,
+         "note": "",
+         "prefix": "",
+         "reps": 9,
+         "to_failure": true,
+         "weight": 150
+        },
+        {
+         "added_weight": null,
+         "bodyweight": false,
+         "note": "",
+         "prefix": "",
+         "reps": 6,
+         "to_failure": true,
+         "weight": 140
+        },
+        {
+         "added_weight": null,
+         "bodyweight": false,
+         "note": "",
+         "prefix": "",
+         "reps": 9,
+         "to_failure": false,
+         "weight": 130
+        },
+        {
+         "added_weight": null,
+         "bodyweight": false,
+         "note": "",
+         "prefix": "",
+         "reps": 10,
+         "to_failure": false,
+         "weight": 120
+        },
+        {
+         "added_weight": null,
+         "bodyweight": false,
+         "note": "",
+         "prefix": "wc",
+         "reps": 10,
+         "to_failure": false,
+         "weight": 110
+        },
+        {
+         "added_weight": null,
+         "bodyweight": false,
+         "note": "",
+         "prefix": "wc",
+         "reps": 11,
+         "to_failure": false,
+         "weight": 100
+        },
+        {
+         "added_weight": null,
+         "bodyweight": false,
+         "note": "",
+         "prefix": "wc",
+         "reps": 10,
+         "to_failure": false,
+         "weight": 90
+        },
+        {
+         "added_weight": null,
+         "bodyweight": false,
+         "note": "",
+         "prefix": "wc",
+         "reps": 14,
+         "to_failure": false,
+         "weight": 80
+        },
+        {
+         "added_weight": null,
+         "bodyweight": false,
+         "note": "",
+         "prefix": "wc",
+         "reps": 15,
+         "to_failure": false,
+         "weight": 80
+        }
+       ]
+      },
+      {
+       "name": "Tricep Pushdown",
+       "sets": [
+        {
+         "added_weight": null,
+         "bodyweight": false,
+         "note": "",
+         "prefix": "",
+         "reps": 12,
+         "to_failure": false,
+         "weight": 75
+        },
+        {
+         "added_weight": null,
+         "bodyweight": false,
+         "note": "ILLEGIBLE: 72x8 (could be 70x8)",
+         "prefix": "",
+         "reps": 8,
+         "to_failure": false,
+         "weight": 72
+        },
+        {
+         "added_weight": null,
+         "bodyweight": false,
+         "note": "",
+         "prefix": "",
+         "reps": 11,
+         "to_failure": false,
+         "weight": 60
+        },
+        {
+         "added_weight": null,
+         "bodyweight": false,
+         "note": "",
+         "prefix": "",
+         "reps": 15,
+         "to_failure": false,
+         "weight": 60
+        }
+       ]
+      },
+      {
+       "name": "DB Tricep Extension",
+       "sets": [
+        {
+         "added_weight": null,
+         "bodyweight": false,
+         "note": "",
+         "prefix": "",
+         "reps": 18,
+         "to_failure": false,
+         "weight": 7.5
+        },
+        {
+         "added_weight": null,
+         "bodyweight": false,
+         "note": "",
+         "prefix": "",
+         "reps": 20,
+         "to_failure": false,
+         "weight": 7.5
+        },
+        {
+         "added_weight": null,
+         "bodyweight": false,
+         "note": "",
+         "prefix": "",
+         "reps": 10,
+         "to_failure": false,
+         "weight": 10
+        }
+       ]
+      },
+      {
+       "name": "DB Fly",
+       "sets": [
+        {
+         "added_weight": null,
+         "bodyweight": false,
+         "note": "",
+         "prefix": "",
+         "reps": 19,
+         "to_failure": false,
+         "weight": 10
+        },
+        {
+         "added_weight": null,
+         "bodyweight": false,
+         "note": "",
+         "prefix": "",
+         "reps": 16,
+         "to_failure": false,
+         "weight": 10
+        },
+        {
+         "added_weight": null,
+         "bodyweight": false,
+         "note": "",
+         "prefix": "",
+         "reps": 10,
+         "to_failure": false,
+         "weight": 12.5
+        }
+       ]
+      }
+     ],
+     "notes": "Header also shows '11:45am', '24:27', '26:40' (unclear).",
+     "page_type": "workout",
+     "side": "bottom",
+     "steps": null,
+     "title": ""
+    }
+   ]
+  },
+  {
+   "file": "5f699db4f9cbca29bd04c4e21b0a5ef0d2c972ac20c48edf6216d13200417af9.jpg",
+   "pages": [
+    {
+     "body_weight_lb": 154.1,
+     "calories": null,
+     "cardio": [
+      {
+       "distance_mi": 3.1069,
+       "duration_min": 28.38,
+       "kind": "run",
+       "note": "5k 28:23"
+      }
+     ],
+     "date": "2026-07-19",
+     "duration_min": null,
+     "exercises": [
+      {
+       "name": "Incline Bench",
+       "sets": [
+        {
+         "added_weight": null,
+         "bodyweight": false,
+         "note": "",
+         "prefix": "",
+         "reps": 13,
+         "to_failure": false,
+         "weight": 130
+        },
+        {
+         "added_weight": null,
+         "bodyweight": false,
+         "note": "",
+         "prefix": "",
+         "reps": 8,
+         "to_failure": true,
+         "weight": 135
+        },
+        {
+         "added_weight": null,
+         "bodyweight": false,
+         "note": "",
+         "prefix": "",
+         "reps": 8,
+         "to_failure": false,
+         "weight": 120
+        },
+        {
+         "added_weight": null,
+         "bodyweight": false,
+         "note": "",
+         "prefix": "wc",
+         "reps": 3,
+         "to_failure": true,
+         "weight": 130
+        },
+        {
+         "added_weight": null,
+         "bodyweight": false,
+         "note": "",
+         "prefix": "wc",
+         "reps": 6,
+         "to_failure": false,
+         "weight": 130
+        },
+        {
+         "added_weight": null,
+         "bodyweight": false,
+         "note": "",
+         "prefix": "wc",
+         "reps": 6,
+         "to_failure": false,
+         "weight": 130
+        }
+       ]
+      },
+      {
+       "name": "Barbell Press",
+       "sets": [
+        {
+         "added_weight": null,
+         "bodyweight": false,
+         "note": "",
+         "prefix": "",
+         "reps": 9,
+         "to_failure": false,
+         "weight": 95
+        },
+        {
+         "added_weight": null,
+         "bodyweight": false,
+         "note": "",
+         "prefix": "",
+         "reps": 9,
+         "to_failure": false,
+         "weight": 95
+        },
+        {
+         "added_weight": null,
+         "bodyweight": false,
+         "note": "FF as written",
+         "prefix": "",
+         "reps": 7,
+         "to_failure": true,
+         "weight": 95
+        }
+       ]
+      },
+      {
+       "name": "DB Fly",
+       "sets": [
+        {
+         "added_weight": null,
+         "bodyweight": false,
+         "note": "",
+         "prefix": "",
+         "reps": 19,
+         "to_failure": false,
+         "weight": 12.5
+        },
+        {
+         "added_weight": null,
+         "bodyweight": false,
+         "note": "",
+         "prefix": "",
+         "reps": 10,
+         "to_failure": false,
+         "weight": 10
+        },
+        {
+         "added_weight": null,
+         "bodyweight": false,
+         "note": "",
+         "prefix": "",
+         "reps": 11,
+         "to_failure": false,
+         "weight": 10
+        }
+       ]
+      },
+      {
+       "name": "Tricep Pushdown",
+       "sets": [
+        {
+         "added_weight": null,
+         "bodyweight": false,
+         "note": "",
+         "prefix": "",
+         "reps": 18,
+         "to_failure": false,
+         "weight": 65
+        },
+        {
+         "added_weight": null,
+         "bodyweight": false,
+         "note": "",
+         "prefix": "",
+         "reps": 12,
+         "to_failure": false,
+         "weight": 70
+        },
+        {
+         "added_weight": null,
+         "bodyweight": false,
+         "note": "",
+         "prefix": "",
+         "reps": 11,
+         "to_failure": false,
+         "weight": 70
+        },
+        {
+         "added_weight": null,
+         "bodyweight": false,
+         "note": "",
+         "prefix": "",
+         "reps": 8,
+         "to_failure": false,
+         "weight": 70
+        }
+       ]
+      },
+      {
+       "name": "Tricep Near Grip Bench",
+       "sets": [
+        {
+         "added_weight": null,
+         "bodyweight": false,
+         "note": "",
+         "prefix": "",
+         "reps": 10,
+         "to_failure": false,
+         "weight": 90
+        },
+        {
+         "added_weight": null,
+         "bodyweight": false,
+         "note": "",
+         "prefix": "",
+         "reps": 10,
+         "to_failure": true,
+         "weight": 90
+        },
+        {
+         "added_weight": null,
+         "bodyweight": false,
+         "note": "",
+         "prefix": "",
+         "reps": 14,
+         "to_failure": false,
+         "weight": 90
+        }
+       ]
+      },
+      {
+       "name": "Skull Crusher",
+       "sets": [
+        {
+         "added_weight": null,
+         "bodyweight": false,
+         "note": "",
+         "prefix": "",
+         "reps": 9,
+         "to_failure": false,
+         "weight": 45
+        },
+        {
+         "added_weight": null,
+         "bodyweight": false,
+         "note": "",
+         "prefix": "",
+         "reps": 20,
+         "to_failure": false,
+         "weight": 50
+        },
+        {
+         "added_weight": null,
+         "bodyweight": false,
+         "note": "",
+         "prefix": "",
+         "reps": 16,
+         "to_failure": false,
+         "weight": 50
+        }
+       ]
+      }
+     ],
+     "notes": "Header also shows '10:35am'.",
+     "page_type": "workout",
+     "side": "top",
+     "steps": null,
+     "title": ""
+    },
+    {
+     "body_weight_lb": 153.9,
+     "calories": null,
+     "cardio": [
+      {
+       "distance_mi": 3.1069,
+       "duration_min": 27.7,
+       "kind": "run",
+       "note": "5k 27:42"
+      }
+     ],
+     "date": "2026-07-20",
+     "duration_min": null,
+     "exercises": [
+      {
+       "name": "Squat",
+       "sets": [
+        {
+         "added_weight": null,
+         "bodyweight": false,
+         "note": "",
+         "prefix": "",
+         "reps": 31,
+         "to_failure": false,
+         "weight": 110
+        },
+        {
+         "added_weight": null,
+         "bodyweight": false,
+         "note": "",
+         "prefix": "",
+         "reps": 30,
+         "to_failure": false,
+         "weight": 120
+        },
+        {
+         "added_weight": null,
+         "bodyweight": false,
+         "note": "",
+         "prefix": "",
+         "reps": 29,
+         "to_failure": false,
+         "weight": 130
+        },
+        {
+         "added_weight": null,
+         "bodyweight": false,
+         "note": "",
+         "prefix": "",
+         "reps": 17,
+         "to_failure": false,
+         "weight": 140
+        },
+        {
+         "added_weight": null,
+         "bodyweight": false,
+         "note": "",
+         "prefix": "",
+         "reps": 11,
+         "to_failure": false,
+         "weight": 150
+        }
+       ]
+      },
+      {
+       "name": "RDL",
+       "sets": [
+        {
+         "added_weight": null,
+         "bodyweight": false,
+         "note": "",
+         "prefix": "",
+         "reps": 23,
+         "to_failure": false,
+         "weight": 140
+        },
+        {
+         "added_weight": null,
+         "bodyweight": false,
+         "note": "",
+         "prefix": "",
+         "reps": 16,
+         "to_failure": false,
+         "weight": 140
+        },
+        {
+         "added_weight": null,
+         "bodyweight": false,
+         "note": "",
+         "prefix": "",
+         "reps": 15,
+         "to_failure": false,
+         "weight": 140
+        }
+       ]
+      }
+     ],
+     "notes": "Header also shows '7:30pm'.",
+     "page_type": "workout",
+     "side": "bottom",
+     "steps": null,
+     "title": ""
+    }
+   ]
+  },
+  {
+   "file": "870d1b73a26e99faa19a50648233bcafd19d47a3133bbc0dd303c50c64867ea0.jpg",
+   "pages": [
+    {
+     "body_weight_lb": 150.2,
+     "calories": null,
+     "cardio": [
+      {
+       "distance_mi": 3.1069,
+       "duration_min": 25.53,
+       "kind": "run",
+       "note": "5k 25:32"
+      }
+     ],
+     "date": "2026-07-24",
+     "duration_min": null,
+     "exercises": [
+      {
+       "name": "Bulgarian Split Squat",
+       "sets": [
+        {
+         "added_weight": null,
+         "bodyweight": false,
+         "note": "",
+         "prefix": "",
+         "reps": 13,
+         "to_failure": false,
+         "weight": 15
+        },
+        {
+         "added_weight": null,
+         "bodyweight": false,
+         "note": "",
+         "prefix": "",
+         "reps": 13,
+         "to_failure": false,
+         "weight": 15
+        },
+        {
+         "added_weight": null,
+         "bodyweight": false,
+         "note": "",
+         "prefix": "",
+         "reps": 13,
+         "to_failure": false,
+         "weight": 15
+        },
+        {
+         "added_weight": null,
+         "bodyweight": false,
+         "note": "",
+         "prefix": "",
+         "reps": 12,
+         "to_failure": false,
+         "weight": 15
+        }
+       ]
+      },
+      {
+       "name": "DB Calf Raises",
+       "sets": [
+        {
+         "added_weight": null,
+         "bodyweight": false,
+         "note": "",
+         "prefix": "",
+         "reps": 13,
+         "to_failure": false,
+         "weight": 20
+        },
+        {
+         "added_weight": null,
+         "bodyweight": false,
+         "note": "",
+         "prefix": "",
+         "reps": 14,
+         "to_failure": false,
+         "weight": 20
+        },
+        {
+         "added_weight": null,
+         "bodyweight": false,
+         "note": "",
+         "prefix": "",
+         "reps": 16,
+         "to_failure": false,
+         "weight": 20
+        },
+        {
+         "added_weight": null,
+         "bodyweight": true,
+         "note": "",
+         "prefix": "",
+         "reps": 19,
+         "to_failure": false,
+         "weight": null
+        },
+        {
+         "added_weight": null,
+         "bodyweight": true,
+         "note": "",
+         "prefix": "",
+         "reps": 23,
+         "to_failure": false,
+         "weight": null
+        },
+        {
+         "added_weight": null,
+         "bodyweight": true,
+         "note": "",
+         "prefix": "",
+         "reps": 12,
+         "to_failure": false,
+         "weight": null
+        }
+       ]
+      },
+      {
+       "name": "DB RDL",
+       "sets": [
+        {
+         "added_weight": null,
+         "bodyweight": false,
+         "note": "",
+         "prefix": "",
+         "reps": 18,
+         "to_failure": false,
+         "weight": 15
+        },
+        {
+         "added_weight": null,
+         "bodyweight": false,
+         "note": "",
+         "prefix": "",
+         "reps": 17,
+         "to_failure": false,
+         "weight": 20
+        },
+        {
+         "added_weight": null,
+         "bodyweight": false,
+         "note": "",
+         "prefix": "",
+         "reps": 15,
+         "to_failure": false,
+         "weight": 20
+        },
+        {
+         "added_weight": null,
+         "bodyweight": false,
+         "note": "",
+         "prefix": "",
+         "reps": 12,
+         "to_failure": false,
+         "weight": 20
+        }
+       ]
+      }
+     ],
+     "notes": "Header also shows '11:34am'.",
+     "page_type": "workout",
+     "side": "top",
+     "steps": null,
+     "title": ""
+    },
+    {
+     "body_weight_lb": 150.1,
+     "calories": null,
+     "cardio": [],
+     "date": "2026-07-25",
+     "duration_min": null,
+     "exercises": [
+      {
+       "name": "Preacher Curl",
+       "sets": [
+        {
+         "added_weight": null,
+         "bodyweight": false,
+         "note": "",
+         "prefix": "",
+         "reps": 11,
+         "to_failure": true,
+         "weight": 65
+        },
+        {
+         "added_weight": null,
+         "bodyweight": false,
+         "note": "",
+         "prefix": "",
+         "reps": 13,
+         "to_failure": false,
+         "weight": 55
+        },
+        {
+         "added_weight": null,
+         "bodyweight": false,
+         "note": "",
+         "prefix": "",
+         "reps": 12,
+         "to_failure": false,
+         "weight": 55
+        },
+        {
+         "added_weight": null,
+         "bodyweight": false,
+         "note": "",
+         "prefix": "",
+         "reps": 13,
+         "to_failure": false,
+         "weight": 55
+        },
+        {
+         "added_weight": null,
+         "bodyweight": false,
+         "note": "",
+         "prefix": "",
+         "reps": 15,
+         "to_failure": false,
+         "weight": 45
+        },
+        {
+         "added_weight": null,
+         "bodyweight": false,
+         "note": "",
+         "prefix": "",
+         "reps": 13,
+         "to_failure": false,
+         "weight": 45
+        }
+       ]
+      },
+      {
+       "name": "Barbell Row",
+       "sets": [
+        {
+         "added_weight": null,
+         "bodyweight": false,
+         "note": "",
+         "prefix": "",
+         "reps": 11,
+         "to_failure": false,
+         "weight": 100
+        },
+        {
+         "added_weight": null,
+         "bodyweight": false,
+         "note": "",
+         "prefix": "",
+         "reps": 11,
+         "to_failure": false,
+         "weight": 100
+        },
+        {
+         "added_weight": null,
+         "bodyweight": false,
+         "note": "",
+         "prefix": "",
+         "reps": 10,
+         "to_failure": false,
+         "weight": 100
+        },
+        {
+         "added_weight": null,
+         "bodyweight": false,
+         "note": "TF as written",
+         "prefix": "",
+         "reps": 10,
+         "to_failure": true,
+         "weight": 100
+        },
+        {
+         "added_weight": null,
+         "bodyweight": false,
+         "note": "",
+         "prefix": "",
+         "reps": 11,
+         "to_failure": false,
+         "weight": 90
+        },
+        {
+         "added_weight": null,
+         "bodyweight": false,
+         "note": "",
+         "prefix": "",
+         "reps": 9,
+         "to_failure": false,
+         "weight": 90
+        }
+       ]
+      },
+      {
+       "name": "DB Hammer Curl",
+       "sets": [
+        {
+         "added_weight": null,
+         "bodyweight": false,
+         "note": "",
+         "prefix": "",
+         "reps": 13,
+         "to_failure": false,
+         "weight": 10
+        },
+        {
+         "added_weight": null,
+         "bodyweight": false,
+         "note": "",
+         "prefix": "",
+         "reps": 11,
+         "to_failure": false,
+         "weight": 10
+        },
+        {
+         "added_weight": null,
+         "bodyweight": false,
+         "note": "",
+         "prefix": "",
+         "reps": 11,
+         "to_failure": false,
+         "weight": 10
+        },
+        {
+         "added_weight": null,
+         "bodyweight": false,
+         "note": "",
+         "prefix": "",
+         "reps": 10,
+         "to_failure": false,
+         "weight": 10
+        },
+        {
+         "added_weight": null,
+         "bodyweight": false,
+         "note": "",
+         "prefix": "",
+         "reps": 10,
+         "to_failure": false,
+         "weight": 10
+        },
+        {
+         "added_weight": null,
+         "bodyweight": false,
+         "note": "",
+         "prefix": "",
+         "reps": 11,
+         "to_failure": false,
+         "weight": 10
+        }
+       ]
+      },
+      {
+       "name": "Cable Crossover",
+       "sets": [
+        {
+         "added_weight": null,
+         "bodyweight": false,
+         "note": "",
+         "prefix": "",
+         "reps": 10,
+         "to_failure": false,
+         "weight": 45
+        },
+        {
+         "added_weight": null,
+         "bodyweight": false,
+         "note": "",
+         "prefix": "",
+         "reps": 10,
+         "to_failure": false,
+         "weight": 45
+        },
+        {
+         "added_weight": null,
+         "bodyweight": false,
+         "note": "",
+         "prefix": "",
+         "reps": 10,
+         "to_failure": false,
+         "weight": 45
+        }
+       ]
+      }
+     ],
+     "notes": "Header also shows '2:33pm', '26:06', '25:32' (unclear).",
+     "page_type": "workout",
+     "side": "bottom",
+     "steps": null,
+     "title": ""
+    }
+   ]
+  },
+  {
+   "file": "e6dab3afb82bf4763447e42360f5041ff26507488c49d4bfb29d0afb86a3b69e.jpg",
+   "pages": [
+    {
+     "body_weight_lb": 152.1,
+     "calories": null,
+     "cardio": [
+      {
+       "distance_mi": 3.1069,
+       "duration_min": 22.73,
+       "kind": "run",
+       "note": "5k 22:44"
+      }
+     ],
+     "date": "2026-07-16",
+     "duration_min": null,
+     "exercises": [
+      {
+       "name": "Concentration Preacher Curl",
+       "sets": [
+        {
+         "added_weight": null,
+         "bodyweight": false,
+         "note": "",
+         "prefix": "",
+         "reps": 14,
+         "to_failure": false,
+         "weight": 60
+        },
+        {
+         "added_weight": null,
+         "bodyweight": false,
+         "note": "",
+         "prefix": "",
+         "reps": 11,
+         "to_failure": true,
+         "weight": 65
+        },
+        {
+         "added_weight": null,
+         "bodyweight": false,
+         "note": "",
+         "prefix": "",
+         "reps": 9,
+         "to_failure": false,
+         "weight": 65
+        },
+        {
+         "added_weight": null,
+         "bodyweight": false,
+         "note": "",
+         "prefix": "",
+         "reps": 8,
+         "to_failure": true,
+         "weight": 65
+        },
+        {
+         "added_weight": null,
+         "bodyweight": false,
+         "note": "",
+         "prefix": "",
+         "reps": 10,
+         "to_failure": true,
+         "weight": 55
+        },
+        {
+         "added_weight": null,
+         "bodyweight": false,
+         "note": "",
+         "prefix": "",
+         "reps": 11,
+         "to_failure": true,
+         "weight": 50
+        }
+       ]
+      },
+      {
+       "name": "Cambered Row",
+       "sets": [
+        {
+         "added_weight": null,
+         "bodyweight": false,
+         "note": "",
+         "prefix": "",
+         "reps": 11,
+         "to_failure": false,
+         "weight": 110
+        },
+        {
+         "added_weight": null,
+         "bodyweight": false,
+         "note": "",
+         "prefix": "",
+         "reps": 9,
+         "to_failure": false,
+         "weight": 110
+        },
+        {
+         "added_weight": null,
+         "bodyweight": false,
+         "note": "",
+         "prefix": "",
+         "reps": 11,
+         "to_failure": false,
+         "weight": 100
+        },
+        {
+         "added_weight": null,
+         "bodyweight": false,
+         "note": "",
+         "prefix": "",
+         "reps": 10,
+         "to_failure": false,
+         "weight": 100
+        },
+        {
+         "added_weight": null,
+         "bodyweight": false,
+         "note": "",
+         "prefix": "",
+         "reps": 10,
+         "to_failure": false,
+         "weight": 100
+        },
+        {
+         "added_weight": null,
+         "bodyweight": false,
+         "note": "",
+         "prefix": "",
+         "reps": 10,
+         "to_failure": false,
+         "weight": 100
+        }
+       ]
+      },
+      {
+       "name": "Incline Curl",
+       "sets": [
+        {
+         "added_weight": null,
+         "bodyweight": false,
+         "note": "",
+         "prefix": "",
+         "reps": 6,
+         "to_failure": true,
+         "weight": 12.5
+        },
+        {
+         "added_weight": null,
+         "bodyweight": false,
+         "note": "",
+         "prefix": "",
+         "reps": 10,
+         "to_failure": false,
+         "weight": 10
+        },
+        {
+         "added_weight": null,
+         "bodyweight": false,
+         "note": "",
+         "prefix": "",
+         "reps": 8,
+         "to_failure": true,
+         "weight": 10
+        },
+        {
+         "added_weight": null,
+         "bodyweight": false,
+         "note": "",
+         "prefix": "",
+         "reps": 13,
+         "to_failure": true,
+         "weight": 7.5
+        },
+        {
+         "added_weight": null,
+         "bodyweight": false,
+         "note": "",
+         "prefix": "",
+         "reps": 14,
+         "to_failure": true,
+         "weight": 7.5
+        },
+        {
+         "added_weight": null,
+         "bodyweight": false,
+         "note": "",
+         "prefix": "",
+         "reps": 12,
+         "to_failure": false,
+         "weight": 7.5
+        }
+       ]
+      },
+      {
+       "name": "Side Delt Raise",
+       "sets": [
+        {
+         "added_weight": null,
+         "bodyweight": false,
+         "note": "",
+         "prefix": "",
+         "reps": 10,
+         "to_failure": false,
+         "weight": 7.5
+        },
+        {
+         "added_weight": null,
+         "bodyweight": false,
+         "note": "",
+         "prefix": "",
+         "reps": 9,
+         "to_failure": false,
+         "weight": 7.5
+        },
+        {
+         "added_weight": null,
+         "bodyweight": false,
+         "note": "",
+         "prefix": "",
+         "reps": 8,
+         "to_failure": false,
+         "weight": 7.5
+        },
+        {
+         "added_weight": null,
+         "bodyweight": false,
+         "note": "",
+         "prefix": "",
+         "reps": 9,
+         "to_failure": false,
+         "weight": 7.5
+        },
+        {
+         "added_weight": null,
+         "bodyweight": false,
+         "note": "",
+         "prefix": "",
+         "reps": 10,
+         "to_failure": false,
+         "weight": 7.5
+        },
+        {
+         "added_weight": null,
+         "bodyweight": false,
+         "note": "",
+         "prefix": "",
+         "reps": 8,
+         "to_failure": false,
+         "weight": 7.5
+        }
+       ]
+      },
+      {
+       "name": "DB Hammer Preacher",
+       "sets": [
+        {
+         "added_weight": null,
+         "bodyweight": false,
+         "note": "",
+         "prefix": "",
+         "reps": 11,
+         "to_failure": true,
+         "weight": 10
+        },
+        {
+         "added_weight": null,
+         "bodyweight": false,
+         "note": "",
+         "prefix": "",
+         "reps": 9,
+         "to_failure": true,
+         "weight": 10
+        },
+        {
+         "added_weight": null,
+         "bodyweight": false,
+         "note": "",
+         "prefix": "",
+         "reps": 9,
+         "to_failure": true,
+         "weight": 10
+        }
+       ]
+      },
+      {
+       "name": "Cable Lat Crossover",
+       "sets": [
+        {
+         "added_weight": null,
+         "bodyweight": false,
+         "note": "",
+         "prefix": "",
+         "reps": 12,
+         "to_failure": false,
+         "weight": 45
+        },
+        {
+         "added_weight": null,
+         "bodyweight": false,
+         "note": "",
+         "prefix": "",
+         "reps": 9,
+         "to_failure": false,
+         "weight": 45
+        },
+        {
+         "added_weight": null,
+         "bodyweight": false,
+         "note": "",
+         "prefix": "",
+         "reps": 8,
+         "to_failure": false,
+         "weight": 45
+        }
+       ]
+      }
+     ],
+     "notes": "Header also shows '8:10am'. 'Best energy' written in left margin.",
+     "page_type": "workout",
+     "side": "top",
+     "steps": null,
+     "title": ""
+    },
+    {
+     "body_weight_lb": 153.9,
+     "calories": null,
+     "cardio": [],
+     "date": "2026-07-18",
+     "duration_min": null,
+     "exercises": [
+      {
+       "name": "Incline DB Bench",
+       "sets": [
+        {
+         "added_weight": null,
+         "bodyweight": false,
+         "note": "",
+         "prefix": "",
+         "reps": 4,
+         "to_failure": true,
+         "weight": 155
+        }
+       ]
+      }
+     ],
+     "notes": "Header also shows '9:18pm', '31:33' (unclear).",
+     "page_type": "workout",
+     "side": "bottom",
+     "steps": null,
+     "title": ""
+    }
+   ]
+  },
+  {
+   "file": "029b50ef0ba24ce164f2d430fafc7823bba502aa1ffd6b9bf02a9863ba521f2b.jpg",
+   "pages": [
+    {
+     "body_weight_lb": 154.5,
+     "calories": null,
+     "cardio": [],
+     "date": "2026-07-14",
+     "duration_min": null,
+     "exercises": [
+      {
+       "name": "Incline Bench",
+       "sets": [
+        {
+         "added_weight": null,
+         "bodyweight": false,
+         "note": "",
+         "prefix": "",
+         "reps": 8,
+         "to_failure": false,
+         "weight": 155
+        },
+        {
+         "added_weight": null,
+         "bodyweight": false,
+         "note": "",
+         "prefix": "",
+         "reps": 9,
+         "to_failure": false,
+         "weight": 150
+        },
+        {
+         "added_weight": null,
+         "bodyweight": false,
+         "note": "",
+         "prefix": "",
+         "reps": 6,
+         "to_failure": true,
+         "weight": 150
+        },
+        {
+         "added_weight": null,
+         "bodyweight": false,
+         "note": "",
+         "prefix": "",
+         "reps": 6,
+         "to_failure": false,
+         "weight": 140
+        },
+        {
+         "added_weight": null,
+         "bodyweight": false,
+         "note": "",
+         "prefix": "",
+         "reps": 7,
+         "to_failure": false,
+         "weight": 130
+        },
+        {
+         "added_weight": null,
+         "bodyweight": false,
+         "note": "",
+         "prefix": "",
+         "reps": 6,
+         "to_failure": false,
+         "weight": 130
+        }
+       ]
+      },
+      {
+       "name": "Barbell Press",
+       "sets": [
+        {
+         "added_weight": null,
+         "bodyweight": false,
+         "note": "",
+         "prefix": "",
+         "reps": 9,
+         "to_failure": false,
+         "weight": 95
+        },
+        {
+         "added_weight": null,
+         "bodyweight": false,
+         "note": "",
+         "prefix": "",
+         "reps": 8,
+         "to_failure": false,
+         "weight": 95
+        },
+        {
+         "added_weight": null,
+         "bodyweight": false,
+         "note": "",
+         "prefix": "",
+         "reps": 6,
+         "to_failure": true,
+         "weight": 95
+        },
+        {
+         "added_weight": null,
+         "bodyweight": false,
+         "note": "",
+         "prefix": "",
+         "reps": 4,
+         "to_failure": true,
+         "weight": 95
+        },
+        {
+         "added_weight": null,
+         "bodyweight": false,
+         "note": "",
+         "prefix": "",
+         "reps": 3,
+         "to_failure": false,
+         "weight": 95
+        }
+       ]
+      },
+      {
+       "name": "Skull Crushers",
+       "sets": [
+        {
+         "added_weight": null,
+         "bodyweight": false,
+         "note": "",
+         "prefix": "",
+         "reps": 17,
+         "to_failure": false,
+         "weight": 55
+        },
+        {
+         "added_weight": null,
+         "bodyweight": false,
+         "note": "",
+         "prefix": "",
+         "reps": 18,
+         "to_failure": false,
+         "weight": 55
+        },
+        {
+         "added_weight": null,
+         "bodyweight": false,
+         "note": "",
+         "prefix": "",
+         "reps": 12,
+         "to_failure": false,
+         "weight": 65
+        },
+        {
+         "added_weight": null,
+         "bodyweight": false,
+         "note": "",
+         "prefix": "",
+         "reps": 11,
+         "to_failure": false,
+         "weight": 65
+        },
+        {
+         "added_weight": null,
+         "bodyweight": false,
+         "note": "",
+         "prefix": "",
+         "reps": 10,
+         "to_failure": false,
+         "weight": 65
+        },
+        {
+         "added_weight": null,
+         "bodyweight": false,
+         "note": "",
+         "prefix": "",
+         "reps": 7,
+         "to_failure": false,
+         "weight": 65
+        }
+       ]
+      },
+      {
+       "name": "DB Skull Crusher",
+       "sets": [
+        {
+         "added_weight": null,
+         "bodyweight": false,
+         "note": "",
+         "prefix": "",
+         "reps": 7,
+         "to_failure": false,
+         "weight": 10
+        },
+        {
+         "added_weight": null,
+         "bodyweight": false,
+         "note": "",
+         "prefix": "",
+         "reps": 13,
+         "to_failure": true,
+         "weight": 35
+        },
+        {
+         "added_weight": null,
+         "bodyweight": false,
+         "note": "",
+         "prefix": "",
+         "reps": 9,
+         "to_failure": true,
+         "weight": 25
+        },
+        {
+         "added_weight": null,
+         "bodyweight": false,
+         "note": "",
+         "prefix": "",
+         "reps": 12,
+         "to_failure": false,
+         "weight": 25
+        },
+        {
+         "added_weight": null,
+         "bodyweight": false,
+         "note": "",
+         "prefix": "",
+         "reps": 11,
+         "to_failure": false,
+         "weight": 25
+        }
+       ]
+      }
+     ],
+     "notes": "Header also shows '11:14am'.",
+     "page_type": "workout",
+     "side": "top",
+     "steps": null,
+     "title": ""
+    },
+    {
+     "body_weight_lb": 154.1,
+     "calories": null,
+     "cardio": [
+      {
+       "distance_mi": 3.1069,
+       "duration_min": 26.53,
+       "kind": "run",
+       "note": "5k 26:32"
+      }
+     ],
+     "date": "2026-07-15",
+     "duration_min": null,
+     "exercises": [
+      {
+       "name": "Squat",
+       "sets": [
+        {
+         "added_weight": null,
+         "bodyweight": false,
+         "note": "",
+         "prefix": "",
+         "reps": 11,
+         "to_failure": false,
+         "weight": 140
+        },
+        {
+         "added_weight": null,
+         "bodyweight": false,
+         "note": "",
+         "prefix": "",
+         "reps": 9,
+         "to_failure": false,
+         "weight": 200
+        },
+        {
+         "added_weight": null,
+         "bodyweight": false,
+         "note": "",
+         "prefix": "",
+         "reps": 8,
+         "to_failure": false,
+         "weight": 200
+        },
+        {
+         "added_weight": null,
+         "bodyweight": false,
+         "note": "",
+         "prefix": "",
+         "reps": 7,
+         "to_failure": false,
+         "weight": 200
+        },
+        {
+         "added_weight": null,
+         "bodyweight": false,
+         "note": "",
+         "prefix": "",
+         "reps": 8,
+         "to_failure": false,
+         "weight": 120
+        }
+       ]
+      },
+      {
+       "name": "RDL",
+       "sets": [
+        {
+         "added_weight": null,
+         "bodyweight": false,
+         "note": "",
+         "prefix": "",
+         "reps": 12,
+         "to_failure": false,
+         "weight": 190
+        },
+        {
+         "added_weight": null,
+         "bodyweight": false,
+         "note": "",
+         "prefix": "",
+         "reps": 12,
+         "to_failure": false,
+         "weight": 200
+        },
+        {
+         "added_weight": null,
+         "bodyweight": false,
+         "note": "",
+         "prefix": "",
+         "reps": 7,
+         "to_failure": false,
+         "weight": 200
+        },
+        {
+         "added_weight": null,
+         "bodyweight": false,
+         "note": "",
+         "prefix": "",
+         "reps": 10,
+         "to_failure": false,
+         "weight": 200
+        },
+        {
+         "added_weight": null,
+         "bodyweight": false,
+         "note": "",
+         "prefix": "",
+         "reps": 3,
+         "to_failure": false,
+         "weight": 200
+        },
+        {
+         "added_weight": null,
+         "bodyweight": false,
+         "note": "",
+         "prefix": "",
+         "reps": 12,
+         "to_failure": false,
+         "weight": 200
+        }
+       ]
+      }
+     ],
+     "notes": "Header also shows '12:15pm'. Illegible scribble '51. 2726' in margin.",
+     "page_type": "workout",
+     "side": "bottom",
+     "steps": null,
+     "title": ""
+    }
+   ]
+  },
+  {
+   "file": "7298f59ede9887bc88fbb27005e67831876116782fa573d0e945aa88eee4f603.jpg",
+   "pages": [
+    {
+     "body_weight_lb": 155.2,
+     "calories": null,
+     "cardio": [
+      {
+       "distance_mi": 3.1069,
+       "duration_min": 27.48,
+       "kind": "run",
+       "note": "5k 27:29"
+      }
+     ],
+     "date": "2026-07-11",
+     "duration_min": null,
+     "exercises": [
+      {
+       "name": "Squat",
+       "sets": [
+        {
+         "added_weight": null,
+         "bodyweight": false,
+         "note": "",
+         "prefix": "",
+         "reps": 12,
+         "to_failure": false,
+         "weight": 170
+        },
+        {
+         "added_weight": null,
+         "bodyweight": false,
+         "note": "",
+         "prefix": "",
+         "reps": 13,
+         "to_failure": false,
+         "weight": 180
+        },
+        {
+         "added_weight": null,
+         "bodyweight": false,
+         "note": "",
+         "prefix": "",
+         "reps": 10,
+         "to_failure": false,
+         "weight": 185
+        },
+        {
+         "added_weight": null,
+         "bodyweight": false,
+         "note": "",
+         "prefix": "",
+         "reps": 8,
+         "to_failure": false,
+         "weight": 190
+        },
+        {
+         "added_weight": null,
+         "bodyweight": false,
+         "note": "",
+         "prefix": "",
+         "reps": 6,
+         "to_failure": false,
+         "weight": 195
+        }
+       ]
+      },
+      {
+       "name": "RDL",
+       "sets": [
+        {
+         "added_weight": null,
+         "bodyweight": false,
+         "note": "",
+         "prefix": "",
+         "reps": 15,
+         "to_failure": false,
+         "weight": 180
+        },
+        {
+         "added_weight": null,
+         "bodyweight": false,
+         "note": "",
+         "prefix": "",
+         "reps": 11,
+         "to_failure": false,
+         "weight": 190
+        },
+        {
+         "added_weight": null,
+         "bodyweight": false,
+         "note": "ILLEGIBLE: 195x11 (could be 185x11)",
+         "prefix": "",
+         "reps": 11,
+         "to_failure": false,
+         "weight": 195
+        },
+        {
+         "added_weight": null,
+         "bodyweight": false,
+         "note": "",
+         "prefix": "",
+         "reps": 10,
+         "to_failure": false,
+         "weight": 195
+        },
+        {
+         "added_weight": null,
+         "bodyweight": false,
+         "note": "",
+         "prefix": "",
+         "reps": 9,
+         "to_failure": false,
+         "weight": 200
+        }
+       ]
+      },
+      {
+       "name": "Goblet Squat",
+       "sets": [
+        {
+         "added_weight": null,
+         "bodyweight": false,
+         "note": "single DB in kg, held with both hands",
+         "prefix": "",
+         "reps": 14,
+         "to_failure": false,
+         "weight": 15
+        },
+        {
+         "added_weight": null,
+         "bodyweight": false,
+         "note": "single DB in kg, held with both hands",
+         "prefix": "",
+         "reps": 20,
+         "to_failure": false,
+         "weight": 15
+        },
+        {
+         "added_weight": null,
+         "bodyweight": false,
+         "note": "single DB in kg, held with both hands",
+         "prefix": "",
+         "reps": 20,
+         "to_failure": false,
+         "weight": 15
+        },
+        {
+         "added_weight": null,
+         "bodyweight": false,
+         "note": "single DB in kg, held with both hands",
+         "prefix": "",
+         "reps": 20,
+         "to_failure": false,
+         "weight": 15
+        },
+        {
+         "added_weight": null,
+         "bodyweight": false,
+         "note": "single DB in kg, held with both hands",
+         "prefix": "",
+         "reps": 20,
+         "to_failure": false,
+         "weight": 15
+        }
+       ]
+      }
+     ],
+     "notes": "Header also shows '7:33pm', '52min' (unclear).",
+     "page_type": "workout",
+     "side": "top",
+     "steps": 15000,
+     "title": ""
+    },
+    {
+     "body_weight_lb": 154.9,
+     "calories": null,
+     "cardio": [
+      {
+       "distance_mi": 3.1069,
+       "duration_min": 28.45,
+       "kind": "run",
+       "note": "5k 28:27"
+      }
+     ],
+     "date": "2026-07-12",
+     "duration_min": null,
+     "exercises": [
+      {
+       "name": "Weighted Pullup",
+       "sets": [
+        {
+         "added_weight": 30,
+         "bodyweight": true,
+         "note": "",
+         "prefix": "",
+         "reps": 10,
+         "to_failure": false,
+         "weight": null
+        },
+        {
+         "added_weight": 30,
+         "bodyweight": true,
+         "note": "",
+         "prefix": "",
+         "reps": 8,
+         "to_failure": false,
+         "weight": null
+        },
+        {
+         "added_weight": 30,
+         "bodyweight": true,
+         "note": "",
+         "prefix": "",
+         "reps": 6,
+         "to_failure": false,
+         "weight": null
+        }
+       ]
+      },
+      {
+       "name": "Cambered Row",
+       "sets": [
+        {
+         "added_weight": null,
+         "bodyweight": false,
+         "note": "",
+         "prefix": "",
+         "reps": 12,
+         "to_failure": false,
+         "weight": 105
+        },
+        {
+         "added_weight": null,
+         "bodyweight": false,
+         "note": "",
+         "prefix": "",
+         "reps": 11,
+         "to_failure": false,
+         "weight": 110
+        },
+        {
+         "added_weight": null,
+         "bodyweight": false,
+         "note": "",
+         "prefix": "",
+         "reps": 9,
+         "to_failure": true,
+         "weight": 110
+        }
+       ]
+      },
+      {
+       "name": "Preacher Curl",
+       "sets": [
+        {
+         "added_weight": null,
+         "bodyweight": false,
+         "note": "",
+         "prefix": "",
+         "reps": 13,
+         "to_failure": true,
+         "weight": 55
+        },
+        {
+         "added_weight": null,
+         "bodyweight": false,
+         "note": "",
+         "prefix": "",
+         "reps": 8,
+         "to_failure": true,
+         "weight": 55
+        },
+        {
+         "added_weight": null,
+         "bodyweight": false,
+         "note": "",
+         "prefix": "",
+         "reps": 9,
+         "to_failure": true,
+         "weight": 55
+        }
+       ]
+      },
+      {
+       "name": "Face Pullup",
+       "sets": [
+        {
+         "added_weight": null,
+         "bodyweight": false,
+         "note": "",
+         "prefix": "",
+         "reps": 7,
+         "to_failure": false,
+         "weight": 75
+        },
+        {
+         "added_weight": null,
+         "bodyweight": false,
+         "note": "",
+         "prefix": "",
+         "reps": 10,
+         "to_failure": false,
+         "weight": 60
+        },
+        {
+         "added_weight": null,
+         "bodyweight": false,
+         "note": "",
+         "prefix": "",
+         "reps": 12,
+         "to_failure": false,
+         "weight": 60
+        }
+       ]
+      },
+      {
+       "name": "DB Hammer Curl",
+       "sets": [
+        {
+         "added_weight": null,
+         "bodyweight": false,
+         "note": "",
+         "prefix": "",
+         "reps": 15,
+         "to_failure": false,
+         "weight": 12.5
+        },
+        {
+         "added_weight": null,
+         "bodyweight": false,
+         "note": "",
+         "prefix": "",
+         "reps": 13,
+         "to_failure": false,
+         "weight": 12.5
+        },
+        {
+         "added_weight": null,
+         "bodyweight": false,
+         "note": "",
+         "prefix": "",
+         "reps": 9,
+         "to_failure": false,
+         "weight": 12.5
+        }
+       ]
+      },
+      {
+       "name": "Side Delt Raise",
+       "sets": [
+        {
+         "added_weight": null,
+         "bodyweight": false,
+         "note": "",
+         "prefix": "",
+         "reps": 11,
+         "to_failure": false,
+         "weight": 7.5
+        },
+        {
+         "added_weight": null,
+         "bodyweight": false,
+         "note": "",
+         "prefix": "",
+         "reps": 9,
+         "to_failure": true,
+         "weight": 7.5
+        },
+        {
+         "added_weight": null,
+         "bodyweight": false,
+         "note": "",
+         "prefix": "",
+         "reps": 8,
+         "to_failure": false,
+         "weight": 7.5
+        }
+       ]
+      },
+      {
+       "name": "DB Preacher",
+       "sets": [
+        {
+         "added_weight": null,
+         "bodyweight": false,
+         "note": "",
+         "prefix": "",
+         "reps": 5,
+         "to_failure": false,
+         "weight": 12.5
+        },
+        {
+         "added_weight": null,
+         "bodyweight": false,
+         "note": "",
+         "prefix": "",
+         "reps": 6,
+         "to_failure": false,
+         "weight": 10
+        },
+        {
+         "added_weight": null,
+         "bodyweight": false,
+         "note": "",
+         "prefix": "",
+         "reps": 10,
+         "to_failure": false,
+         "weight": 10
+        }
+       ]
+      },
+      {
+       "name": "DB Hammer Preacher",
+       "sets": [
+        {
+         "added_weight": null,
+         "bodyweight": false,
+         "note": "",
+         "prefix": "",
+         "reps": 5,
+         "to_failure": false,
+         "weight": 10
+        },
+        {
+         "added_weight": null,
+         "bodyweight": false,
+         "note": "",
+         "prefix": "",
+         "reps": 7,
+         "to_failure": false,
+         "weight": 10
+        },
+        {
+         "added_weight": null,
+         "bodyweight": false,
+         "note": "",
+         "prefix": "",
+         "reps": 6,
+         "to_failure": false,
+         "weight": 10
+        }
+       ]
+      }
+     ],
+     "notes": "Header also shows '10:48am'.",
+     "page_type": "workout",
+     "side": "bottom",
+     "steps": null,
+     "title": ""
+    }
+   ]
+  },
+  {
+   "file": "fe0fbc72affa9ea9477232f07064b987a8e973fee4456c4d6fb3a20aba28986e.jpg",
+   "pages": [
+    {
+     "body_weight_lb": 156.7,
+     "calories": null,
+     "cardio": [],
+     "date": "2026-07-08",
+     "duration_min": null,
+     "exercises": [
+      {
+       "name": "Cable Preacher Curl",
+       "sets": [
+        {
+         "added_weight": null,
+         "bodyweight": false,
+         "note": "",
+         "prefix": "",
+         "reps": 12,
+         "to_failure": true,
+         "weight": 60
+        },
+        {
+         "added_weight": null,
+         "bodyweight": false,
+         "note": "",
+         "prefix": "",
+         "reps": 11,
+         "to_failure": true,
+         "weight": 60
+        },
+        {
+         "added_weight": null,
+         "bodyweight": false,
+         "note": "",
+         "prefix": "",
+         "reps": 10,
+         "to_failure": true,
+         "weight": 60
+        },
+        {
+         "added_weight": null,
+         "bodyweight": false,
+         "note": "",
+         "prefix": "",
+         "reps": 8,
+         "to_failure": true,
+         "weight": 60
+        },
+        {
+         "added_weight": null,
+         "bodyweight": false,
+         "note": "",
+         "prefix": "",
+         "reps": 11,
+         "to_failure": false,
+         "weight": 50
+        },
+        {
+         "added_weight": null,
+         "bodyweight": false,
+         "note": "",
+         "prefix": "",
+         "reps": 10,
+         "to_failure": false,
+         "weight": 50
+        }
+       ]
+      },
+      {
+       "name": "Cambered Rows",
+       "sets": [
+        {
+         "added_weight": null,
+         "bodyweight": false,
+         "note": "",
+         "prefix": "",
+         "reps": 11,
+         "to_failure": false,
+         "weight": 105
+        },
+        {
+         "added_weight": null,
+         "bodyweight": false,
+         "note": "",
+         "prefix": "",
+         "reps": 10,
+         "to_failure": false,
+         "weight": 100
+        },
+        {
+         "added_weight": null,
+         "bodyweight": false,
+         "note": "",
+         "prefix": "",
+         "reps": 10,
+         "to_failure": false,
+         "weight": 100
+        },
+        {
+         "added_weight": null,
+         "bodyweight": false,
+         "note": "",
+         "prefix": "",
+         "reps": 8,
+         "to_failure": false,
+         "weight": 100
+        },
+        {
+         "added_weight": null,
+         "bodyweight": false,
+         "note": "",
+         "prefix": "",
+         "reps": 7,
+         "to_failure": false,
+         "weight": 100
+        }
+       ]
+      },
+      {
+       "name": "DB Hammer Curl",
+       "sets": [
+        {
+         "added_weight": null,
+         "bodyweight": false,
+         "note": "",
+         "prefix": "",
+         "reps": 7,
+         "to_failure": false,
+         "weight": 15
+        },
+        {
+         "added_weight": null,
+         "bodyweight": false,
+         "note": "",
+         "prefix": "",
+         "reps": 8,
+         "to_failure": true,
+         "weight": 12.5
+        },
+        {
+         "added_weight": null,
+         "bodyweight": false,
+         "note": "",
+         "prefix": "",
+         "reps": 8,
+         "to_failure": false,
+         "weight": 12.5
+        },
+        {
+         "added_weight": null,
+         "bodyweight": false,
+         "note": "",
+         "prefix": "",
+         "reps": 8,
+         "to_failure": false,
+         "weight": 12.5
+        }
+       ]
+      },
+      {
+       "name": "Side Lat Raise",
+       "sets": [
+        {
+         "added_weight": null,
+         "bodyweight": false,
+         "note": "",
+         "prefix": "",
+         "reps": 15,
+         "to_failure": false,
+         "weight": 5
+        },
+        {
+         "added_weight": null,
+         "bodyweight": false,
+         "note": "",
+         "prefix": "",
+         "reps": 13,
+         "to_failure": false,
+         "weight": 5
+        },
+        {
+         "added_weight": null,
+         "bodyweight": false,
+         "note": "",
+         "prefix": "",
+         "reps": 11,
+         "to_failure": false,
+         "weight": 5
+        },
+        {
+         "added_weight": null,
+         "bodyweight": false,
+         "note": "",
+         "prefix": "",
+         "reps": 11,
+         "to_failure": false,
+         "weight": 5
+        }
+       ]
+      },
+      {
+       "name": "WG Pullup",
+       "sets": [
+        {
+         "added_weight": null,
+         "bodyweight": true,
+         "note": "",
+         "prefix": "",
+         "reps": 10,
+         "to_failure": false,
+         "weight": null
+        },
+        {
+         "added_weight": null,
+         "bodyweight": true,
+         "note": "",
+         "prefix": "",
+         "reps": 6,
+         "to_failure": false,
+         "weight": null
+        },
+        {
+         "added_weight": null,
+         "bodyweight": true,
+         "note": "",
+         "prefix": "",
+         "reps": 3,
+         "to_failure": false,
+         "weight": null
+        }
+       ]
+      }
+     ],
+     "notes": "Header also shows '6:30'. '25 July?' written in margin (unclear).",
+     "page_type": "workout",
+     "side": "top",
+     "steps": 10000,
+     "title": ""
+    },
+    {
+     "body_weight_lb": 156.6,
+     "calories": null,
+     "cardio": [],
+     "date": "2026-07-10",
+     "duration_min": 51,
+     "exercises": [
+      {
+       "name": "Incline Bench",
+       "sets": [
+        {
+         "added_weight": null,
+         "bodyweight": false,
+         "note": "",
+         "prefix": "",
+         "reps": 6,
+         "to_failure": true,
+         "weight": 155
+        },
+        {
+         "added_weight": null,
+         "bodyweight": false,
+         "note": "",
+         "prefix": "",
+         "reps": 7,
+         "to_failure": false,
+         "weight": 140
+        },
+        {
+         "added_weight": null,
+         "bodyweight": false,
+         "note": "",
+         "prefix": "",
+         "reps": 5,
+         "to_failure": true,
+         "weight": 140
+        },
+        {
+         "added_weight": null,
+         "bodyweight": false,
+         "note": "",
+         "prefix": "",
+         "reps": 8,
+         "to_failure": false,
+         "weight": 130
+        },
+        {
+         "added_weight": null,
+         "bodyweight": false,
+         "note": "",
+         "prefix": "wc",
+         "reps": 5,
+         "to_failure": true,
+         "weight": 130
+        },
+        {
+         "added_weight": null,
+         "bodyweight": false,
+         "note": "",
+         "prefix": "wc",
+         "reps": 4,
+         "to_failure": true,
+         "weight": 130
+        }
+       ]
+      },
+      {
+       "name": "Tricep Pushdown",
+       "sets": [
+        {
+         "added_weight": null,
+         "bodyweight": false,
+         "note": "",
+         "prefix": "",
+         "reps": 21,
+         "to_failure": false,
+         "weight": 65
+        },
+        {
+         "added_weight": null,
+         "bodyweight": false,
+         "note": "",
+         "prefix": "",
+         "reps": 13,
+         "to_failure": false,
+         "weight": 70
+        },
+        {
+         "added_weight": null,
+         "bodyweight": false,
+         "note": "",
+         "prefix": "",
+         "reps": 10,
+         "to_failure": false,
+         "weight": 70
+        },
+        {
+         "added_weight": null,
+         "bodyweight": false,
+         "note": "",
+         "prefix": "",
+         "reps": 10,
+         "to_failure": true,
+         "weight": 70
+        },
+        {
+         "added_weight": null,
+         "bodyweight": false,
+         "note": "",
+         "prefix": "",
+         "reps": 11,
+         "to_failure": false,
+         "weight": 70
+        }
+       ]
+      },
+      {
+       "name": "DB Bench",
+       "sets": [
+        {
+         "added_weight": null,
+         "bodyweight": false,
+         "note": "",
+         "prefix": "",
+         "reps": 10,
+         "to_failure": false,
+         "weight": 22.5
+        },
+        {
+         "added_weight": null,
+         "bodyweight": false,
+         "note": "",
+         "prefix": "",
+         "reps": 8,
+         "to_failure": true,
+         "weight": 27.5
+        },
+        {
+         "added_weight": null,
+         "bodyweight": false,
+         "note": "",
+         "prefix": "",
+         "reps": 6,
+         "to_failure": true,
+         "weight": 27.5
+        },
+        {
+         "added_weight": null,
+         "bodyweight": false,
+         "note": "",
+         "prefix": "",
+         "reps": 6,
+         "to_failure": false,
+         "weight": 27.5
+        }
+       ]
+      },
+      {
+       "name": "DB Fly",
+       "sets": [
+        {
+         "added_weight": null,
+         "bodyweight": false,
+         "note": "",
+         "prefix": "",
+         "reps": 18,
+         "to_failure": false,
+         "weight": 12.5
+        },
+        {
+         "added_weight": null,
+         "bodyweight": false,
+         "note": "",
+         "prefix": "",
+         "reps": 7,
+         "to_failure": false,
+         "weight": 12.5
+        },
+        {
+         "added_weight": null,
+         "bodyweight": false,
+         "note": "",
+         "prefix": "",
+         "reps": 7,
+         "to_failure": false,
+         "weight": 12.5
+        }
+       ]
+      },
+      {
+       "name": "Dips",
+       "sets": [
+        {
+         "added_weight": null,
+         "bodyweight": true,
+         "note": "",
+         "prefix": "",
+         "reps": 11,
+         "to_failure": false,
+         "weight": null
+        },
+        {
+         "added_weight": null,
+         "bodyweight": true,
+         "note": "",
+         "prefix": "",
+         "reps": 12,
+         "to_failure": false,
+         "weight": null
+        },
+        {
+         "added_weight": null,
+         "bodyweight": true,
+         "note": "",
+         "prefix": "",
+         "reps": 18,
+         "to_failure": false,
+         "weight": null
+        },
+        {
+         "added_weight": null,
+         "bodyweight": true,
+         "note": "",
+         "prefix": "",
+         "reps": 13,
+         "to_failure": false,
+         "weight": null
+        }
+       ]
+      }
+     ],
+     "notes": "Header also shows '12:30'. '51min' as written.",
+     "page_type": "workout",
+     "side": "bottom",
+     "steps": null,
+     "title": ""
+    }
+   ]
+  }
+ ]
+}
