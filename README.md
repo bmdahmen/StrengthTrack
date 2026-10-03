@@ -1,10 +1,10 @@
-# Workout Log
+# StrengthTrack
 
 Personal workout log: 60 notebook pages transcribed into a Cloudflare D1
 database, served by a small Cloudflare Worker with a searchable UI and
 strength-progression charts.
 
-Live at https://workouts.bmdahmen.workers.dev/
+Live at https://strengthtrack.bmdahmen.workers.dev/
 
 ## Layout
 

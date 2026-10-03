@@ -1,4 +1,4 @@
-// Workout Log — Cloudflare Worker + D1. Single-file app.
+// StrengthTrack — Cloudflare Worker + D1. Single-file app.
 // Serves the frontend and a small JSON API. Open access (no login).
 
 function json(data, status) {
