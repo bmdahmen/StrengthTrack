@@ -20,7 +20,6 @@ jobs:
       - name: Deploy to Cloudflare
         uses: cloudflare/wrangler-action@v3
         with:
-          apiKey: ${{ secrets.CLOUDFLARE_API_KEY }}
-          email: ${{ secrets.CLOUDFLARE_EMAIL }}
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           accountId: 49f1f72b4dae679753d12e26aed81221
           command: deploy
