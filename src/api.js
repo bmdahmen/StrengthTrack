@@ -399,6 +399,16 @@ async function handleApi(request, env, url) {
     return await handleApiInner(request, env, url);
   } catch (e) {
     // Never leak an HTML error page to the client — it breaks .json() parsing.
+    // Also persist the stack so we can diagnose without asking the user to retry blind.
+    const detail = String((e && e.stack) || (e && e.message) || e).slice(0, 2000);
+    try {
+      await env.DB.prepare(
+        'CREATE TABLE IF NOT EXISTS error_log (id INTEGER PRIMARY KEY, created_at TEXT, source TEXT, message TEXT)'
+      ).run();
+      await env.DB.prepare(
+        'INSERT INTO error_log (created_at, source, message) VALUES (?,?,?)'
+      ).bind(new Date().toISOString(), 'handleApi:' + url.pathname, detail).run();
+    } catch (e2) { /* logging must never throw */ }
     return json({ error: 'server_error', message: String((e && e.message) || e) }, 500);
   }
 }

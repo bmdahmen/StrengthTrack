@@ -83,7 +83,8 @@ function handleGoogleCredential(resp) {
   }).then(function (r) { return r.json().then(function (d) { return { status: r.status, body: d }; }); })
     .then(function (res) {
       if (res.status !== 200 || !res.body.ok) {
-        document.getElementById('loginerr').innerHTML = '<div class="err">' + esc(res.body.error || 'sign-in failed') + '</div>';
+        document.getElementById('loginerr').innerHTML = '<div class="err">' +
+          esc(res.body.message || res.body.error || 'sign-in failed') + '</div>';
         return;
       }
       try {
