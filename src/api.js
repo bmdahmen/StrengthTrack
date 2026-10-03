@@ -14,7 +14,7 @@ function esc(s) {
   });
 }
 
-const MUSE_MODEL_DEFAULT = 'muse-spark-1.3'; // Meta Model API (dev.meta.ai), Anthropic-compatible
+const CLAUDE_MODEL_DEFAULT = 'claude-sonnet-5'; // Anthropic API
 
 function ptDate() {
   // YYYY-MM-DD in America/Los_Angeles
@@ -28,12 +28,12 @@ function extractJson(text) {
   return JSON.parse(text.slice(a, b + 1));
 }
 
-async function callMuse(env, model, maxTokens, messages) {
-  const res = await fetch('https://api.meta.ai/v1/messages', {
+async function callClaude(env, model, maxTokens, messages) {
+  const res = await fetch('https://api.anthropic.com/v1/messages', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
-      'Authorization': 'Bearer ' + env.MODEL_API_KEY,
+      'x-api-key': env.ANTHROPIC_API_KEY,
       'anthropic-version': '2023-06-01',
     },
     body: JSON.stringify({ model: model, max_tokens: maxTokens, messages: messages }),
@@ -43,7 +43,7 @@ async function callMuse(env, model, maxTokens, messages) {
   return (data.content || []).filter(function (b) { return b.type === 'text'; }).map(function (b) { return b.text; }).join('\n');
 }
 
-function museModel(env) { return env.MUSE_MODEL || MUSE_MODEL_DEFAULT; }
+function claudeModel(env) { return env.CLAUDE_MODEL || CLAUDE_MODEL_DEFAULT; }
 
 function parsePrompt(exNames, today) {
   return 'You transcribe a photo of a handwritten workout notebook page into JSON. ' +
@@ -68,8 +68,8 @@ function parsePrompt(exNames, today) {
 }
 
 async function handleParse(request, env, user) {
-  if (!env.MODEL_API_KEY) {
-    return json({ error: 'vision_not_configured', message: 'Photo parsing needs a MODEL_API_KEY secret on the worker (create one at dev.meta.ai).' }, 503);
+  if (!env.ANTHROPIC_API_KEY) {
+    return json({ error: 'vision_not_configured', message: 'Photo parsing needs an ANTHROPIC_API_KEY secret on the worker.' }, 503);
   }
   const limited = await checkLimit(env, user, 'parse');
   if (limited) return limited;
@@ -84,7 +84,7 @@ async function handleParse(request, env, user) {
   const today = ptDate();
   let text;
   try {
-    text = await callMuse(env, museModel(env), 4000, [{
+    text = await callClaude(env, claudeModel(env), 4000, [{
       role: 'user',
       content: [
         { type: 'image', source: { type: 'base64', media_type: m[1], data: m[2] } },
@@ -166,8 +166,8 @@ const COACH_PROFILE =
   '15+ years ago and trains around joint concerns (prefers rowing over running).';
 
 async function handleCoach(request, env, user) {
-  if (!env.MODEL_API_KEY) {
-    return json({ error: 'coach_not_configured', message: 'Coaching needs a MODEL_API_KEY secret on the worker (create one at dev.meta.ai).' }, 503);
+  if (!env.ANTHROPIC_API_KEY) {
+    return json({ error: 'coach_not_configured', message: 'Coaching needs an ANTHROPIC_API_KEY secret on the worker.' }, 503);
   }
   const limited = await checkLimit(env, user, 'coach');
   if (limited) return limited;
@@ -230,7 +230,7 @@ async function handleCoach(request, env, user) {
     'Plain text, short paragraphs, no markdown headers.';
   let evaluation;
   try {
-    evaluation = await callMuse(env, museModel(env), 600, [
+    evaluation = await callClaude(env, claudeModel(env), 600, [
       { role: 'user', content: [{ type: 'text', text: prompt }] },
     ]);
   } catch (e) {
