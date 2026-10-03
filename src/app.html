@@ -65,6 +65,8 @@ textarea { resize:vertical; }
 .setedit .flab { display:flex; align-items:center; gap:4px; font-size:13px; color:var(--dim); flex:none; }
 .setedit .flab input { width:auto; }
 .coachcard { border-color:var(--acc); }
+.uchip { font-size:13px; color:var(--dim); }
+#userchip a { font-size:13px; color:var(--acc); text-decoration:none; margin-left:8px; }
 .err { color:#ff8f8f; font-size:13px; margin-top:8px; }
 .grphead { font-size:13px; font-weight:700; letter-spacing:1.5px; color:var(--dim); margin:18px 2px 8px; }
 .exgrid { display:grid; grid-template-columns:repeat(auto-fill,minmax(150px,1fr)); gap:8px; }
@@ -91,7 +93,7 @@ a.exblock:active { background:#1c222c; }
 <a href="#/log" data-nav>+ Log</a>
 <a href="#/wt" data-nav>Body&nbsp;wt</a>
 <a href="#/notes" data-nav>Notes</a>
-
+<span id="userchip" style="margin-left:auto"></span>
 </div></header>
 <main><div id="view"></div></main>
 <script src="/app.js"></script>

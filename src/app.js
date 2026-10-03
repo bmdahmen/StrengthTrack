@@ -4,12 +4,106 @@
 function $(sel) { return document.querySelector(sel); }
 
 function api(path, opts) {
-  return fetch(path, Object.assign({ credentials: 'same-origin' }, opts || {}))
+  var headers = { 'Authorization': 'Bearer ' + (sessionToken() || '') };
+  var o = Object.assign({ credentials: 'same-origin', headers: headers }, opts || {});
+  if (opts && opts.headers) o.headers = Object.assign(headers, opts.headers);
+  return fetch(path, o)
     .then(function (r) {
-      if (r.status === 401) { location.reload(); throw new Error('unauthorized'); }
+      if (r.status === 401) {
+        return r.json().then(function (d) {
+          if (d && d.code === 'AUTH_REQUIRED') { signOut(true); throw new Error('signed out'); }
+          throw new Error('unauthorized');
+        }).catch(function (e) {
+          if (e.message === 'signed out') throw e;
+          signOut(true); throw new Error('unauthorized');
+        });
+      }
       if (!r.ok) throw new Error('request failed: ' + r.status);
       return r.json();
     });
+}
+
+/* ---------- auth ---------- */
+
+function sessionToken() { try { return localStorage.getItem('st_session'); } catch (e) { return null; } }
+function sessionUser() { try { return JSON.parse(localStorage.getItem('st_user') || 'null'); } catch (e) { return null; } }
+
+function signOut(silent) {
+  var tok = sessionToken();
+  try { localStorage.removeItem('st_session'); localStorage.removeItem('st_user'); } catch (e) {}
+  cache.workouts = null; cache.exercises = null; coachCache = {};
+  if (tok && !silent) fetch('/api/auth/logout', { method: 'POST', headers: { 'Authorization': 'Bearer ' + tok } }).catch(function () {});
+  vLogin();
+}
+
+function vLogin() {
+  var v = $('#view');
+  v.innerHTML =
+    '<div class="card" style="max-width:380px;margin:40px auto;text-align:center">' +
+    '<div class="wdate" style="font-size:20px">StrengthTrack</div>' +
+    '<div class="wmeta" style="margin:8px 0 18px">Your workout log lives in your own account.<br>Sign in with Google to continue.</div>' +
+    '<div id="gsibtn" style="display:flex;justify-content:center"></div>' +
+    '<div id="loginerr"></div></div>';
+  loadGis(function () {
+    api('/api/auth/config').then(function (cfg) {
+      google.accounts.id.initialize({
+        client_id: cfg.google_client_id,
+        callback: handleGoogleCredential,
+        auto_select: true,
+      });
+      google.accounts.id.renderButton(document.getElementById('gsibtn'), { theme: 'filled_blue', size: 'large' });
+      google.accounts.id.prompt();
+    }).catch(function (e) {
+      document.getElementById('loginerr').innerHTML = '<div class="err">' + esc(e.message) + '</div>';
+    });
+  });
+}
+
+var gisLoaded = false, gisQueue = [];
+function loadGis(cb) {
+  if (gisLoaded) { cb(); return; }
+  gisQueue.push(cb);
+  if (gisQueue.length > 1) return;
+  var s = document.createElement('script');
+  s.src = 'https://accounts.google.com/gsi/client';
+  s.async = true; s.defer = true;
+  s.onload = function () { gisLoaded = true; gisQueue.forEach(function (f) { f(); }); gisQueue = []; };
+  s.onerror = function () { document.getElementById('loginerr').innerHTML = '<div class="err">Could not load Google sign-in.</div>'; };
+  document.head.appendChild(s);
+}
+
+function handleGoogleCredential(resp) {
+  fetch('/api/auth/google', {
+    method: 'POST', credentials: 'same-origin',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ token: resp.credential }),
+  }).then(function (r) { return r.json().then(function (d) { return { status: r.status, body: d }; }); })
+    .then(function (res) {
+      if (res.status !== 200 || !res.body.ok) {
+        document.getElementById('loginerr').innerHTML = '<div class="err">' + esc(res.body.error || 'sign-in failed') + '</div>';
+        return;
+      }
+      try {
+        localStorage.setItem('st_session', res.body.session_token);
+        localStorage.setItem('st_user', JSON.stringify(res.body.user));
+      } catch (e) {}
+      location.hash = '#/';
+      nav();
+    })
+    .catch(function (e) {
+      document.getElementById('loginerr').innerHTML = '<div class="err">' + esc(e.message) + '</div>';
+    });
+}
+
+function paintUserChip() {
+  var el = document.getElementById('userchip');
+  if (!el) return;
+  var u = sessionUser();
+  el.innerHTML = u
+    ? '<span class="uchip">' + esc(u.name || u.email || 'Account') + '</span> <a href="#" id="logoutlink">Sign out</a>'
+    : '';
+  var lo = document.getElementById('logoutlink');
+  if (lo) lo.addEventListener('click', function (e) { e.preventDefault(); signOut(false); });
 }
 
 function esc(s) {
@@ -139,6 +233,8 @@ var cache = {};
 
 function nav() {
   var h = location.hash || '#/';
+  paintUserChip();
+  if (!sessionToken()) { vLogin(); return; }
   document.querySelectorAll('[data-nav]').forEach(function (a) {
     var href = a.getAttribute('href');
     var on = false;

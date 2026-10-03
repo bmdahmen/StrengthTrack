@@ -67,15 +67,19 @@ function parsePrompt(exNames, today) {
   '"cardio":[{"kind":"run","distance_mi":3.11,"duration_min":25.5,"note":""}]}';
 }
 
-async function handleParse(request, env) {
+async function handleParse(request, env, user) {
   if (!env.MODEL_API_KEY) {
     return json({ error: 'vision_not_configured', message: 'Photo parsing needs a MODEL_API_KEY secret on the worker (create one at dev.meta.ai).' }, 503);
   }
+  const limited = await checkLimit(env, user, 'parse');
+  if (limited) return limited;
   let body = {};
   try { body = await request.json(); } catch (e) { return json({ error: 'bad request' }, 400); }
   const m = String(body.image || '').match(/^data:(image\/[a-zA-Z0-9+.-]+);base64,([A-Za-z0-9+/=]+)$/);
   if (!m) return json({ error: 'missing or invalid image (expected data URL)' }, 400);
-  const exRows = await env.DB.prepare('SELECT DISTINCT exercise FROM sets ORDER BY exercise').all();
+  const exRows = await env.DB.prepare(
+    'SELECT DISTINCT s.exercise FROM sets s JOIN workouts w ON w.id = s.workout_id WHERE w.user_id = ? ORDER BY s.exercise'
+  ).bind(user.id).all();
   const exNames = exRows.results.map(function (r) { return r.exercise; });
   const today = ptDate();
   let text;
@@ -113,7 +117,7 @@ function setTotalLb(name, s) {
   return Math.round(s.weight * 10) / 10;
 }
 
-async function handleSaveWorkout(request, env) {
+async function handleSaveWorkout(request, env, user) {
   let b = {};
   try { b = await request.json(); } catch (e) { return json({ error: 'bad request' }, 400); }
   if (!b.date || !/^\d{4}-\d{2}-\d{2}$/.test(b.date)) return json({ error: 'date is required (YYYY-MM-DD)' }, 400);
@@ -122,8 +126,8 @@ async function handleSaveWorkout(request, env) {
   if (!exercises.length && !cardio.length) return json({ error: 'nothing to save' }, 400);
   const wid = (await env.DB.prepare('SELECT COALESCE(MAX(id),0)+1 AS n FROM workouts').first()).n;
   await env.DB.prepare(
-    'INSERT INTO workouts (id, date, title, body_weight_lb, body_weight_source, notes) VALUES (?,?,?,?,?,?)'
-  ).bind(wid, b.date, b.title || '', b.body_weight_lb != null ? b.body_weight_lb : null, 'notebook', b.notes || '').run();
+    'INSERT INTO workouts (id, date, title, body_weight_lb, body_weight_source, notes, user_id) VALUES (?,?,?,?,?,?,?)'
+  ).bind(wid, b.date, b.title || '', b.body_weight_lb != null ? b.body_weight_lb : null, 'notebook', b.notes || '', user.id).run();
   let sid = (await env.DB.prepare('SELECT COALESCE(MAX(id),0) AS n FROM sets').first()).n;
   for (let ei = 0; ei < exercises.length; ei++) {
     const ex = exercises[ei];
@@ -161,15 +165,17 @@ const COACH_PROFILE =
   'everything else is pounds. He coaches wrestling, rows regularly, had arthroscopic knee surgery ' +
   '15+ years ago and trains around joint concerns (prefers rowing over running).';
 
-async function handleCoach(request, env) {
+async function handleCoach(request, env, user) {
   if (!env.MODEL_API_KEY) {
     return json({ error: 'coach_not_configured', message: 'Coaching needs a MODEL_API_KEY secret on the worker (create one at dev.meta.ai).' }, 503);
   }
+  const limited = await checkLimit(env, user, 'coach');
+  if (limited) return limited;
   let b = {};
   try { b = await request.json(); } catch (e) { return json({ error: 'bad request' }, 400); }
   const id = Number(b.workout_id);
   if (!id) return json({ error: 'workout_id required' }, 400);
-  const w = await env.DB.prepare('SELECT * FROM workouts WHERE id = ?').bind(id).first();
+  const w = await env.DB.prepare('SELECT * FROM workouts WHERE id = ? AND user_id = ?').bind(id, user.id).first();
   if (!w) return json({ error: 'not found' }, 404);
   const sets = await env.DB.prepare(
     'SELECT exercise, set_index, reps, weight, unit, per_hand, total_lb, bodyweight, added_weight_lb, to_failure' +
@@ -182,8 +188,8 @@ async function handleCoach(request, env) {
     const rows = await env.DB.prepare(
       'SELECT w.date, s.reps, s.total_lb, s.bodyweight, s.added_weight_lb, w.body_weight_lb' +
       ' FROM sets s JOIN workouts w ON w.id = s.workout_id' +
-      ' WHERE s.exercise = ? AND w.date <= ? ORDER BY w.date DESC LIMIT 40'
-    ).bind(name, w.date).all();
+      ' WHERE s.exercise = ? AND w.user_id = ? AND w.date <= ? ORDER BY w.date DESC LIMIT 40'
+    ).bind(name, user.id, w.date).all();
     const byDate = {};
     for (const r of rows.results) {
       let load = r.bodyweight ? (r.body_weight_lb != null ? r.body_weight_lb + (r.added_weight_lb || 0) : null) : r.total_lb;
@@ -197,12 +203,12 @@ async function handleCoach(request, env) {
   // last 7 workouts for frequency/split context
   const recent = await env.DB.prepare(
     'SELECT w.date, GROUP_CONCAT(DISTINCT s.exercise) AS exs FROM workouts w' +
-    ' LEFT JOIN sets s ON s.workout_id = w.id WHERE w.date <= ? GROUP BY w.id ORDER BY w.date DESC LIMIT 7'
-  ).bind(w.date).all();
+    ' LEFT JOIN sets s ON s.workout_id = w.id WHERE w.user_id = ? AND w.date <= ? GROUP BY w.id ORDER BY w.date DESC LIMIT 7'
+  ).bind(user.id, w.date).all();
   const recentTxt = recent.results.reverse().map(function (r) { return r.date + ' [' + (r.exs || 'cardio') + ']'; }).join('\n');
   const wts = await env.DB.prepare(
-    'SELECT date, body_weight_lb FROM workouts WHERE body_weight_lb IS NOT NULL AND date <= ? ORDER BY date DESC LIMIT 5'
-  ).bind(w.date).all();
+    'SELECT date, body_weight_lb FROM workouts WHERE body_weight_lb IS NOT NULL AND user_id = ? AND date <= ? ORDER BY date DESC LIMIT 5'
+  ).bind(user.id, w.date).all();
   const wtTxt = wts.results.reverse().map(function (r) { return r.date + ' ' + r.body_weight_lb + ' lb'; }).join(', ');
 
   const setLines = sets.results.map(function (s) {
@@ -233,23 +239,199 @@ async function handleCoach(request, env) {
   return json({ workout_id: id, evaluation: evaluation.trim() });
 }
 
+/* ---------- Google sign-in + per-user data + rate limits (mirrors CalProTrack) ---------- */
+
+function googleClientId(env) {
+  return env.GOOGLE_CLIENT_ID || '156334413688-usb68f1fldmrhic94mn925l75hnk82pk.apps.googleusercontent.com';
+}
+const OWNER_EMAIL = 'bmdahmen@gmail.com';
+const LIMITS_DEFAULT = { parse: 20, coach: 25 };
+const LIMITS_OWNER = 9999;
+
+let authSchemaReady = false;
+async function ensureAuthSchema(env) {
+  if (authSchemaReady) return;
+  await env.DB.prepare(
+    'CREATE TABLE IF NOT EXISTS users (id TEXT PRIMARY KEY, google_id TEXT UNIQUE, name TEXT, email TEXT,' +
+    ' avatar TEXT, created_at TEXT, lim_parse INTEGER, lim_coach INTEGER)'
+  ).run();
+  await env.DB.prepare(
+    'CREATE TABLE IF NOT EXISTS sessions (token_sha TEXT PRIMARY KEY, user_id TEXT, created_at TEXT, expires_at TEXT)'
+  ).run();
+  await env.DB.prepare(
+    'CREATE TABLE IF NOT EXISTS rate_limits (user_id TEXT, date TEXT, parse_count INTEGER DEFAULT 0,' +
+    ' coach_count INTEGER DEFAULT 0, PRIMARY KEY (user_id, date))'
+  ).run();
+  try { await env.DB.prepare('ALTER TABLE workouts ADD COLUMN user_id TEXT').run(); } catch (e) { /* exists */ }
+  try { await env.DB.prepare('ALTER TABLE notes ADD COLUMN user_id TEXT').run(); } catch (e) { /* exists */ }
+  authSchemaReady = true;
+}
+
+async function sha256Hex(str) {
+  const buf = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(str));
+  return [...new Uint8Array(buf)].map(function (b) { return b.toString(16).padStart(2, '0'); }).join('');
+}
+
+function randHex(n) {
+  const a = new Uint8Array(n);
+  crypto.getRandomValues(a);
+  return [...a].map(function (b) { return b.toString(16).padStart(2, '0'); }).join('');
+}
+
+async function resolveUser(request, env) {
+  let token = null;
+  const h = request.headers.get('Authorization') || '';
+  const m = h.match(/^Bearer\s+(.+)$/i);
+  if (m) token = m[1].trim();
+  if (!token && request.method === 'POST') {
+    try {
+      const b = await request.clone().json();
+      if (b && b.session_token) token = b.session_token;
+    } catch (e) { /* ignore */ }
+  }
+  if (!token) return null;
+  const sha = await sha256Hex(token);
+  const s = await env.DB.prepare(
+    'SELECT s.user_id, u.* FROM sessions s JOIN users u ON u.id = s.user_id' +
+    ' WHERE s.token_sha = ? AND s.expires_at > datetime(\'now\')'
+  ).bind(sha).first();
+  return s || null;
+}
+
+async function handleGoogleAuth(request, env) {
+  await ensureAuthSchema(env);
+  let body = {};
+  try { body = await request.json(); } catch (e) { return json({ error: 'bad request' }, 400); }
+  if (!body.token) return json({ error: 'missing token' }, 400);
+  const verify = await fetch('https://oauth2.googleapis.com/tokeninfo?id_token=' + encodeURIComponent(body.token));
+  const info = await verify.json();
+  if (!verify.ok || !info || info.aud !== googleClientId(env) || !info.sub) {
+    return json({ error: 'Google verification failed', code: 'AUTH_FAILED' }, 401);
+  }
+  const now = new Date().toISOString();
+  let user = await env.DB.prepare('SELECT * FROM users WHERE google_id = ?').bind(info.sub).first();
+  let isNew = false;
+  const isOwner = (info.email || '').toLowerCase() === OWNER_EMAIL;
+  if (!user) {
+    const id = randHex(8);
+    await env.DB.prepare(
+      'INSERT INTO users (id, google_id, name, email, avatar, created_at, lim_parse, lim_coach)' +
+      ' VALUES (?,?,?,?,?,?,?,?)'
+    ).bind(id, info.sub, info.name || '', info.email || '', info.picture || '', now,
+      isOwner ? LIMITS_OWNER : LIMITS_DEFAULT.parse, isOwner ? LIMITS_OWNER : LIMITS_DEFAULT.coach).run();
+    user = await env.DB.prepare('SELECT * FROM users WHERE id = ?').bind(id).first();
+    isNew = true;
+  } else if (isOwner && (user.lim_parse == null || user.lim_parse < LIMITS_OWNER)) {
+    await env.DB.prepare('UPDATE users SET lim_parse = ?, lim_coach = ? WHERE id = ?')
+      .bind(LIMITS_OWNER, LIMITS_OWNER, user.id).run();
+    user.lim_parse = LIMITS_OWNER; user.lim_coach = LIMITS_OWNER;
+  }
+  // First owner sign-in claims the pre-auth workout history.
+  if (isOwner) {
+    await env.DB.prepare('UPDATE workouts SET user_id = ? WHERE user_id IS NULL').bind(user.id).run();
+    await env.DB.prepare('UPDATE notes SET user_id = ? WHERE user_id IS NULL').bind(user.id).run();
+  }
+  const token = randHex(32);
+  const sha = await sha256Hex(token);
+  const exp = new Date(Date.now() + 90 * 864e5).toISOString();
+  await env.DB.prepare(
+    'INSERT INTO sessions (token_sha, user_id, created_at, expires_at) VALUES (?,?,?,?)'
+  ).bind(sha, user.id, now, exp).run();
+  return json({
+    ok: true, is_new: isNew, session_token: token,
+    user: { id: user.id, name: user.name, email: user.email, avatar: user.avatar },
+  });
+}
+
+async function handleLogout(request, env) {
+  const user = await resolveUser(request, env);
+  if (user) {
+    const h = request.headers.get('Authorization') || '';
+    const m = h.match(/^Bearer\s+(.+)$/i);
+    if (m) await env.DB.prepare('DELETE FROM sessions WHERE token_sha = ?').bind(await sha256Hex(m[1].trim())).run();
+  }
+  return json({ ok: true });
+}
+
+function userLimits(user) {
+  return {
+    parse: user.lim_parse != null ? user.lim_parse : LIMITS_DEFAULT.parse,
+    coach: user.lim_coach != null ? user.lim_coach : LIMITS_DEFAULT.coach,
+  };
+}
+
+async function checkLimit(env, user, field) {
+  // field: 'parse' | 'coach'
+  const limits = userLimits(user);
+  const limit = limits[field];
+  const today = ptDate();
+  const col = field + '_count';
+  await env.DB.prepare(
+    'INSERT INTO rate_limits (user_id, date, ' + col + ') VALUES (?,?,1)' +
+    ' ON CONFLICT (user_id, date) DO UPDATE SET ' + col + ' = COALESCE(' + col + ',0)+1'
+  ).bind(user.id, today).run();
+  const row = await env.DB.prepare('SELECT ' + col + ' AS n FROM rate_limits WHERE user_id = ? AND date = ?')
+    .bind(user.id, today).first();
+  const n = row ? row.n : 1;
+  if (n > limit) {
+    return json({
+      error: 'Daily limit of ' + limit + ' reached. Resets tomorrow.',
+      code: 'RATE_LIMITED', rate_limited: true,
+    }, 429);
+  }
+  return null;
+}
+
+async function handleUsage(env, user) {
+  const today = ptDate();
+  const row = await env.DB.prepare('SELECT * FROM rate_limits WHERE user_id = ? AND date = ?')
+    .bind(user.id, today).first();
+  return json({
+    usage: { parse: (row && row.parse_count) || 0, coach: (row && row.coach_count) || 0 },
+    limits: userLimits(user),
+  });
+}
+
+/* ---------- end auth ---------- */
+
 async function handleApi(request, env, url) {
   const path = url.pathname;
+
+  if (path === '/api/auth/google' && request.method === 'POST') {
+    return handleGoogleAuth(request, env);
+  }
+  if (path === '/api/auth/logout' && request.method === 'POST') {
+    return handleLogout(request, env);
+  }
+  if (path === '/api/auth/config' && request.method === 'GET') {
+    return json({ google_client_id: googleClientId(env) });
+  }
+
+  await ensureAuthSchema(env);
+  const user = await resolveUser(request, env);
+  if (!user) {
+    return json({ error: 'Please sign in.', code: 'AUTH_REQUIRED' }, 401);
+  }
+  const uid = user.id;
+
+  if (path === '/api/usage' && request.method === 'GET') {
+    return handleUsage(env, user);
+  }
 
   if (path === '/api/workouts' && request.method === 'GET') {
     const rows = await env.DB.prepare(
       'SELECT w.id, w.date, w.title, w.body_weight_lb, w.body_weight_source, w.duration_min, w.calories, w.steps,' +
       ' (SELECT COUNT(*) FROM sets s WHERE s.workout_id = w.id) AS set_count,' +
       ' (SELECT COUNT(DISTINCT s.exercise) FROM sets s WHERE s.workout_id = w.id) AS exercise_count' +
-      ' FROM workouts w ORDER BY w.date DESC, w.id DESC'
-    ).all();
+      ' FROM workouts w WHERE w.user_id = ? ORDER BY w.date DESC, w.id DESC'
+    ).bind(uid).all();
     return json(rows.results);
   }
 
   let m = path.match(/^\/api\/workout\/(\d+)$/);
   if (m) {
     const id = Number(m[1]);
-    const w = await env.DB.prepare('SELECT * FROM workouts WHERE id = ?').bind(id).first();
+    const w = await env.DB.prepare('SELECT * FROM workouts WHERE id = ? AND user_id = ?').bind(id, uid).first();
     if (!w) return json({ error: 'not found' }, 404);
     const sets = await env.DB.prepare(
       'SELECT * FROM sets WHERE workout_id = ? ORDER BY set_index'
@@ -262,9 +444,10 @@ async function handleApi(request, env, url) {
 
   if (path === '/api/exercises') {
     const rows = await env.DB.prepare(
-      'SELECT exercise AS name, COUNT(DISTINCT workout_id) AS workouts, COUNT(*) AS sets' +
-      ' FROM sets GROUP BY exercise ORDER BY workouts DESC, name'
-    ).all();
+      'SELECT s.exercise AS name, COUNT(DISTINCT s.workout_id) AS workouts, COUNT(*) AS sets' +
+      ' FROM sets s JOIN workouts w ON w.id = s.workout_id WHERE w.user_id = ?' +
+      ' GROUP BY s.exercise ORDER BY workouts DESC, name'
+    ).bind(uid).all();
     return json(rows.results);
   }
 
@@ -275,8 +458,8 @@ async function handleApi(request, env, url) {
       'SELECT w.date, w.body_weight_lb, s.set_index, s.exercise_index, s.reps, s.weight, s.unit, s.per_hand, s.total_lb,' +
       ' s.bodyweight, s.added_weight_lb, s.to_failure, s.prefix' +
       ' FROM sets s JOIN workouts w ON w.id = s.workout_id' +
-      ' WHERE s.exercise = ? ORDER BY w.date, s.set_index'
-    ).bind(name).all();
+      ' WHERE s.exercise = ? AND w.user_id = ? ORDER BY w.date, s.set_index'
+    ).bind(name, uid).all();
     const byDate = {};
     for (const r of rows.results) {
       const d = r.date;
@@ -321,20 +504,20 @@ async function handleApi(request, env, url) {
   if (path === '/api/weights') {
     const rows = await env.DB.prepare(
       'SELECT date, body_weight_lb, body_weight_source FROM workouts' +
-      ' WHERE body_weight_lb IS NOT NULL ORDER BY date'
-    ).all();
+      ' WHERE body_weight_lb IS NOT NULL AND user_id = ? ORDER BY date'
+    ).bind(uid).all();
     return json(rows.results);
   }
 
   if (path === '/api/notes') {
-    const rows = await env.DB.prepare('SELECT * FROM notes ORDER BY date').all();
+    const rows = await env.DB.prepare('SELECT * FROM notes WHERE user_id = ? ORDER BY date').bind(uid).all();
     return json(rows.results);
   }
 
   if (path === '/api/backfill-weights' && request.method === 'POST') {
     const missing = await env.DB.prepare(
-      "SELECT id, date FROM workouts WHERE body_weight_lb IS NULL ORDER BY date"
-    ).all();
+      "SELECT id, date FROM workouts WHERE body_weight_lb IS NULL AND user_id = ? ORDER BY date"
+    ).bind(uid).all();
     let filled = 0;
     const details = [];
     for (const w of missing.results) {
@@ -356,15 +539,15 @@ async function handleApi(request, env, url) {
   }
 
   if (path === '/api/parse' && request.method === 'POST') {
-    return handleParse(request, env);
+    return handleParse(request, env, user);
   }
 
   if (path === '/api/workouts' && request.method === 'POST') {
-    return handleSaveWorkout(request, env);
+    return handleSaveWorkout(request, env, user);
   }
 
   if (path === '/api/coach' && request.method === 'POST') {
-    return handleCoach(request, env);
+    return handleCoach(request, env, user);
   }
 
   return json({ error: 'not found' }, 404);
