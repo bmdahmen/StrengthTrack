@@ -395,6 +395,15 @@ async function handleUsage(env, user) {
 /* ---------- end auth ---------- */
 
 async function handleApi(request, env, url) {
+  try {
+    return await handleApiInner(request, env, url);
+  } catch (e) {
+    // Never leak an HTML error page to the client — it breaks .json() parsing.
+    return json({ error: 'server_error', message: String((e && e.message) || e) }, 500);
+  }
+}
+
+async function handleApiInner(request, env, url) {
   const path = url.pathname;
 
   if (path === '/api/auth/google' && request.method === 'POST') {

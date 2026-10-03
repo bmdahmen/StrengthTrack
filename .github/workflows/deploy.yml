@@ -23,12 +23,3 @@ jobs:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           accountId: 49f1f72b4dae679753d12e26aed81221
           command: deploy
-
-      # Pushes the GitHub secret MODEL_API_KEY into the worker as a runtime
-      # secret (GitHub secrets are NOT visible to the worker on their own).
-      - name: Sync MODEL_API_KEY worker secret
-        if: ${{ secrets.MODEL_API_KEY != '' }}
-        env:
-          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
-          CLOUDFLARE_ACCOUNT_ID: 49f1f72b4dae679753d12e26aed81221
-        run: printf '%s' "${{ secrets.MODEL_API_KEY }}" | npx -y wrangler secret put MODEL_API_KEY
