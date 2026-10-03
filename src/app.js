@@ -52,7 +52,10 @@ function vLogin() {
         auto_select: true,
       });
       google.accounts.id.renderButton(document.getElementById('gsibtn'), { theme: 'filled_blue', size: 'large' });
-      google.accounts.id.prompt();
+      // One Tap auto-prompt is a nice-to-have; on some mobile browsers it throws
+      // (e.g. Safari "string did not match the expected pattern"). Never let it
+      // break the login screen — the button above works on its own.
+      try { google.accounts.id.prompt(); } catch (e) { /* one-tap unavailable */ }
     }).catch(function (e) {
       document.getElementById('loginerr').innerHTML = '<div class="err">' + esc(e.message) + '</div>';
     });
