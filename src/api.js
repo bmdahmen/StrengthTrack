@@ -14,10 +14,228 @@ function esc(s) {
   });
 }
 
+const VISION_MODEL_DEFAULT = 'claude-sonnet-5';
+const COACH_MODEL_DEFAULT = 'claude-sonnet-5';
+
+function ptDate() {
+  // YYYY-MM-DD in America/Los_Angeles
+  const p = new Intl.DateTimeFormat('en-CA', { timeZone: 'America/Los_Angeles', year: 'numeric', month: '2-digit', day: '2-digit' }).format(new Date());
+  return p;
+}
+
+function extractJson(text) {
+  const a = text.indexOf('{'), b = text.lastIndexOf('}');
+  if (a < 0 || b <= a) throw new Error('no JSON in model response');
+  return JSON.parse(text.slice(a, b + 1));
+}
+
+async function callClaude(env, model, maxTokens, messages) {
+  const res = await fetch('https://api.anthropic.com/v1/messages', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'x-api-key': env.ANTHROPIC_API_KEY,
+      'anthropic-version': '2023-06-01',
+    },
+    body: JSON.stringify({ model: model, max_tokens: maxTokens, messages: messages }),
+  });
+  const data = await res.json();
+  if (data.error) throw new Error(data.error.message || data.error.type || 'claude error');
+  return (data.content || []).filter(function (b) { return b.type === 'text'; }).map(function (b) { return b.text; }).join('\n');
+}
+
+function parsePrompt(exNames, today) {
+  return 'You transcribe a photo of a handwritten workout notebook page into JSON. ' +
+  'Today is ' + today + '. Dates like "10/3" are in the current year unless clearly otherwise.\n' +
+  'RULES:\n' +
+  '- Page header looks like "10/3-151.8": date, then bodyweight in lb (always 140-170 range). Record body_weight_lb. No weight written -> null, do not guess.\n' +
+  '- Sets are WEIGHTxREPS, e.g. "150x11". Trailing F ("65x6F") -> to_failure true. Ignore his arithmetic like "=216".\n' +
+  '- Prefix before the weight ("WG", "NG", "CG", "CC") -> keep verbatim in "prefix".\n' +
+  '- "BW" = bodyweight: bodyweight true, weight null. "BWx11" -> reps 11. "Weighted Pullup 25x11" -> bodyweight true, added_weight 25.\n' +
+  '- Dropset arrows "22.5x8 -> BWx17" -> TWO sets: {weight 22.5, reps 8} then {bodyweight true, reps 17, note "dropset to bodyweight"}.\n' +
+  '- Dumbbell exercises (name has DB/Dumbbell, or single-DB moves like Goblet Squat): weight is KILOGRAMS, unit "kg". Everything else is pounds, unit "lb". Bodyweight sets: unit null.\n' +
+  '- Cardio: "5k 25:32" -> {"kind":"run","distance_mi":3.11,"duration_min":25.5}. "5k Row 25:59" -> kind "row". "20 min walk" -> kind "walk", duration_min 20. Bare times on a lifting page go in notes, not cardio.\n' +
+  '- Exercise names: use the closest name from this canonical list when it is clearly the same exercise:\n' +
+  exNames.join(', ') + '\n' +
+  '- If nothing on the list fits, use the name as written (it will be reviewed).\n' +
+  '- Truly illegible: put "ILLEGIBLE: <best guess>" in the set note. Never invent numbers.\n' +
+  '- Title: only if the page labels the session (Push/Pull/Legs). Else "".\n' +
+  'Respond with ONLY this JSON object, no other text:\n' +
+  '{"date":"YYYY-MM-DD","body_weight_lb":151.8,"title":"","notes":"","warnings":["anything uncertain, as short strings"],' +
+  '"exercises":[{"name":"<canonical or as-written>","sets":[{"weight":150,"unit":"lb","reps":11,"to_failure":false,"prefix":"","bodyweight":false,"added_weight":null,"note":""}]}],' +
+  '"cardio":[{"kind":"run","distance_mi":3.11,"duration_min":25.5,"note":""}]}';
+}
+
+async function handleParse(request, env) {
+  if (!env.ANTHROPIC_API_KEY) {
+    return json({ error: 'vision_not_configured', message: 'Photo parsing needs an ANTHROPIC_API_KEY secret on the worker.' }, 503);
+  }
+  let body = {};
+  try { body = await request.json(); } catch (e) { return json({ error: 'bad request' }, 400); }
+  const m = String(body.image || '').match(/^data:(image\/[a-zA-Z0-9+.-]+);base64,([A-Za-z0-9+/=]+)$/);
+  if (!m) return json({ error: 'missing or invalid image (expected data URL)' }, 400);
+  const exRows = await env.DB.prepare('SELECT DISTINCT exercise FROM sets ORDER BY exercise').all();
+  const exNames = exRows.results.map(function (r) { return r.exercise; });
+  const today = ptDate();
+  let text;
+  try {
+    text = await callClaude(env, env.MODEL_SONNET || VISION_MODEL_DEFAULT, 4000, [{
+      role: 'user',
+      content: [
+        { type: 'image', source: { type: 'base64', media_type: m[1], data: m[2] } },
+        { type: 'text', text: parsePrompt(exNames, today) },
+      ],
+    }]);
+  } catch (e) {
+    return json({ error: 'vision_failed', message: e.message }, 502);
+  }
+  let parsed;
+  try { parsed = extractJson(text); }
+  catch (e) { return json({ error: 'bad_parse', message: 'Could not read the model response as JSON.' }, 502); }
+  // light normalization
+  parsed.date = parsed.date || today;
+  if (!Array.isArray(parsed.exercises)) parsed.exercises = [];
+  if (!Array.isArray(parsed.cardio)) parsed.cardio = [];
+  if (!Array.isArray(parsed.warnings)) parsed.warnings = [];
+  return json(parsed);
+}
+
+function setTotalLb(name, s) {
+  // mirrors tools/seed.py set_total_lb
+  if (s.bodyweight) return s.added_weight != null ? s.added_weight : null;
+  if (s.weight == null || s.unit == null) return null;
+  if (s.unit === 'kg') {
+    const lb = s.weight * 2.20462;
+    const perHand = /goblet/i.test(name) ? 0 : (/\bdb\b|dumbbell/i.test(name) ? 1 : 0);
+    return Math.round(lb * (perHand ? 2 : 1) * 10) / 10;
+  }
+  return Math.round(s.weight * 10) / 10;
+}
+
+async function handleSaveWorkout(request, env) {
+  let b = {};
+  try { b = await request.json(); } catch (e) { return json({ error: 'bad request' }, 400); }
+  if (!b.date || !/^\d{4}-\d{2}-\d{2}$/.test(b.date)) return json({ error: 'date is required (YYYY-MM-DD)' }, 400);
+  const exercises = (b.exercises || []).filter(function (e) { return e.name && (e.sets || []).length; });
+  const cardio = b.cardio || [];
+  if (!exercises.length && !cardio.length) return json({ error: 'nothing to save' }, 400);
+  const wid = (await env.DB.prepare('SELECT COALESCE(MAX(id),0)+1 AS n FROM workouts').first()).n;
+  await env.DB.prepare(
+    'INSERT INTO workouts (id, date, title, body_weight_lb, body_weight_source, notes) VALUES (?,?,?,?,?,?)'
+  ).bind(wid, b.date, b.title || '', b.body_weight_lb != null ? b.body_weight_lb : null, 'notebook', b.notes || '').run();
+  let sid = (await env.DB.prepare('SELECT COALESCE(MAX(id),0) AS n FROM sets').first()).n;
+  for (let ei = 0; ei < exercises.length; ei++) {
+    const ex = exercises[ei];
+    const sets = ex.sets || [];
+    for (let i = 0; i < sets.length; i++) {
+      const s = sets[i];
+      sid++;
+      const perHand = s.unit === 'kg' ? (/goblet/i.test(ex.name) ? 0 : (/\bdb\b|dumbbell/i.test(ex.name) ? 1 : 0)) : 0;
+      await env.DB.prepare(
+        'INSERT INTO sets (id, workout_id, exercise, exercise_raw, set_index, exercise_index, reps, weight, unit,' +
+        ' per_hand, total_lb, bodyweight, added_weight_lb, warmup, to_failure, prefix, note)' +
+        ' VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)'
+      ).bind(sid, wid, ex.name, ex.name, i, ei,
+        s.reps != null ? s.reps : null, s.weight != null ? s.weight : null, s.unit || null,
+        perHand, setTotalLb(ex.name, s), s.bodyweight ? 1 : 0,
+        s.added_weight != null ? s.added_weight : null, 0, s.to_failure ? 1 : 0,
+        s.prefix || '', s.note || '').run();
+    }
+  }
+  let cid = (await env.DB.prepare('SELECT COALESCE(MAX(id),0) AS n FROM cardio').first()).n;
+  for (const c of cardio) {
+    cid++;
+    await env.DB.prepare(
+      'INSERT INTO cardio (id, workout_id, kind, distance_mi, duration_min, steps, note) VALUES (?,?,?,?,?,?,?)'
+    ).bind(cid, wid, c.kind || '', c.distance_mi != null ? c.distance_mi : null,
+      c.duration_min != null ? c.duration_min : null, null, c.note || '').run();
+  }
+  return json({ ok: true, id: wid });
+}
+
+const COACH_PROFILE =
+  'The athlete is Brian, in his first 6 months of consistent weight training (newbie gains phase), ' +
+  'training Push/Pull/Legs. He is currently lean-bulking at roughly +200 kcal/day surplus ' +
+  '(3100 kcal training days, 2700 rest days). Dumbbell weights in his logs are kg per dumbbell; ' +
+  'everything else is pounds. He coaches wrestling, rows regularly, had arthroscopic knee surgery ' +
+  '15+ years ago and trains around joint concerns (prefers rowing over running).';
+
+async function handleCoach(request, env) {
+  if (!env.ANTHROPIC_API_KEY) {
+    return json({ error: 'coach_not_configured', message: 'Coaching needs an ANTHROPIC_API_KEY secret on the worker.' }, 503);
+  }
+  let b = {};
+  try { b = await request.json(); } catch (e) { return json({ error: 'bad request' }, 400); }
+  const id = Number(b.workout_id);
+  if (!id) return json({ error: 'workout_id required' }, 400);
+  const w = await env.DB.prepare('SELECT * FROM workouts WHERE id = ?').bind(id).first();
+  if (!w) return json({ error: 'not found' }, 404);
+  const sets = await env.DB.prepare(
+    'SELECT exercise, set_index, reps, weight, unit, per_hand, total_lb, bodyweight, added_weight_lb, to_failure' +
+    ' FROM sets WHERE workout_id = ? ORDER BY exercise_index, set_index'
+  ).bind(id).all();
+  const exNames = [...new Set(sets.results.map(function (s) { return s.exercise; }))];
+  // recent best-1RM trend per exercise (last 4 sessions)
+  const trends = [];
+  for (const name of exNames) {
+    const rows = await env.DB.prepare(
+      'SELECT w.date, s.reps, s.total_lb, s.bodyweight, s.added_weight_lb, w.body_weight_lb' +
+      ' FROM sets s JOIN workouts w ON w.id = s.workout_id' +
+      ' WHERE s.exercise = ? AND w.date <= ? ORDER BY w.date DESC LIMIT 40'
+    ).bind(name, w.date).all();
+    const byDate = {};
+    for (const r of rows.results) {
+      let load = r.bodyweight ? (r.body_weight_lb != null ? r.body_weight_lb + (r.added_weight_lb || 0) : null) : r.total_lb;
+      if (load == null || r.reps == null || r.reps <= 0) continue;
+      const est = r.reps === 1 ? load : load * (1 + r.reps / 30);
+      if (!byDate[r.date] || est > byDate[r.date]) byDate[r.date] = Math.round(est);
+    }
+    const ds = Object.keys(byDate).sort().slice(-4);
+    if (ds.length >= 2) trends.push(name + ': ' + ds.map(function (d) { return d.slice(5) + ' ' + byDate[d]; }).join(' -> '));
+  }
+  // last 7 workouts for frequency/split context
+  const recent = await env.DB.prepare(
+    'SELECT w.date, GROUP_CONCAT(DISTINCT s.exercise) AS exs FROM workouts w' +
+    ' LEFT JOIN sets s ON s.workout_id = w.id WHERE w.date <= ? GROUP BY w.id ORDER BY w.date DESC LIMIT 7'
+  ).bind(w.date).all();
+  const recentTxt = recent.results.reverse().map(function (r) { return r.date + ' [' + (r.exs || 'cardio') + ']'; }).join('\n');
+  const wts = await env.DB.prepare(
+    'SELECT date, body_weight_lb FROM workouts WHERE body_weight_lb IS NOT NULL AND date <= ? ORDER BY date DESC LIMIT 5'
+  ).bind(w.date).all();
+  const wtTxt = wts.results.reverse().map(function (r) { return r.date + ' ' + r.body_weight_lb + ' lb'; }).join(', ');
+
+  const setLines = sets.results.map(function (s) {
+    let t = s.exercise + ' set ' + (s.set_index + 1) + ': ';
+    t += s.bodyweight ? ('BW' + (s.added_weight_lb ? '+' + s.added_weight_lb : '') + 'x' + s.reps)
+      : ((s.weight != null ? s.weight + (s.unit || '') : '?') + 'x' + s.reps);
+    if (s.to_failure) t += 'F';
+    return t;
+  }).join('\n');
+
+  const prompt =
+    'You are a direct, knowledgeable strength coach reviewing one workout. ' + COACH_PROFILE + '\n\n' +
+    'WORKOUT ' + w.date + (w.title ? ' (' + w.title + ')' : '') + ', bodyweight ' + (w.body_weight_lb || '?') + ' lb:\n' + setLines + '\n\n' +
+    'Recent estimated-1RM trend per exercise (last sessions, lb):\n' + (trends.join('\n') || 'n/a') + '\n\n' +
+    'Last 7 sessions:\n' + recentTxt + '\n\nRecent bodyweights: ' + wtTxt + '\n\n' +
+    'Evaluate this workout in under 220 words. Be specific and use his numbers. ' +
+    'Cover: (1) what went well, (2) anything that looks off (stalls, regressions, volume gaps, form-risk patterns like grinding singles), ' +
+    '(3) one or two concrete suggestions for next time. No generic fitness advice, no disclaimers, no medical diagnoses. ' +
+    'Plain text, short paragraphs, no markdown headers.';
+  let evaluation;
+  try {
+    evaluation = await callClaude(env, env.MODEL_SONNET || COACH_MODEL_DEFAULT, 600, [
+      { role: 'user', content: [{ type: 'text', text: prompt }] },
+    ]);
+  } catch (e) {
+    return json({ error: 'coach_failed', message: e.message }, 502);
+  }
+  return json({ workout_id: id, evaluation: evaluation.trim() });
+}
+
 async function handleApi(request, env, url) {
   const path = url.pathname;
 
-  if (path === '/api/workouts') {
+  if (path === '/api/workouts' && request.method === 'GET') {
     const rows = await env.DB.prepare(
       'SELECT w.id, w.date, w.title, w.body_weight_lb, w.body_weight_source, w.duration_min, w.calories, w.steps,' +
       ' (SELECT COUNT(*) FROM sets s WHERE s.workout_id = w.id) AS set_count,' +
@@ -134,6 +352,18 @@ async function handleApi(request, env, url) {
       }
     }
     return json({ filled: filled, details: details });
+  }
+
+  if (path === '/api/parse' && request.method === 'POST') {
+    return handleParse(request, env);
+  }
+
+  if (path === '/api/workouts' && request.method === 'POST') {
+    return handleSaveWorkout(request, env);
+  }
+
+  if (path === '/api/coach' && request.method === 'POST') {
+    return handleCoach(request, env);
   }
 
   return json({ error: 'not found' }, 404);

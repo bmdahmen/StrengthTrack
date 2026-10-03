@@ -40,6 +40,31 @@ th { color:var(--dim); font-weight:500; border-top:none; }
 .num { text-align:right; font-variant-numeric:tabular-nums; }
 svg.chart { width:100%; height:auto; display:block; }
 button.go { background:var(--acc); color:#06121f; border:none; border-radius:10px; padding:9px 16px; font-size:15px; font-weight:600; cursor:pointer; }
+button.go:disabled { opacity:.55; cursor:default; }
+button.go.ghost { background:transparent; color:var(--acc); border:1px solid var(--acc); }
+button.go.sm { padding:5px 10px; font-size:13px; border-radius:8px; }
+button.go.big { width:100%; padding:12px; font-size:16px; margin:4px 0 20px; }
+.btnrow { display:flex; gap:10px; }
+.btnrow .go { flex:1; }
+.fl { display:block; font-size:12px; color:var(--dim); margin:10px 0 4px; }
+input[type="date"], input[type="number"], input[type="text"], select, textarea {
+  background:var(--card); color:var(--fg); border:1px solid var(--line); border-radius:8px;
+  padding:8px 10px; font-size:15px; width:100%; box-sizing:border-box; font-family:inherit;
+}
+textarea { resize:vertical; }
+.exinput { font-size:17px; font-weight:600; }
+.thumb { max-width:100%; border-radius:10px; border:1px solid var(--line); }
+.warncard { border-color:#a97b2f; }
+.xbtn { background:none; border:none; color:var(--dim); cursor:pointer; font-size:15px; padding:8px; flex:none; }
+.setedit { display:flex; gap:6px; align-items:center; margin:6px 0; flex-wrap:wrap; }
+.setedit .pin { width:44px; flex:none; }
+.setedit .win { width:74px; flex:none; }
+.setedit .rin { width:64px; flex:none; }
+.setedit select { width:64px; flex:none; }
+.setedit .nin { flex:1 1 120px; }
+.setedit .flab { display:flex; align-items:center; gap:4px; font-size:13px; color:var(--dim); flex:none; }
+.setedit .flab input { width:auto; }
+.coachcard { border-color:var(--acc); }
 .err { color:#ff8f8f; font-size:13px; margin-top:8px; }
 .grphead { font-size:13px; font-weight:700; letter-spacing:1.5px; color:var(--dim); margin:18px 2px 8px; }
 .exgrid { display:grid; grid-template-columns:repeat(auto-fill,minmax(150px,1fr)); gap:8px; }
@@ -63,6 +88,7 @@ a.exblock:active { background:#1c222c; }
 <h1>StrengthTrack</h1>
 <a href="#/" data-nav>Exercises</a>
 <a href="#/wo" data-nav>Workouts</a>
+<a href="#/log" data-nav>+ Log</a>
 <a href="#/wt" data-nav>Body&nbsp;wt</a>
 <a href="#/notes" data-nav>Notes</a>
 

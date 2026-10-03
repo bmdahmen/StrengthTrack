@@ -155,6 +155,7 @@ function nav() {
   if (m) return vExercise(decodeURIComponent(m[1]));
   if (h === '#/wt') return vWeight();
   if (h === '#/notes') return vNotes();
+  if (h === '#/log') return vLog();
   return vExercises('');
 }
 
@@ -201,6 +202,8 @@ function vWorkout(id) {
       (w.steps ? ' · ' + w.steps.toLocaleString() + ' steps' : '') +
       '</div></div></div>' +
       (w.notes ? '<div class="small" style="margin-top:8px">' + esc(w.notes) + '</div>' : '') +
+      '<div class="btnrow" style="margin-top:10px"><button class="go ghost sm" id="coachbtn">Ask AI coach</button></div>' +
+      '<div id="coachout"></div>' +
       '</div>';
     groups.forEach(function (g) {
       h += '<div class="exname">' + esc(g.name) + '<span class="badge">' + g.sets.length + '</span></div>';
@@ -221,6 +224,10 @@ function vWorkout(id) {
     });
     if (!groups.length && !cardio.length) h += '<div class="dim">No sets recorded.</div>';
     v.innerHTML = h;
+    var cb = document.getElementById('coachbtn');
+    if (cb) cb.addEventListener('click', function () {
+      askCoach(id, cb, document.getElementById('coachout'));
+    });
   }).catch(function (e) { v.innerHTML = '<div class="err">' + esc(e.message) + '</div>'; });
 }
 
@@ -402,6 +409,289 @@ function vNotes() {
         '<div class="small" style="white-space:pre-wrap; margin-top:6px">' + esc(n.text) + '</div></div>';
     }).join('') : '<div class="dim">No notes.</div>';
   }).catch(function (e) { v.innerHTML = '<div class="err">' + esc(e.message) + '</div>'; });
+}
+
+/* ---------- Log-a-workout flow ---------- */
+
+var draft = null;
+
+function downscaleImage(file, cb) {
+  var img = new Image();
+  img.onload = function () {
+    var scale = Math.min(1, 1600 / Math.max(img.width, img.height));
+    var c = document.createElement('canvas');
+    c.width = Math.round(img.width * scale);
+    c.height = Math.round(img.height * scale);
+    c.getContext('2d').drawImage(img, 0, 0, c.width, c.height);
+    URL.revokeObjectURL(img.src);
+    cb(c.toDataURL('image/jpeg', 0.85));
+  };
+  img.onerror = function () { cb(null); };
+  img.src = URL.createObjectURL(file);
+}
+
+function vLog() {
+  var v = $('#view');
+  draft = null;
+  v.innerHTML =
+    '<div class="card"><div class="wdate" style="font-size:18px">Log a workout</div>' +
+    '<div class="wmeta">Snap your notebook page — I\'ll parse it, then you review and approve.</div></div>' +
+    '<div class="card"><div class="btnrow">' +
+    '<button class="go" id="btnCam">Take photo</button>' +
+    '<button class="go ghost" id="btnUpl">Upload</button></div>' +
+    '<input type="file" id="fileCam" accept="image/*" capture="environment" style="display:none">' +
+    '<input type="file" id="fileUpl" accept="image/*" style="display:none">' +
+    '<div id="logstage" style="margin-top:12px"></div></div>';
+  function pick(input) {
+    var f = input.files && input.files[0];
+    if (!f) return;
+    input.value = '';
+    $('#logstage').innerHTML = '<div class="dim">Reading photo…</div>';
+    downscaleImage(f, function (url) {
+      if (!url) { $('#logstage').innerHTML = '<div class="err">Could not read that image.</div>'; return; }
+      $('#logstage').innerHTML =
+        '<img class="thumb" src="' + url + '">' +
+        '<div class="btnrow" style="margin-top:10px"><button class="go" id="btnAnalyze">Analyze this page</button>' +
+        '<button class="go ghost" id="btnRetake">Retake</button></div><div id="parseout"></div>';
+      $('#btnAnalyze').addEventListener('click', function () { analyzePhoto(url); });
+      $('#btnRetake').addEventListener('click', function () { $('#logstage').innerHTML = ''; });
+    });
+  }
+  $('#btnCam').addEventListener('click', function () { $('#fileCam').click(); });
+  $('#btnUpl').addEventListener('click', function () { $('#fileUpl').click(); });
+  $('#fileCam').addEventListener('change', function (e) { pick(e.target); });
+  $('#fileUpl').addEventListener('change', function (e) { pick(e.target); });
+}
+
+function analyzePhoto(url) {
+  var out = $('#parseout');
+  out.innerHTML = '<div class="dim" style="margin-top:10px">Analyzing handwriting… this takes a few seconds.</div>';
+  fetch('/api/parse', {
+    method: 'POST', credentials: 'same-origin',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ image: url }),
+  }).then(function (r) { return r.json().then(function (d) { return { status: r.status, body: d }; }); })
+    .then(function (res) {
+      if (res.status !== 200) {
+        out.innerHTML = '<div class="err" style="margin-top:10px">' + esc(res.body.message || res.body.error || 'parse failed') + '</div>';
+        return;
+      }
+      draft = res.body;
+      if (!draft.warnings) draft.warnings = [];
+      ensureExNames(renderReview);
+    })
+    .catch(function (e) { out.innerHTML = '<div class="err" style="margin-top:10px">' + esc(e.message) + '</div>'; });
+}
+
+function ensureExNames(cb) {
+  if (cache.exercises) { cb(); return; }
+  api('/api/exercises').then(function (es) { cache.exercises = es; cb(); })
+    .catch(function () { cache.exercises = []; cb(); });
+}
+
+function exNameOptions() {
+  return (cache.exercises || []).map(function (e) { return '<option value="' + esc(e.name) + '">'; }).join('');
+}
+
+function setRowHtml(ei, si, s) {
+  var bw = !!s.bodyweight;
+  return '<div class="setedit" data-ex="' + ei + '" data-set="' + si + '">' +
+    '<input class="pin" data-field="prefix" value="' + esc(s.prefix || '') + '" placeholder="pre" title="prefix">' +
+    '<input class="win" data-field="weight" type="number" step="any" value="' + (s.weight != null ? s.weight : '') + '"' + (bw ? ' disabled' : '') + '>' +
+    '<select data-field="unit">' +
+    '<option value="lb"' + (s.unit === 'lb' && !bw ? ' selected' : '') + '>lb</option>' +
+    '<option value="kg"' + (s.unit === 'kg' && !bw ? ' selected' : '') + '>kg</option>' +
+    '<option value="bw"' + (bw ? ' selected' : '') + '>BW</option></select>' +
+    '<input class="rin" data-field="reps" type="number" step="any" value="' + (s.reps != null ? s.reps : '') + '" placeholder="reps">' +
+    '<label class="flab" title="to failure"><input type="checkbox" data-field="fail"' + (s.to_failure ? ' checked' : '') + '>F</label>' +
+    '<button class="xbtn" data-act="delset" title="delete set">✕</button>' +
+    (s.note ? '<input class="nin" data-field="note" value="' + esc(s.note) + '" placeholder="set note">' : '') +
+    '</div>';
+}
+
+function renderReview() {
+  var st = $('#logstage');
+  var h = '';
+  if (draft.warnings && draft.warnings.length) {
+    h += '<div class="card warncard"><div class="wdate" style="font-size:14px">Heads up</div><ul class="small">' +
+      draft.warnings.map(function (w) { return '<li>' + esc(w) + '</li>'; }).join('') + '</ul></div>';
+  }
+  h += '<div class="card"><div class="row">' +
+    '<div class="grow"><label class="fl">Date</label><input type="date" id="d_date" value="' + esc(draft.date || '') + '"></div>' +
+    '<div><label class="fl">Body wt (lb)</label><input type="number" id="d_bw" step="0.1" value="' + (draft.body_weight_lb != null ? draft.body_weight_lb : '') + '"></div>' +
+    '</div><label class="fl">Session title (optional)</label><input type="text" id="d_title" value="' + esc(draft.title || '') + '" placeholder="Push / Pull / Legs…"></div>';
+  h += '<datalist id="exnames">' + exNameOptions() + '</datalist>';
+  h += '<div id="d_exs">';
+  draft.exercises.forEach(function (ex, ei) {
+    h += '<div class="card"><div class="row"><div class="grow">' +
+      '<input type="text" class="exinput" data-ex="' + ei + '" data-field="name" list="exnames" value="' + esc(ex.name) + '">' +
+      '</div><button class="xbtn" data-act="delex" data-ex="' + ei + '" title="remove exercise">✕</button></div>' +
+      '<div class="small dim" style="margin:6px 0 2px">prefix · weight · unit · reps</div>' +
+      ex.sets.map(function (s, si) { return setRowHtml(ei, si, s); }).join('') +
+      '<button class="go ghost sm" data-act="addset" data-ex="' + ei + '">+ Set</button></div>';
+  });
+  h += '</div><button class="go ghost" data-act="addex" style="margin-bottom:10px">+ Add exercise</button>';
+  h += '<div class="card"><div class="wdate" style="font-size:15px">Cardio</div><div id="d_cardio">';
+  (draft.cardio || []).forEach(function (c, ci) {
+    h += '<div class="setedit" data-cardio="' + ci + '">' +
+      '<select data-cfield="kind">' +
+      ['run', 'walk', 'row', 'other'].map(function (k) {
+        return '<option value="' + k + '"' + (c.kind === k ? ' selected' : '') + '>' + k + '</option>';
+      }).join('') + '</select>' +
+      '<input class="win" data-cfield="distance_mi" type="number" step="any" value="' + (c.distance_mi != null ? c.distance_mi : '') + '" placeholder="mi">' +
+      '<input class="win" data-cfield="duration_min" type="number" step="any" value="' + (c.duration_min != null ? c.duration_min : '') + '" placeholder="min">' +
+      '<input class="nin" data-cfield="note" value="' + esc(c.note || '') + '" placeholder="note">' +
+      '<button class="xbtn" data-act="delcardio" data-cardio="' + ci + '">✕</button></div>';
+  });
+  h += '</div><button class="go ghost sm" data-act="addcardio">+ Cardio</button></div>';
+  h += '<div class="card"><label class="fl">Notes</label><textarea id="d_notes" rows="3">' + esc(draft.notes || '') + '</textarea></div>';
+  h += '<div id="d_err"></div><button class="go big" id="d_save">Save workout</button>';
+  st.innerHTML = h;
+
+  st.addEventListener('input', onDraftInput);
+  st.addEventListener('change', onDraftChange);
+  st.addEventListener('click', onDraftClick);
+}
+
+function onDraftInput(ev) {
+  var t = ev.target, ds = t.dataset;
+  if (t.id === 'd_date') { draft.date = t.value; return; }
+  if (t.id === 'd_bw') { draft.body_weight_lb = t.value === '' ? null : +t.value; return; }
+  if (t.id === 'd_title') { draft.title = t.value; return; }
+  if (t.id === 'd_notes') { draft.notes = t.value; return; }
+  if (ds.cardio !== undefined && ds.cfield) {
+    var c = draft.cardio[+ds.cardio], f = ds.cfield;
+    c[f] = (f === 'kind' || f === 'note') ? t.value : (t.value === '' ? null : +t.value);
+    return;
+  }
+  if (ds.ex !== undefined) {
+    var ex = draft.exercises[+ds.ex];
+    if (ds.field === 'name') { ex.name = t.value; return; }
+    if (ds.set !== undefined) {
+      var s = ex.sets[+ds.set], fl = ds.field;
+      if (fl === 'weight') s.weight = t.value === '' ? null : +t.value;
+      else if (fl === 'reps') s.reps = t.value === '' ? null : +t.value;
+      else if (fl === 'prefix') s.prefix = t.value;
+      else if (fl === 'note') s.note = t.value;
+      else if (fl === 'fail') s.to_failure = t.checked;
+    }
+  }
+}
+
+function onDraftChange(ev) {
+  var t = ev.target, ds = t.dataset;
+  if (ds.ex !== undefined && ds.set !== undefined && ds.field === 'unit') {
+    var s = draft.exercises[+ds.ex].sets[+ds.set];
+    if (t.value === 'bw') { s.bodyweight = true; s.unit = null; s.weight = null; }
+    else { s.bodyweight = false; s.unit = t.value; }
+    renderReview();
+  }
+}
+
+function onDraftClick(ev) {
+  var t = ev.target.closest ? ev.target.closest('[data-act]') : null;
+  if (!t) {
+    if (ev.target.id === 'd_save') saveDraft();
+    return;
+  }
+  var act = t.getAttribute('data-act');
+  if (act === 'delset') {
+    var se = t.closest('.setedit').dataset;
+    draft.exercises[+se.ex].sets.splice(+se.set, 1);
+    renderReview();
+  } else if (act === 'addset') {
+    draft.exercises[+t.getAttribute('data-ex')].sets.push({ weight: null, unit: 'lb', reps: null, to_failure: false, prefix: '', bodyweight: false, added_weight: null, note: '' });
+    renderReview();
+  } else if (act === 'delex') {
+    draft.exercises.splice(+t.getAttribute('data-ex'), 1);
+    renderReview();
+  } else if (act === 'addex') {
+    draft.exercises.push({ name: '', sets: [{ weight: null, unit: 'lb', reps: null, to_failure: false, prefix: '', bodyweight: false, added_weight: null, note: '' }] });
+    renderReview();
+  } else if (act === 'delcardio') {
+    draft.cardio.splice(+t.getAttribute('data-cardio'), 1);
+    renderReview();
+  } else if (act === 'addcardio') {
+    draft.cardio.push({ kind: 'run', distance_mi: null, duration_min: null, note: '' });
+    renderReview();
+  }
+}
+
+function saveDraft() {
+  var err = $('#d_err');
+  if (!draft.date) { err.innerHTML = '<div class="err">Date is required.</div>'; return; }
+  var okEx = draft.exercises.filter(function (e) { return e.name && e.sets.length; });
+  if (!okEx.length && !(draft.cardio || []).length) { err.innerHTML = '<div class="err">Add at least one exercise or cardio entry.</div>'; return; }
+  err.innerHTML = '';
+  var btn = $('#d_save');
+  btn.disabled = true; btn.textContent = 'Saving…';
+  var payload = {
+    date: draft.date, body_weight_lb: draft.body_weight_lb, title: draft.title, notes: draft.notes,
+    exercises: okEx.map(function (e) {
+      return {
+        name: e.name,
+        sets: e.sets.map(function (s) {
+          return {
+            weight: s.bodyweight ? null : s.weight, unit: s.bodyweight ? null : (s.unit || 'lb'),
+            reps: s.reps, to_failure: !!s.to_failure, prefix: s.prefix || '',
+            bodyweight: !!s.bodyweight, added_weight: s.added_weight != null ? s.added_weight : null,
+            note: s.note || '',
+          };
+        }),
+      };
+    }),
+    cardio: draft.cardio || [],
+  };
+  fetch('/api/workouts', {
+    method: 'POST', credentials: 'same-origin',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(payload),
+  }).then(function (r) { return r.json().then(function (d) { return { status: r.status, body: d }; }); })
+    .then(function (res) {
+      if (res.status !== 200 || !res.body.ok) {
+        err.innerHTML = '<div class="err">' + esc(res.body.error || 'save failed') + '</div>';
+        btn.disabled = false; btn.textContent = 'Save workout';
+        return;
+      }
+      cache.workouts = null; cache.exercises = null;
+      location.hash = '#/w/' + res.body.id;
+    })
+    .catch(function (e) {
+      err.innerHTML = '<div class="err">' + esc(e.message) + '</div>';
+      btn.disabled = false; btn.textContent = 'Save workout';
+    });
+}
+
+/* ---------- AI coach ---------- */
+
+var coachCache = {};
+
+function askCoach(id, btn, out) {
+  if (coachCache[id]) { out.innerHTML = coachHtml(coachCache[id]); return; }
+  btn.disabled = true; btn.textContent = 'Thinking…';
+  fetch('/api/coach', {
+    method: 'POST', credentials: 'same-origin',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ workout_id: id }),
+  }).then(function (r) { return r.json().then(function (d) { return { status: r.status, body: d }; }); })
+    .then(function (res) {
+      btn.disabled = false; btn.textContent = 'Ask AI coach';
+      if (res.status !== 200 || !res.body.evaluation) {
+        out.innerHTML = '<div class="err">' + esc(res.body.message || res.body.error || 'coach failed') + '</div>';
+        return;
+      }
+      coachCache[id] = res.body.evaluation;
+      out.innerHTML = coachHtml(res.body.evaluation);
+    })
+    .catch(function (e) {
+      btn.disabled = false; btn.textContent = 'Ask AI coach';
+      out.innerHTML = '<div class="err">' + esc(e.message) + '</div>';
+    });
+}
+
+function coachHtml(text) {
+  return '<div class="card coachcard"><div class="wdate" style="font-size:15px">Coach\'s take</div>' +
+    '<div class="small" style="white-space:pre-wrap; margin-top:6px">' + esc(text) + '</div></div>';
 }
 
 window.addEventListener('hashchange', function () { nav(); });
