@@ -232,7 +232,7 @@ function muscleGroup(name) {
   if (GROUP_OVERRIDES[name]) return GROUP_OVERRIDES[name];
   var n = name.toLowerCase();
   if (/(squat|deadlift|\brdl\b|lunge|calf|hip thrust)/.test(n)) return 'legs';
-  if (/(bench|press|fly|crossover|\bdips?\b|tricep|skull crusher|lateral raise|trap raise)/.test(n)) return 'push';
+  if (/(bench|press|fly|crossover|\bdips?\b|tricep|skull crusher|lateral raise|trap raise|incline)/.test(n)) return 'push';
   if (/(pull-?up|pulldown|row|curl|face pull|lat prayer|shrug|wrist)/.test(n)) return 'pull';
   return 'other';
 }

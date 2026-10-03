@@ -52,6 +52,7 @@ CANON = {
     "Wide Pullup": "Pull-Up (Wide Grip)",
     "WG Pullup": "Pull-Up (Wide Grip)",
     "Neutral Grip Pullup": "Pull-Up (Neutral Grip)",
+    "OG Pullup": "Pull-Up",  # user: OG = regular pullup (2026-10-03)
     # --- rows ---
     "Cambered Rows": "Cambered Row",
     "DB Row": "DB Row",
@@ -67,6 +68,7 @@ CANON = {
     "Ez Bar Curl": "EZ Bar Curl",
     "EZ Bar Curl": "EZ Bar Curl",
     "Preacher": "Preacher Curl",
+    "Prison Curls": "Concentration Curl",  # user: prison curls = concentration curls (2026-10-03)
     "Preacher Curls": "Preacher Curl",
     "Preacher EZ Curl": "EZ Bar Preacher Curl",
     "Preacher Ez Curl": "EZ Bar Preacher Curl",
@@ -119,6 +121,7 @@ CANON = {
     "Hex Shoulder Shrugs": "Hex Bar Shrug",
     # --- squat / lunge ---
     "Squat": "Barbell Squat",
+    "90° Squat": "Barbell Squat",  # user: 90-degree squat is just squat (2026-10-03)
     "Bulgarian Split": "Bulgarian Split Squat",
     "Bulgarian Split Lunge": "Bulgarian Split Squat",
     "Bulgarian Split Squat DB": "Bulgarian Split Squat",
@@ -171,19 +174,35 @@ def canon_base(raw):
 
 def grip_suffix(base, prefix):
     # Grip variants are distinct exercises: a "WG" (wide grip) prefix on a set
-    # puts it in e.g. "Incline Bench (Wide Grip)" — but only for press/pull
+    # puts it in e.g. "Bench Press (Wide Grip)" — but only for press/pull
     # families, so a WG prefix on e.g. dips doesn't fork the exercise.
-    # "wc" is not a grip marker: those sets stay in the base exercise.
+    # "wc" is a transcription misread of "wg" (user confirmed 2026-10-03).
     if not _GRIP_FAMILY.search(base):
         return ""
     pl = (prefix or "").strip().lower()
-    if pl == "wg":
+    if pl in ("wg", "wc"):
         return " (Wide Grip)"
     if pl in ("cg", "cc", "close grip"):
         return " (Close Grip)"
     if pl in ("ng", "neutral grip"):
         return " (Neutral Grip)"
     return ""
+
+
+# User directive 2026-10-03: all barbell incline work is one exercise called
+# "Incline" — this covers the cambered-bar incline (everything since May) and
+# all grip variants. DB Incline Press stays separate (dumbbell variant).
+_INCLINE_NAMES = {
+    "Incline Bench Press",
+    "Incline Bench Press (Wide Grip)",
+    "Incline Bench Press (Close Grip)",
+    "Incline Bench Press (Neutral Grip)",
+    "Cambered Incline Press",
+}
+
+
+def merge_incline(name):
+    return "Incline" if name in _INCLINE_NAMES else name
 
 
 def canon_name(raw, prefixes=()):
@@ -314,7 +333,9 @@ def list_names():
     print(f"\n{len(pages)} pages, {sum(names.values())} sets")
 
 
-def infer_unit_and_hands(ex_name):
+def infer_unit_and_hands(ex_name, raw_name=None):
+    if raw_name in UNIT_OVERRIDE:
+        return UNIT_OVERRIDE[raw_name]
     if ex_name in UNIT_OVERRIDE:
         return UNIT_OVERRIDE[ex_name]
     low = ex_name.lower()
@@ -388,8 +409,8 @@ def do_insert():
                 gs = grip_suffix(base, s.get("prefix"))
                 parts.setdefault(gs, []).append(s)
             for gs, ssets in parts.items():
-                cn = base + gs
-                unit, per_hand = infer_unit_and_hands(cn)
+                cn = merge_incline(base + gs)
+                unit, per_hand = infer_unit_and_hands(cn, raw)
                 for i, s in enumerate(ssets):
                     sid += 1
                     if s.get("note") and ILLEGIBLE_RE.search(s["note"]):
