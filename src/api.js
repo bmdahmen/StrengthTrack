@@ -255,6 +255,13 @@ async function ensureAuthSchema(env) {
     'CREATE TABLE IF NOT EXISTS users (id TEXT PRIMARY KEY, google_id TEXT UNIQUE, name TEXT, email TEXT,' +
     ' avatar TEXT, created_at TEXT, lim_parse INTEGER, lim_coach INTEGER)'
   ).run();
+  // Legacy password-login sessions table (token, created_at) predates Google auth
+  // and lacks token_sha/user_id/expires_at — replace it; its rows are useless now.
+  const sessCols = await env.DB.prepare('PRAGMA table_info(sessions)').all().catch(function () { return { results: [] }; });
+  const hasTokenSha = (sessCols.results || []).some(function (c) { return c.name === 'token_sha'; });
+  if (!hasTokenSha) {
+    await env.DB.prepare('DROP TABLE IF EXISTS sessions').run();
+  }
   await env.DB.prepare(
     'CREATE TABLE IF NOT EXISTS sessions (token_sha TEXT PRIMARY KEY, user_id TEXT, created_at TEXT, expires_at TEXT)'
   ).run();
