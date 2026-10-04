@@ -251,6 +251,25 @@ async function ensureSuggestSchema(env) {
   }
 }
 
+function parseSuggestJson(raw) {
+  const tries = [raw.trim()];
+  const fence = raw.match(/```(?:json)?\s*([\s\S]*?)```/);
+  if (fence) tries.push(fence[1].trim());
+  const greedy = raw.match(/\{[\s\S]*\}/);
+  if (greedy) tries.push(greedy[0]);
+  for (const t of tries) {
+    try {
+      const o = JSON.parse(t);
+      if (o && o.target && o.reason) return { target: String(o.target), reason: String(o.reason) };
+    } catch (e) { /* try next */ }
+  }
+  // Last resort: tolerate broken quoting inside the reason and extract fields directly.
+  const tm = raw.match(/"target"\s*:\s*"((?:[^"\\]|\\.)*)"/);
+  const rm = raw.match(/"reason"\s*:\s*"((?:[^"\\]|\\.)*)"/);
+  if (tm && rm) return { target: tm[1], reason: rm[1] };
+  return null;
+}
+
 async function handleSuggest(request, env, user) {
   if (!env.ANTHROPIC_API_KEY) {
     return json({ error: 'ai_not_configured', message: 'AI suggestions need an ANTHROPIC_API_KEY secret on the worker.' }, 503);
@@ -306,7 +325,7 @@ async function handleSuggest(request, env, user) {
     'Math baseline: trailing 5-session estimated-1RM trend ends at ' + Math.round(base) +
     ', so +2% is ' + Math.round(mathTarget) + ' lb. ' +
     'The lifter usually targets small concrete jumps: same weight +1 rep, or +5 lb (barbell) / +2.5 kg per dumbbell.\n\n' +
-    'Reply with ONLY a JSON object, no other text: {"target": "<weight> x <reps>", "reason": "<=25 words>"}. ' +
+    'Reply with ONLY a JSON object, no code fences, no commentary, no other text: {"target": "<weight> x <reps>", "reason": "<=25 words>"}. ' +
     'Target must be a concrete jump at or near the math baseline. If the notes mention pain, a recent stall, or a big gap since last session, ' +
     'override downward (repeat or reduce) and say why in the reason. Keep units as shown above.';
   let raw;
@@ -317,13 +336,9 @@ async function handleSuggest(request, env, user) {
   } catch (e) {
     return json({ error: 'suggest_failed', message: e.message }, 502);
   }
-  let out = null;
-  try {
-    const m = raw.match(/\{[\s\S]*\}/);
-    if (m) out = JSON.parse(m[1]);
-  } catch (e) { /* fall through */ }
-  if (!out || !out.target || !out.reason) {
-    return json({ error: 'suggest_parse_failed', message: 'AI response was not valid JSON.' }, 502);
+  let out = parseSuggestJson(raw);
+  if (!out) {
+    return json({ error: 'suggest_parse_failed', message: 'AI response was not valid JSON: ' + raw.slice(0, 300) }, 502);
   }
   return json({ exercise: name, target: String(out.target).slice(0, 60), reason: String(out.reason).slice(0, 200), math_target_1rm: Math.round(mathTarget) });
 }
