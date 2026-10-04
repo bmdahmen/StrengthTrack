@@ -519,57 +519,51 @@ function vExercise(name) {
       if (sc) sc.textContent = t.nDates;
     }
     function epLb(loadLb, reps) { return reps === 1 ? loadLb : loadLb * (1 + reps / 30); }
-    function targetZones(cur, goal) {
-      // One target per rep scheme, each calibrated to clear the trend goal.
-      // Low = heaviest load that clears in 3-8 reps; Med = tightest clear in 9-12;
-      // High = lightest load that clears in 13-20.
+    function targetZones(cur) {
+      // Anchor on the last top set: per zone, pick the in-zone weight x reps whose
+      // implied 1RM lands closest to lastTop x 1.02. Zones: Low 5-8, Med 8-12, High 12-16.
       var defs = [
         { name: 'Low', lo: 5, hi: 8 },
         { name: 'Med', lo: 8, hi: 12 },
         { name: 'High', lo: 12, hi: 16 }
       ];
-      var grids = [];
+      var T = cur.one_rm * 1.02;
+      var grid = [];
       if (cur.bodyweight) {
-        var bw = (cur.load_lb || 0) - (cur.added_weight_lb || 0), ad = cur.added_weight_lb || 0;
-        [-2.5, 0, 2.5].forEach(function (d) {
-          var a2 = Math.max(0, Math.round((ad + d) * 10) / 10);
-          grids.push({ load: bw + a2, label: a2 ? 'BW +' + a2 : 'BW' });
+        var bw = (cur.load_lb || 0) - (cur.added_weight_lb || 0), w0 = cur.added_weight_lb || 0;
+        [-5, -2.5, 0, 2.5, 5].forEach(function (d) {
+          var a = Math.max(0, Math.round((w0 + d) * 10) / 10);
+          grid.push({ load: bw + a, label: a ? 'BW +' + a : 'BW' });
         });
       } else if (cur.unit === 'kg') {
         var mult = cur.per_hand ? 2 : 1, u = ' kg' + (cur.per_hand ? '/hand' : '');
-        [-2.5, 0, 2.5].forEach(function (d) {
+        [-5, -2.5, 0, 2.5, 5].forEach(function (d) {
           var w = Math.max(0, Math.round((cur.weight + d) * 10) / 10);
-          grids.push({ load: w * mult * 2.20462, label: w + u });
+          grid.push({ load: w * mult * 2.20462, label: w + u });
         });
       } else {
-        [-5, 0, 5].forEach(function (d) {
+        [-10, -5, 0, 5, 10].forEach(function (d) {
           var wl = cur.total_lb + d;
-          if (wl > 0) grids.push({ load: wl, label: Math.round(wl) + ' lb' });
+          if (wl > 0) grid.push({ load: wl, label: Math.round(wl) + ' lb' });
         });
       }
+      var used = {};
       return defs.map(function (z) {
         var cands = [];
-        grids.forEach(function (g) {
+        grid.forEach(function (g) {
           for (var r = z.lo; r <= z.hi; r++) {
             var e = epLb(g.load, r);
-            if (e >= goal) cands.push({ load: g.load, label: g.label, reps: r, one_rm: e });
+            cands.push({ s: Math.abs(e - T), label: g.label + ' \u00d7 ' + r, one_rm: e });
           }
         });
+        cands.sort(function (a, b) { return a.s - b.s; });
         var pick = null;
-        if (cands.length) {
-          cands.forEach(function (c) {
-            if (z.name === 'Low') {
-              if (!pick || c.load > pick.load || (c.load === pick.load && c.reps < pick.reps)) pick = c;
-            } else if (z.name === 'High') {
-              if (!pick || c.load < pick.load || (c.load === pick.load && c.reps < pick.reps)) pick = c;
-            } else if (!pick || c.one_rm < pick.one_rm) { pick = c; }
-          });
-        } else {
-          // Nothing in the zone clears the goal — show the closest (heaviest/lightest at top reps).
-          var g2 = z.name === 'High' ? grids[0] : grids[grids.length - 1];
-          pick = { load: g2.load, label: g2.label, reps: z.hi, one_rm: epLb(g2.load, z.hi) };
+        for (var i = 0; i < cands.length; i++) {
+          if (!used[cands[i].label]) { pick = cands[i]; break; }
         }
-        return { name: z.name, label: pick.label + ' \u00d7 ' + pick.reps, one_rm: pick.one_rm };
+        if (!pick) pick = cands[0];
+        used[pick.label] = true;
+        return { name: z.name, label: pick.label, one_rm: pick.one_rm };
       });
     }
     function targetHTML() {
@@ -582,10 +576,14 @@ function vExercise(name) {
       if (!tops.length) return '';
       var tr = trendPoints();
       var base = tr.length ? tr[tr.length - 1].y : tops[tops.length - 1].one_rm;
-      var goal = base * 1.02;
       var cur = tops[tops.length - 1];
-      var zones = targetZones(cur, goal);
+      var zones = targetZones(cur);
       if (!zones.length) return '';
+      var lastLabel = cur.bodyweight
+        ? ('BW' + (cur.added_weight_lb ? ' +' + cur.added_weight_lb : '') + ' \u00d7 ' + cur.reps)
+        : cur.unit === 'kg'
+        ? (cur.weight + ' kg' + (cur.per_hand ? '/hand' : '') + ' \u00d7 ' + cur.reps)
+        : (Math.round(cur.total_lb) + ' lb \u00d7 ' + cur.reps);
       var rows = zones.map(function (z) {
         return '<div style="display:flex;justify-content:space-between;align-items:baseline;padding:3px 0">' +
           '<span class="small dim" style="width:36px">' + z.name.toUpperCase() + '</span>' +
@@ -593,8 +591,9 @@ function vExercise(name) {
           '<span class="small dim">1RM ' + Math.round(z.one_rm) + '</span></div>';
       }).join('');
       return '<div class="card"><div class="small dim">NEXT TOP-SET TARGETS</div>' + rows +
-        '<div class="small dim" style="margin-top:4px">Calibrated to your 5-workout trend (' + Math.round(base) +
-        ', goal ' + Math.round(goal) + ') — pick your rep scheme.</div>' +
+        '<div class="small dim" style="margin-top:4px">From your last top set ' + esc(lastLabel) +
+        ' (1RM ' + Math.round(cur.one_rm) + ') — each option targets ~' + Math.round(cur.one_rm * 1.02) +
+        '. Trend ' + Math.round(base) + '.</div>' +
         '<div id="aiout" style="margin-top:6px"></div>' +
         '<button id="aitake" class="btn" style="margin-top:8px;font-size:13px">AI take</button></div>';
     }
