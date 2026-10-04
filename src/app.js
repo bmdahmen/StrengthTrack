@@ -560,11 +560,36 @@ function vExercise(name) {
       if (!pick) pick = cands.reduce(function (a, c) { return c.one_rm > a.one_rm ? c : a; });
       return '<div class="card"><div class="small dim">NEXT TOP-SET TARGET</div>' +
         '<div style="font-size:19px;font-weight:700;margin:2px 0">' + esc(pick.label) + '</div>' +
-        '<div class="small dim">Clears your 5-workout trend (' + Math.round(base) + ') — hit this and the trend turns up.</div></div>';
+        '<div class="small dim">Clears your 5-workout trend (' + Math.round(base) + ') — hit this and the trend turns up.</div>' +
+        '<div id="aiout" style="margin-top:6px"></div>' +
+        '<button id="aitake" class="btn" style="margin-top:8px;font-size:13px">AI take</button></div>';
     }
     function paintTarget() {
       var el = document.getElementById('extarget');
-      if (el) el.innerHTML = targetHTML();
+      if (el) {
+        el.innerHTML = targetHTML();
+        var btn = document.getElementById('aitake');
+        if (btn) btn.addEventListener('click', function () {
+          var out = document.getElementById('aiout');
+          btn.disabled = true; btn.textContent = 'Thinking\u2026';
+          api('/api/suggest', {
+            method: 'POST', headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ exercise: d.name })
+          }).then(function (r) {
+            out.innerHTML = '<div style="font-size:15px;font-weight:700">' + esc(r.target) + '</div>' +
+              '<div class="small dim">AI coach: ' + esc(r.reason) + '</div>';
+            btn.style.display = 'none';
+          }).catch(function (e) {
+            var msg = e && e.message === 'request failed: 503'
+              ? 'AI not set up on the server — math target stands.'
+              : e && e.message === 'request failed: 429'
+              ? 'Daily AI limit reached — math target stands.'
+              : 'AI unavailable right now — math target stands.';
+            out.innerHTML = '<div class="small dim">' + esc(msg) + '</div>';
+            btn.disabled = false; btn.textContent = 'AI take';
+          });
+        });
+      }
     }
     h += '<div id="extarget" style="margin-bottom:12px"></div><div id="extable"></div>';
     v.innerHTML = h;
