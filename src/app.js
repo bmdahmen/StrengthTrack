@@ -491,6 +491,7 @@ function vExercise(name) {
         var sets = p.sets.filter(setOK);
         if (!sets.length) return;
         nDates++;
+        var gcls = nDates % 2 ? ' galt' : '';
         var vol = 0;
         sets.forEach(function (s) { if (s.total_lb != null && s.reps != null) vol += s.total_lb * s.reps; });
         vol = Math.round(vol);
@@ -500,7 +501,7 @@ function vExercise(name) {
           else if (s.unit === 'kg') loadTxt = s.weight + ' kg' + (s.per_hand ? '/hand' : '') + ' × ' + s.reps;
           else loadTxt = (s.weight != null ? s.weight + ' lb' : '?') + ' × ' + s.reps;
           if (s.to_failure) loadTxt += ' F';
-          rows.push('<tr>' + (i === 0
+          rows.push('<tr class="' + (i === 0 ? 'daystart' : '') + gcls + '">' + (i === 0
             ? '<td rowspan="' + sets.length + '">' + fmtDate(p.date) +
               (p.first_of_day ? '<br><span class="badge">1st</span>' : '') +
               (vol ? '<br><span class="dim small">vol ' + vol.toLocaleString() + '</span>' : '') + '</td>'
