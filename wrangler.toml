@@ -18,4 +18,4 @@ database_id = "ce1b81ad-050f-4ea2-9b66-974881099f89"
 # Plain (non-secret) env vars. Kept here — not in the dashboard — so CI
 # `wrangler deploy` doesn't wipe them.
 [vars]
-CLAUDE_MODEL = "claude-sonnet-5-5"
+CLAUDE_MODEL = "claude-sonnet-5"
