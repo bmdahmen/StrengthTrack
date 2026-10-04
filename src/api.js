@@ -338,6 +338,14 @@ async function handleSuggest(request, env, user) {
   }
   let out = parseSuggestJson(raw);
   if (!out) {
+    try {
+      await env.DB.prepare(
+        'CREATE TABLE IF NOT EXISTS error_log (id INTEGER PRIMARY KEY, created_at TEXT, source TEXT, message TEXT)'
+      ).run();
+      await env.DB.prepare(
+        'INSERT INTO error_log (created_at, source, message) VALUES (?,?,?)'
+      ).bind(new Date().toISOString(), 'suggest:unparsed-model-response', String(raw).slice(0, 2000)).run();
+    } catch (e2) { /* logging must never throw */ }
     return json({ error: 'suggest_parse_failed', message: 'AI response was not valid JSON: ' + raw.slice(0, 300) }, 502);
   }
   return json({ exercise: name, target: String(out.target).slice(0, 60), reason: String(out.reason).slice(0, 200), math_target_1rm: Math.round(mathTarget) });
