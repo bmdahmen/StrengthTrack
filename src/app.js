@@ -178,7 +178,7 @@ function multiChart(series, yFmt) {
   vis.forEach(function (s) {
     var pts = s.points.slice().sort(function (a, b) { return a.x < b.x ? -1 : 1; });
     var line = pts.map(function (p) { return xPos[p.x].toFixed(1) + ',' + Y(p.y).toFixed(1); }).join(' ');
-    svg += '<polyline points="' + line + '" fill="none" stroke="' + s.color + '" stroke-width="2" opacity="0.9"/>';
+    svg += '<polyline points="' + line + '" fill="none" stroke="' + s.color + '" stroke-width="2" opacity="0.9"' + (s.dash ? ' stroke-dasharray="' + s.dash + '"' : '') + '/>';
     pts.forEach(function (p) {
       var cx = xPos[p.x].toFixed(1), cy = Y(p.y).toFixed(1);
       if (p.first) svg += '<circle cx="' + cx + '" cy="' + cy + '" r="6" fill="none" stroke="#fff" stroke-width="1.6"/>';
@@ -265,7 +265,19 @@ function vWorkouts() {
   v.innerHTML = '<div class="dim">Loading…</div>';
   api('/api/workouts').then(function (ws) {
     cache.workouts = ws;
-    v.innerHTML = '<div class="small dim" style="margin:4px 0 8px">' + ws.length + ' workouts logged</div>' +
+    var sorted = ws.slice().sort(function (a, b) { return a.date < b.date ? -1 : 1; });
+    var gapById = {};
+    sorted.forEach(function (w, i) {
+      if (i > 0) gapById[w.id] = Math.round((new Date(w.date) - new Date(sorted[i - 1].date)) / 86400000);
+    });
+    function gapColor(gap) {
+      if (gap == null) return '#666';
+      var t = Math.max(0, Math.min(1, (gap - 1) / 6));
+      return 'hsl(' + Math.round(120 * (1 - t)) + ', 70%, 45%)';
+    }
+    v.innerHTML = '<div class="small dim" style="margin:4px 0 8px">' + ws.length + ' workouts logged · ' +
+      '<span style="display:inline-block;width:8px;height:8px;border-radius:50%;background:hsl(120,70%,45%);vertical-align:baseline"></span> frequent ' +
+      '<span style="display:inline-block;width:8px;height:8px;border-radius:50%;background:hsl(0,70%,45%);vertical-align:baseline"></span> long break</div>' +
       ws.map(function (w) {
         var meta = [];
         if (w.title) meta.push(esc(w.title));
@@ -273,8 +285,11 @@ function vWorkouts() {
         meta.push(w.set_count + ' sets');
         if (w.duration_min) meta.push(w.duration_min + ' min');
         if (w.calories) meta.push(w.calories + ' cal');
+        var gap = gapById[w.id];
+        var dot = '<span title="' + (gap == null ? 'first logged workout' : gap + (gap === 1 ? ' day' : ' days') + ' since previous workout') + '"' +
+          ' style="display:inline-block;width:10px;height:10px;border-radius:50%;background:' + gapColor(gap) + ';margin-right:8px"></span>';
         return '<a class="wo" href="#/w/' + w.id + '"><div class="card"><div class="row">' +
-          '<div class="grow"><div class="wdate">' + fmtDate(w.date) + '</div>' +
+          '<div class="grow"><div class="wdate">' + dot + fmtDate(w.date) + '</div>' +
           '<div class="wmeta">' + meta.join(' · ') + '</div></div>' +
           '<div class="dim">›</div></div></div></a>';
       }).join('') +
@@ -392,7 +407,16 @@ function vExercise(name) {
       p.sets.forEach(function (s) { if (s.one_rm != null && s.set_index + 1 > maxSets) maxSets = s.set_index + 1; });
     });
     // Implement filter: DB (kg) vs barbell (lb). Shown only when both exist.
-    var impl = 'all', hiddenSets = {}, hasDB = false, hasBB = false;
+    var impl = 'all', win = '90', hiddenSets = {}, hasDB = false, hasBB = false;
+    var latestDate = '';
+    prog.forEach(function (p) { if (p.date > latestDate) latestDate = p.date; });
+    function inWin(ds) {
+      if (win === 'all') return true;
+      var cut = new Date(latestDate + 'T00:00:00');
+      cut.setDate(cut.getDate() - (parseInt(win, 10) - 1));
+      return new Date(ds + 'T00:00:00') >= cut;
+    }
+    function wprog() { return prog.filter(function (p) { return inWin(p.date); }); }
     prog.forEach(function (p) {
       p.sets.forEach(function (s) {
         if (s.unit === 'kg') hasDB = true;
@@ -407,9 +431,10 @@ function vExercise(name) {
     var series = [];
     function buildSeries() {
       series = [];
+      var wp = wprog();
       for (var si = 0; si < maxSets; si++) {
         var pts = [];
-        prog.forEach(function (p) {
+        wp.forEach(function (p) {
           var s = p.sets[si];
           if (s && s.one_rm != null && setOK(s)) pts.push({ x: p.date, y: s.one_rm, first: !!p.first_of_day });
         });
@@ -418,39 +443,78 @@ function vExercise(name) {
           hidden: hiddenSets[si] !== undefined ? hiddenSets[si] : si >= 3, points: pts
         });
       }
+      // Trend: 5-workout moving average of the per-workout max 1RM.
+      var tops = [];
+      prog.forEach(function (p) {
+        var m = null;
+        p.sets.forEach(function (s) { if (s.one_rm != null && setOK(s) && (m == null || s.one_rm > m)) m = s.one_rm; });
+        if (m != null) tops.push({ x: p.date, y: m });
+      });
+      var TW = 5, trendPts = [];
+      for (var ti = 0; ti < tops.length; ti++) {
+        var a = Math.max(0, ti - TW + 1), sum = 0;
+        for (var tj = a; tj <= ti; tj++) sum += tops[tj].y;
+        trendPts.push({ x: tops[ti].x, y: sum / (ti - a + 1) });
+      }
+      trendPts = trendPts.filter(function (pt) { return inWin(pt.x); });
+      if (trendPts.length > 1) series.push({
+        label: 'Trend (5)', si: 'trend', color: '#f2f2f2', dash: '7,4',
+        hidden: hiddenSets['trend'] === true, points: trendPts
+      });
     }
     buildSeries();
     var h = '<a href="#/" class="dim small" style="text-decoration:none">‹ Exercises</a>' +
       '<div class="card"><div class="wdate" style="font-size:18px">' + esc(d.name) + '</div>' +
-      '<div class="wmeta">' + prog.length + ' sessions · est. 1RM via Epley (w × (1 + reps/30))' +
+      '<div class="wmeta"><span id="exsessions">' + prog.length + '</span> sessions · est. 1RM via Epley (w × (1 + reps/30))' +
       '<br>Bodyweight moves use that day\u2019s body weight as the load.</div></div>';
     if (series.length) {
       h += '<div class="card"><div class="row" style="margin-bottom:6px"><div class="grow small dim">' +
         'Estimated 1RM over time — tap a set in the legend to show/hide it</div>';
+      h += '<div class="seg" id="winseg"><span data-win="30">30D</span>' +
+        '<span data-win="90" class="on">90D</span><span data-win="365">1Y</span>' +
+        '<span data-win="all">All</span></div>';
       if (hasDB && hasBB) {
         h += '<div class="seg" id="implseg"><span data-impl="all" class="on">All</span>' +
           '<span data-impl="db">DB</span><span data-impl="bb">Barbell</span></div>';
       }
       h += '</div><div id="exchart"></div></div>';
     }
-    h += '<div class="card"><table><tr><th>Date</th><th>Set</th><th>Load × Reps</th><th class="num">Est 1RM</th></tr>' +
-      prog.slice().reverse().map(function (p) {
-        return p.sets.map(function (s, i) {
+    function tableHTML() {
+      var rows = [], nDates = 0;
+      wprog().slice().reverse().forEach(function (p) {
+        var sets = p.sets.filter(setOK);
+        if (!sets.length) return;
+        nDates++;
+        var vol = 0;
+        sets.forEach(function (s) { if (s.total_lb != null && s.reps != null) vol += s.total_lb * s.reps; });
+        vol = Math.round(vol);
+        sets.forEach(function (s, i) {
           var loadTxt;
           if (s.bodyweight) loadTxt = 'BW' + (s.added_weight_lb ? ' +' + s.added_weight_lb : '') + ' × ' + s.reps;
           else if (s.unit === 'kg') loadTxt = s.weight + ' kg' + (s.per_hand ? '/hand' : '') + ' × ' + s.reps;
           else loadTxt = (s.weight != null ? s.weight + ' lb' : '?') + ' × ' + s.reps;
           if (s.to_failure) loadTxt += ' F';
-          return '<tr>' + (i === 0
-            ? '<td rowspan="' + p.sets.length + '">' + fmtDate(p.date) +
+          rows.push('<tr>' + (i === 0
+            ? '<td rowspan="' + sets.length + '">' + fmtDate(p.date) +
               (p.first_of_day ? '<br><span class="badge">1st</span>' : '') +
-              (p.volume_lb ? '<br><span class="dim small">vol ' + p.volume_lb.toLocaleString() + '</span>' : '') + '</td>'
+              (vol ? '<br><span class="dim small">vol ' + vol.toLocaleString() + '</span>' : '') + '</td>'
             : '') +
             '<td>' + (s.set_index + 1) + '</td><td>' + esc(loadTxt) + '</td>' +
-            '<td class="num">' + (s.one_rm != null ? Math.round(s.one_rm) : '—') + '</td></tr>';
-        }).join('');
-      }).join('') + '</table></div>';
+            '<td class="num">' + (s.one_rm != null ? Math.round(s.one_rm) : '—') + '</td></tr>');
+        });
+      });
+      return { html: '<div class="card"><table><tr><th>Date</th><th>Set</th><th>Load × Reps</th><th class="num">Est 1RM</th></tr>' +
+        rows.join('') + '</table></div>', nDates: nDates };
+    }
+    function paintTable() {
+      var t = tableHTML();
+      document.getElementById('extable').innerHTML = t.html;
+      var sc = document.getElementById('exsessions');
+      if (sc) sc.textContent = t.nDates;
+    }
+    h += '<div id="extable"></div>';
     v.innerHTML = h;
+    paintTable();
     if (series.length) {
       var yFmt = function (y) { return Math.round(y) + ''; };
       var cel = document.getElementById('exchart');
@@ -470,6 +534,17 @@ function vExercise(name) {
           paint();
         }
       });
+      var wseg = document.getElementById('winseg');
+      if (wseg) wseg.addEventListener('click', function (ev) {
+        var t = ev.target.closest ? ev.target.closest('[data-win]') : null;
+        if (!t || !wseg.contains(t)) return;
+        win = t.getAttribute('data-win');
+        wseg.querySelectorAll('[data-win]').forEach(function (el) {
+          el.classList.toggle('on', el === t);
+        });
+        paint();
+        paintTable();
+      });
       var seg = document.getElementById('implseg');
       if (seg) seg.addEventListener('click', function (ev) {
         var t = ev.target.closest ? ev.target.closest('[data-impl]') : null;
@@ -479,6 +554,7 @@ function vExercise(name) {
           el.classList.toggle('on', el === t);
         });
         paint();
+        paintTable();
       });
     }
   }).catch(function (e) { v.innerHTML = '<div class="err">' + esc(e.message) + '</div>'; });
