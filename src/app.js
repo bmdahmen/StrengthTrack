@@ -524,9 +524,9 @@ function vExercise(name) {
       // Low = heaviest load that clears in 3-8 reps; Med = tightest clear in 9-12;
       // High = lightest load that clears in 13-20.
       var defs = [
-        { name: 'Low', lo: 3, hi: 8 },
-        { name: 'Med', lo: 9, hi: 12 },
-        { name: 'High', lo: 13, hi: 20 }
+        { name: 'Low', lo: 5, hi: 8 },
+        { name: 'Med', lo: 8, hi: 12 },
+        { name: 'High', lo: 12, hi: 16 }
       ];
       var grids = [];
       if (cur.bodyweight) {
