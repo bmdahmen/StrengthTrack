@@ -465,8 +465,8 @@ function vExercise(name) {
     buildSeries();
     var h = '<a href="#/" class="dim small" style="text-decoration:none">‹ Exercises</a>' +
       '<div class="card"><div class="wdate" style="font-size:18px">' + esc(d.name) + '</div>' +
-      '<div class="wmeta"><span id="exsessions">' + prog.length + '</span> sessions · est. 1RM via Epley (w × (1 + reps/30))' +
-      '<br>Bodyweight moves use that day\u2019s body weight as the load.</div></div>';
+      '<div class="wmeta"><span id="exsessions">' + prog.length + '</span> sessions' +
+      '</div></div>';
     if (series.length) {
       h += '<div class="card"><div class="row" style="margin-bottom:6px"><div class="grow small dim">' +
         'Estimated 1RM over time — tap a set in the legend to show/hide it</div>';
@@ -477,7 +477,7 @@ function vExercise(name) {
         h += '<div class="seg" id="implseg"><span data-impl="all" class="on">All</span>' +
           '<span data-impl="db">DB</span><span data-impl="bb">Barbell</span></div>';
       }
-      h += '</div><div id="exchart"></div></div>';
+      h += '</div><div id="windelta" style="margin:2px 0 8px"></div><div id="exchart"></div></div>';
     }
     function tableHTML() {
       var rows = [], nDates = 0;
@@ -518,7 +518,29 @@ function vExercise(name) {
     if (series.length) {
       var yFmt = function (y) { return Math.round(y) + ''; };
       var cel = document.getElementById('exchart');
-      var paint = function () { buildSeries(); cel.innerHTML = multiChart(series, yFmt); };
+      var paint = function () {
+        buildSeries();
+        cel.innerHTML = multiChart(series, yFmt);
+        var dEl = document.getElementById('windelta');
+        if (dEl) {
+          var tr = null;
+          series.forEach(function (s) { if (s.si === 'trend') tr = s; });
+          if (tr && tr.points.length > 1) {
+            var p0 = tr.points[0], p1 = tr.points[tr.points.length - 1];
+            var d = Math.round(p1.y - p0.y);
+            var span = Math.max(1, Math.round((new Date(p1.x + 'T00:00:00') - new Date(p0.x + 'T00:00:00')) / 86400000));
+            var perWk = d / span * 7;
+            var cls = d > 0.5 ? '#7ddb8a' : d < -0.5 ? '#ff7d9c' : '#9aa4b2';
+            var winLbl = win === 'all' ? 'all time' : win + 'D';
+            dEl.innerHTML = '<span style="font-size:16px;font-weight:700;color:' + cls + '">' +
+              (d > 0 ? '+' : '') + d + ' lb</span>' +
+              '<span class="dim small"> trend ' + winLbl +
+              ' <span class="dim">(' + (perWk > 0 ? '+' : '') + perWk.toFixed(1) + '/wk)</span></span>';
+          } else {
+            dEl.innerHTML = '<span class="dim small">Not enough sessions in range for a trend.</span>';
+          }
+        }
+      };
       paint();
       cel.addEventListener('click', function (ev) {
         var t = ev.target;
