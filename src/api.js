@@ -28,7 +28,7 @@ function extractJson(text) {
   return JSON.parse(text.slice(a, b + 1));
 }
 
-async function callClaude(env, model, maxTokens, messages) {
+async function callClaude(env, model, maxTokens, messages, onResponse) {
   const res = await fetch('https://api.anthropic.com/v1/messages', {
     method: 'POST',
     headers: {
@@ -39,6 +39,7 @@ async function callClaude(env, model, maxTokens, messages) {
     body: JSON.stringify({ model: model, max_tokens: maxTokens, messages: messages }),
   });
   const data = await res.json();
+  if (onResponse) { try { onResponse(data); } catch (e) { /* never break the call */ } }
   if (data.error) throw new Error(data.error.message || data.error.type || 'model error');
   return (data.content || []).filter(function (b) { return b.type === 'text'; }).map(function (b) { return b.text; }).join('\n');
 }
@@ -328,13 +329,23 @@ async function handleSuggest(request, env, user) {
     'Reply with ONLY a JSON object, no code fences, no commentary, no other text: {"target": "<weight> x <reps>", "reason": "<=25 words>"}. ' +
     'Target must be a concrete jump at or near the math baseline. If the notes mention pain, a recent stall, or a big gap since last session, ' +
     'override downward (repeat or reduce) and say why in the reason. Keep units as shown above.';
-  let raw;
+  let raw, apiData = null;
   try {
     raw = await callClaude(env, claudeModel(env), 150, [
       { role: 'user', content: [{ type: 'text', text: prompt }] },
-    ]);
+    ], function (d) { apiData = d; });
   } catch (e) {
     return json({ error: 'suggest_failed', message: e.message }, 502);
+  }
+  if (!raw || !raw.trim()) {
+    try {
+      await env.DB.prepare(
+        'CREATE TABLE IF NOT EXISTS error_log (id INTEGER PRIMARY KEY, created_at TEXT, source TEXT, message TEXT)'
+      ).run();
+      await env.DB.prepare(
+        'INSERT INTO error_log (created_at, source, message) VALUES (?,?,?)'
+      ).bind(new Date().toISOString(), 'suggest:empty-model-payload', JSON.stringify(apiData).slice(0, 2000)).run();
+    } catch (e2) { /* logging must never throw */ }
   }
   let out = parseSuggestJson(raw);
   if (!out) {
