@@ -239,13 +239,102 @@ async function handleCoach(request, env, user) {
   return json({ workout_id: id, evaluation: evaluation.trim() });
 }
 
+async function ensureSuggestSchema(env) {
+  // Self-heal: add the suggest columns if this worker predates them.
+  const ucols = await env.DB.prepare('PRAGMA table_info(users)').all().catch(function () { return { results: [] }; });
+  if (!(ucols.results || []).some(function (c) { return c.name === 'lim_suggest'; })) {
+    try { await env.DB.prepare('ALTER TABLE users ADD COLUMN lim_suggest INTEGER').run(); } catch (e) { /* exists */ }
+  }
+  const rcols = await env.DB.prepare('PRAGMA table_info(rate_limits)').all().catch(function () { return { results: [] }; });
+  if (!(rcols.results || []).some(function (c) { return c.name === 'suggest_count'; })) {
+    try { await env.DB.prepare('ALTER TABLE rate_limits ADD COLUMN suggest_count INTEGER DEFAULT 0').run(); } catch (e) { /* exists */ }
+  }
+}
+
+async function handleSuggest(request, env, user) {
+  if (!env.ANTHROPIC_API_KEY) {
+    return json({ error: 'ai_not_configured', message: 'AI suggestions need an ANTHROPIC_API_KEY secret on the worker.' }, 503);
+  }
+  await ensureSuggestSchema(env);
+  const limited = await checkLimit(env, user, 'suggest');
+  if (limited) return limited;
+  let b = {};
+  try { b = await request.json(); } catch (e) { return json({ error: 'bad request' }, 400); }
+  const name = (b.exercise || '').trim();
+  if (!name) return json({ error: 'exercise required' }, 400);
+  // Last 8 sessions: top set per date by Epley e1RM + any session notes (pain flags).
+  const rows = await env.DB.prepare(
+    'SELECT w.date, w.body_weight_lb, s.reps, s.weight, s.unit, s.per_hand, s.total_lb,' +
+    ' s.bodyweight, s.added_weight_lb, s.set_index FROM sets s' +
+    ' JOIN workouts w ON w.id = s.workout_id' +
+    ' WHERE s.exercise = ? AND w.user_id = ? ORDER BY w.date DESC, s.set_index ASC LIMIT 240'
+  ).bind(name, user.id).all();
+  const noteRows = await env.DB.prepare(
+    'SELECT w.date, n.text FROM notes n JOIN workouts w ON w.id = n.workout_id' +
+    ' WHERE n.exercise = ? AND w.user_id = ? ORDER BY w.date DESC LIMIT 8'
+  ).bind(name, user.id).all().catch(function () { return { results: [] }; });
+  const notesByDate = {};
+  (noteRows.results || []).forEach(function (r) {
+    (notesByDate[r.date] = notesByDate[r.date] || []).push(r.text);
+  });
+  const byDate = {};
+  (rows.results || []).forEach(function (r) {
+    let load = r.bodyweight ? (r.body_weight_lb != null ? r.body_weight_lb + (r.added_weight_lb || 0) : null) : r.total_lb;
+    if (load == null || r.reps == null || r.reps <= 0) return;
+    const est = r.reps === 1 ? load : load * (1 + r.reps / 30);
+    const lbl = r.bodyweight
+      ? ('BW' + (r.added_weight_lb ? '+' + r.added_weight_lb : '') + ' x ' + r.reps)
+      : ((r.weight != null ? (r.per_hand ? r.weight + 'kg/hand' : r.weight + 'lb') : '?') + ' x ' + r.reps);
+    const d = byDate[r.date] || (byDate[r.date] = { best: null, notes: notesByDate[r.date] || [] });
+    if (!d.best || est > d.best.est) d.best = { est: est, label: lbl };
+  });
+  const dates = Object.keys(byDate).sort().slice(-8);
+  if (!dates.length) return json({ error: 'no data for ' + name }, 404);
+  const lines = dates.map(function (d) {
+    let t = d.slice(5) + ': top set ' + byDate[d].best.label + ' (est 1RM ' + Math.round(byDate[d].best.est) + ' lb)';
+    if (byDate[d].notes.length) t += ' — notes: ' + byDate[d].notes.join(' / ').slice(0, 200);
+    return t;
+  });
+  // Math baseline: trailing 5-session e1RM trend + 2%.
+  const tops = dates.slice(-5).map(function (d) { return byDate[d].best.est; });
+  const base = tops[tops.length - 1];
+  const mathTarget = base * 1.02;
+  const prompt =
+    'You are a strength coach picking next session\u2019s top-set target for one exercise. ' + COACH_PROFILE + '\n\n' +
+    'Exercise: ' + name + '\n' +
+    'Recent sessions (top set each, newest last):\n' + lines.join('\n') + '\n\n' +
+    'Math baseline: trailing 5-session estimated-1RM trend ends at ' + Math.round(base) +
+    ', so +2% is ' + Math.round(mathTarget) + ' lb. ' +
+    'The lifter usually targets small concrete jumps: same weight +1 rep, or +5 lb (barbell) / +2.5 kg per dumbbell.\n\n' +
+    'Reply with ONLY a JSON object, no other text: {"target": "<weight> x <reps>", "reason": "<=25 words>"}. ' +
+    'Target must be a concrete jump at or near the math baseline. If the notes mention pain, a recent stall, or a big gap since last session, ' +
+    'override downward (repeat or reduce) and say why in the reason. Keep units as shown above.';
+  let raw;
+  try {
+    raw = await callClaude(env, claudeModel(env), 150, [
+      { role: 'user', content: [{ type: 'text', text: prompt }] },
+    ]);
+  } catch (e) {
+    return json({ error: 'suggest_failed', message: e.message }, 502);
+  }
+  let out = null;
+  try {
+    const m = raw.match(/\{[\s\S]*\}/);
+    if (m) out = JSON.parse(m[1]);
+  } catch (e) { /* fall through */ }
+  if (!out || !out.target || !out.reason) {
+    return json({ error: 'suggest_parse_failed', message: 'AI response was not valid JSON.' }, 502);
+  }
+  return json({ exercise: name, target: String(out.target).slice(0, 60), reason: String(out.reason).slice(0, 200), math_target_1rm: Math.round(mathTarget) });
+}
+
 /* ---------- Google sign-in + per-user data + rate limits (mirrors CalProTrack) ---------- */
 
 function googleClientId(env) {
   return env.GOOGLE_CLIENT_ID || '156334413688-usb68f1fldmrhic94mn925l75hnk82pk.apps.googleusercontent.com';
 }
 const OWNER_EMAIL = 'bmdahmen@gmail.com';
-const LIMITS_DEFAULT = { parse: 20, coach: 25 };
+const LIMITS_DEFAULT = { parse: 20, coach: 25, suggest: 15 };
 const LIMITS_OWNER = 9999;
 
 let authSchemaReady = false;
@@ -253,7 +342,7 @@ async function ensureAuthSchema(env) {
   if (authSchemaReady) return;
   await env.DB.prepare(
     'CREATE TABLE IF NOT EXISTS users (id TEXT PRIMARY KEY, google_id TEXT UNIQUE, name TEXT, email TEXT,' +
-    ' avatar TEXT, created_at TEXT, lim_parse INTEGER, lim_coach INTEGER)'
+    ' avatar TEXT, created_at TEXT, lim_parse INTEGER, lim_coach INTEGER, lim_suggest INTEGER)'
   ).run();
   // Legacy password-login sessions table (token, created_at) predates Google auth
   // and lacks token_sha/user_id/expires_at — replace it; its rows are useless now.
@@ -267,7 +356,7 @@ async function ensureAuthSchema(env) {
   ).run();
   await env.DB.prepare(
     'CREATE TABLE IF NOT EXISTS rate_limits (user_id TEXT, date TEXT, parse_count INTEGER DEFAULT 0,' +
-    ' coach_count INTEGER DEFAULT 0, PRIMARY KEY (user_id, date))'
+    ' coach_count INTEGER DEFAULT 0, suggest_count INTEGER DEFAULT 0, PRIMARY KEY (user_id, date))'
   ).run();
   try { await env.DB.prepare('ALTER TABLE workouts ADD COLUMN user_id TEXT').run(); } catch (e) { /* exists */ }
   try { await env.DB.prepare('ALTER TABLE notes ADD COLUMN user_id TEXT').run(); } catch (e) { /* exists */ }
@@ -322,16 +411,17 @@ async function handleGoogleAuth(request, env) {
   if (!user) {
     const id = randHex(8);
     await env.DB.prepare(
-      'INSERT INTO users (id, google_id, name, email, avatar, created_at, lim_parse, lim_coach)' +
-      ' VALUES (?,?,?,?,?,?,?,?)'
+      'INSERT INTO users (id, google_id, name, email, avatar, created_at, lim_parse, lim_coach, lim_suggest)' +
+      ' VALUES (?,?,?,?,?,?,?,?,?)'
     ).bind(id, info.sub, info.name || '', info.email || '', info.picture || '', now,
-      isOwner ? LIMITS_OWNER : LIMITS_DEFAULT.parse, isOwner ? LIMITS_OWNER : LIMITS_DEFAULT.coach).run();
+      isOwner ? LIMITS_OWNER : LIMITS_DEFAULT.parse, isOwner ? LIMITS_OWNER : LIMITS_DEFAULT.coach,
+      isOwner ? LIMITS_OWNER : LIMITS_DEFAULT.suggest).run();
     user = await env.DB.prepare('SELECT * FROM users WHERE id = ?').bind(id).first();
     isNew = true;
   } else if (isOwner && (user.lim_parse == null || user.lim_parse < LIMITS_OWNER)) {
-    await env.DB.prepare('UPDATE users SET lim_parse = ?, lim_coach = ? WHERE id = ?')
-      .bind(LIMITS_OWNER, LIMITS_OWNER, user.id).run();
-    user.lim_parse = LIMITS_OWNER; user.lim_coach = LIMITS_OWNER;
+    await env.DB.prepare('UPDATE users SET lim_parse = ?, lim_coach = ?, lim_suggest = ? WHERE id = ?')
+      .bind(LIMITS_OWNER, LIMITS_OWNER, LIMITS_OWNER, user.id).run();
+    user.lim_parse = LIMITS_OWNER; user.lim_coach = LIMITS_OWNER; user.lim_suggest = LIMITS_OWNER;
   }
   // First owner sign-in claims the pre-auth workout history.
   if (isOwner) {
@@ -364,6 +454,7 @@ function userLimits(user) {
   return {
     parse: user.lim_parse != null ? user.lim_parse : LIMITS_DEFAULT.parse,
     coach: user.lim_coach != null ? user.lim_coach : LIMITS_DEFAULT.coach,
+    suggest: user.lim_suggest != null ? user.lim_suggest : LIMITS_DEFAULT.suggest,
   };
 }
 
@@ -394,7 +485,7 @@ async function handleUsage(env, user) {
   const row = await env.DB.prepare('SELECT * FROM rate_limits WHERE user_id = ? AND date = ?')
     .bind(user.id, today).first();
   return json({
-    usage: { parse: (row && row.parse_count) || 0, coach: (row && row.coach_count) || 0 },
+    usage: { parse: (row && row.parse_count) || 0, coach: (row && row.coach_count) || 0, suggest: (row && row.suggest_count) || 0 },
     limits: userLimits(user),
   });
 }
@@ -574,6 +665,10 @@ async function handleApiInner(request, env, url) {
 
   if (path === '/api/coach' && request.method === 'POST') {
     return handleCoach(request, env, user);
+  }
+
+  if (path === '/api/suggest' && request.method === 'POST') {
+    return handleSuggest(request, env, user);
   }
 
   return json({ error: 'not found' }, 404);
