@@ -18,7 +18,10 @@ function api(path, opts) {
           signOut(true); throw new Error('unauthorized');
         });
       }
-      if (!r.ok) throw new Error('request failed: ' + r.status);
+      if (!r.ok) return r.json().catch(function () { return null; }).then(function (d) {
+        var m = d && (d.message || d.error);
+        throw new Error('request failed: ' + r.status + (m ? ' — ' + m : ''));
+      });
       return r.json();
     });
 }
@@ -611,12 +614,13 @@ function vExercise(name) {
               '<div class="small dim">AI coach: ' + esc(r.reason) + '</div>';
             btn.style.display = 'none';
           }).catch(function (e) {
-            var msg = e && e.message === 'request failed: 503'
+            var msg = String((e && e.message) || 'request failed');
+            var short = msg.indexOf('request failed: 503') === 0
               ? 'AI not set up on the server — math target stands.'
-              : e && e.message === 'request failed: 429'
+              : msg.indexOf('request failed: 429') === 0
               ? 'Daily AI limit reached — math target stands.'
-              : 'AI unavailable right now — math target stands.';
-            out.innerHTML = '<div class="small dim">' + esc(msg) + '</div>';
+              : msg + ' — math target stands.';
+            out.innerHTML = '<div class="small dim">' + esc(short) + '</div>';
             btn.disabled = false; btn.textContent = 'AI take';
           });
         });
