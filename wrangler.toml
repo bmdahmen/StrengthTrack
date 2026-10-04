@@ -14,3 +14,8 @@ database_id = "ff8e23d2-1340-4f7a-9d7b-8ec86fb8b0e8"
 binding = "CAL"
 database_name = "calorie"
 database_id = "ce1b81ad-050f-4ea2-9b66-974881099f89"
+
+# Plain (non-secret) env vars. Kept here — not in the dashboard — so CI
+# `wrangler deploy` doesn't wipe them.
+[vars]
+CLAUDE_MODEL = "claude-sonnet-5-5"
