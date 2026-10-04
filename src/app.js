@@ -429,6 +429,21 @@ function vExercise(name) {
       return true;
     }
     var series = [];
+    function trendPoints() {
+      var tops = [];
+      prog.forEach(function (p) {
+        var m = null;
+        p.sets.forEach(function (s) { if (s.one_rm != null && setOK(s) && (m == null || s.one_rm > m)) m = s.one_rm; });
+        if (m != null) tops.push({ x: p.date, y: m });
+      });
+      var TW = 5, out = [];
+      for (var ti = 0; ti < tops.length; ti++) {
+        var a = Math.max(0, ti - TW + 1), sum = 0;
+        for (var tj = a; tj <= ti; tj++) sum += tops[tj].y;
+        out.push({ x: tops[ti].x, y: sum / (ti - a + 1) });
+      }
+      return out.filter(function (pt) { return inWin(pt.x); });
+    }
     function buildSeries() {
       series = [];
       var wp = wprog();
@@ -444,19 +459,7 @@ function vExercise(name) {
         });
       }
       // Trend: 5-workout moving average of the per-workout max 1RM.
-      var tops = [];
-      prog.forEach(function (p) {
-        var m = null;
-        p.sets.forEach(function (s) { if (s.one_rm != null && setOK(s) && (m == null || s.one_rm > m)) m = s.one_rm; });
-        if (m != null) tops.push({ x: p.date, y: m });
-      });
-      var TW = 5, trendPts = [];
-      for (var ti = 0; ti < tops.length; ti++) {
-        var a = Math.max(0, ti - TW + 1), sum = 0;
-        for (var tj = a; tj <= ti; tj++) sum += tops[tj].y;
-        trendPts.push({ x: tops[ti].x, y: sum / (ti - a + 1) });
-      }
-      trendPts = trendPts.filter(function (pt) { return inWin(pt.x); });
+      var trendPts = trendPoints();
       if (trendPts.length > 1) series.push({
         label: 'Trend (5)', si: 'trend', color: '#f2f2f2', dash: '7,4',
         hidden: hiddenSets['trend'] === true, points: trendPts
@@ -512,9 +515,61 @@ function vExercise(name) {
       var sc = document.getElementById('exsessions');
       if (sc) sc.textContent = t.nDates;
     }
-    h += '<div id="extable"></div>';
+    function epLb(loadLb, reps) { return reps === 1 ? loadLb : loadLb * (1 + reps / 30); }
+    function targetCands(cur) {
+      var out = [];
+      function push(label, loadLb, reps) {
+        if (reps < 3 || reps > 15 || loadLb == null) return;
+        out.push({ label: label, one_rm: epLb(loadLb, reps) });
+      }
+      if (cur.bodyweight) {
+        var bw = (cur.load_lb || 0) - (cur.added_weight_lb || 0), ad = cur.added_weight_lb || 0;
+        var nm = ad ? 'BW +' + ad : 'BW';
+        push(nm + ' \u00d7 ' + (cur.reps + 1), bw + ad, cur.reps + 1);
+        push('BW +' + (ad + 2.5) + ' \u00d7 ' + cur.reps, bw + ad + 2.5, cur.reps);
+        push('BW +' + (ad + 2.5) + ' \u00d7 ' + (cur.reps + 1), bw + ad + 2.5, cur.reps + 1);
+      } else if (cur.unit === 'kg') {
+        var mult = cur.per_hand ? 2 : 1, w = cur.weight, u = ' kg' + (cur.per_hand ? '/hand' : '');
+        push(w + u + ' \u00d7 ' + (cur.reps + 1), (w) * mult * 2.20462, cur.reps + 1);
+        push((w + 2.5) + u + ' \u00d7 ' + cur.reps, (w + 2.5) * mult * 2.20462, cur.reps);
+        push((w + 2.5) + u + ' \u00d7 ' + (cur.reps + 1), (w + 2.5) * mult * 2.20462, cur.reps + 1);
+      } else {
+        var wl = cur.total_lb;
+        push(Math.round(wl) + ' lb \u00d7 ' + (cur.reps + 1), wl, cur.reps + 1);
+        push(Math.round(wl + 5) + ' lb \u00d7 ' + cur.reps, wl + 5, cur.reps);
+        push(Math.round(wl + 5) + ' lb \u00d7 ' + (cur.reps + 1), wl + 5, cur.reps + 1);
+      }
+      return out;
+    }
+    function targetHTML() {
+      var wp = wprog(), tops = [];
+      wp.forEach(function (p) {
+        var b = null;
+        p.sets.forEach(function (s) { if (s.one_rm != null && setOK(s) && (!b || s.one_rm > b.one_rm)) b = s; });
+        if (b) tops.push(b);
+      });
+      if (!tops.length) return '';
+      var tr = trendPoints();
+      var base = tr.length ? tr[tr.length - 1].y : tops[tops.length - 1].one_rm;
+      var goal = base * 1.02;
+      var cur = tops[tops.length - 1];
+      var cands = targetCands(cur);
+      if (!cands.length) return '';
+      var pick = null;
+      cands.forEach(function (c) { if (c.one_rm >= goal && (!pick || c.one_rm < pick.one_rm)) pick = c; });
+      if (!pick) pick = cands.reduce(function (a, c) { return c.one_rm > a.one_rm ? c : a; });
+      return '<div class="card"><div class="small dim">NEXT TOP-SET TARGET</div>' +
+        '<div style="font-size:19px;font-weight:700;margin:2px 0">' + esc(pick.label) + '</div>' +
+        '<div class="small dim">Clears your 5-workout trend (' + Math.round(base) + ') — hit this and the trend turns up.</div></div>';
+    }
+    function paintTarget() {
+      var el = document.getElementById('extarget');
+      if (el) el.innerHTML = targetHTML();
+    }
+    h += '<div id="extarget" style="margin-bottom:12px"></div><div id="extable"></div>';
     v.innerHTML = h;
     paintTable();
+    paintTarget();
     if (series.length) {
       var yFmt = function (y) { return Math.round(y) + ''; };
       var cel = document.getElementById('exchart');
@@ -566,6 +621,7 @@ function vExercise(name) {
         });
         paint();
         paintTable();
+        paintTarget();
       });
       var seg = document.getElementById('implseg');
       if (seg) seg.addEventListener('click', function (ev) {
@@ -577,6 +633,7 @@ function vExercise(name) {
         });
         paint();
         paintTable();
+        paintTarget();
       });
     }
   }).catch(function (e) { v.innerHTML = '<div class="err">' + esc(e.message) + '</div>'; });
