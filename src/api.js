@@ -231,7 +231,7 @@ async function handleCoach(request, env, user) {
     'Plain text, short paragraphs, no markdown headers.';
   let evaluation;
   try {
-    evaluation = await callClaude(env, claudeModel(env), 600, [
+    evaluation = await callClaude(env, claudeModel(env), 1000, [
       { role: 'user', content: [{ type: 'text', text: prompt }] },
     ]);
   } catch (e) {
@@ -331,7 +331,7 @@ async function handleSuggest(request, env, user) {
     'override downward (repeat or reduce) and say why in the reason. Keep units as shown above.';
   let raw, apiData = null;
   try {
-    raw = await callClaude(env, claudeModel(env), 150, [
+    raw = await callClaude(env, claudeModel(env), 1000, [
       { role: 'user', content: [{ type: 'text', text: prompt }] },
     ], function (d) { apiData = d; });
   } catch (e) {
