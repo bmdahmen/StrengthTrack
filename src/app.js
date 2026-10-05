@@ -591,17 +591,50 @@ function vExercise(name) {
           '<span style="font-size:16px;font-weight:700;flex:1">' + esc(z.label) + '</span>' +
           '<span class="small dim">1RM ' + Math.round(z.one_rm) + '</span></div>';
       }).join('');
+      var setOpts = '';
+      for (var si = 1; si <= 20; si++) setOpts += '<option value="' + si + '"' + (si === 3 ? ' selected' : '') + '>' + si + '</option>';
+      var cw0 = Math.round(cur.total_lb || 0), cr0 = cur.reps || 0;
       return '<div class="card"><div class="small dim">NEXT TOP-SET TARGETS</div>' + rows +
         '<div class="small dim" style="margin-top:4px">From your last top set ' + esc(lastLabel) +
         ' (1RM ' + Math.round(cur.one_rm) + ') — each option targets ~' + Math.round(cur.one_rm * 1.02) +
         '. Trend ' + Math.round(base) + '.</div>' +
         '<div id="aiout" style="margin-top:6px"></div>' +
-        '<button id="aitake" class="btn" style="margin-top:8px;font-size:13px">AI take</button></div>';
+        '<button id="aitake" class="btn" style="margin-top:8px;font-size:13px">AI take</button>' +
+        '<div style="margin-top:10px;border-top:1px solid var(--line);padding-top:8px">' +
+        '<div class="small dim">1RM CALCULATOR</div>' +
+        '<div style="display:flex;gap:8px;margin-top:6px">' +
+        '<label style="flex:1;min-width:0"><span class="small dim">Weight (lb)</span><input type="text" id="calcw" inputmode="decimal" autocomplete="off" value="' + cw0 + '"></label>' +
+        '<label style="flex:1;min-width:0"><span class="small dim">Reps</span><input type="text" id="calcr" inputmode="numeric" autocomplete="off" value="' + cr0 + '"></label>' +
+        '<label style="flex:1;min-width:0"><span class="small dim">Sets</span><select id="calcs">' + setOpts + '</select></label>' +
+        '</div>' +
+        '<div style="display:flex;justify-content:space-between;align-items:baseline;margin-top:8px">' +
+        '<span style="font-size:20px;font-weight:700">1RM <span id="calconerm">—</span></span>' +
+        '<span class="small dim">Volume <span id="calcvol">—</span></span></div>' +
+        '</div></div>';
     }
     function paintTarget() {
       var el = document.getElementById('extarget');
       if (el) {
         el.innerHTML = targetHTML();
+        var cwEl = document.getElementById('calcw');
+        if (cwEl) {
+          var crEl = document.getElementById('calcr'), csEl = document.getElementById('calcs');
+          var calcUpdate = function () {
+            var w = parseFloat(cwEl.value), r = parseInt(crEl.value, 10), s = parseInt(csEl.value, 10);
+            var oEl = document.getElementById('calconerm'), vEl = document.getElementById('calcvol');
+            if (!(w > 0) || !(r > 0)) {
+              if (oEl) oEl.textContent = '—';
+              if (vEl) vEl.textContent = '—';
+              return;
+            }
+            if (oEl) oEl.textContent = Math.round(epLb(w, r)) + ' lb';
+            if (vEl) vEl.textContent = Math.round(w * r * (s > 0 ? s : 1)) + ' lb';
+          };
+          cwEl.addEventListener('input', calcUpdate);
+          crEl.addEventListener('input', calcUpdate);
+          csEl.addEventListener('change', calcUpdate);
+          calcUpdate();
+        }
         var btn = document.getElementById('aitake');
         if (btn) btn.addEventListener('click', function () {
           var out = document.getElementById('aiout');
