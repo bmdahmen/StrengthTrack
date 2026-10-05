@@ -591,8 +591,6 @@ function vExercise(name) {
           '<span style="font-size:16px;font-weight:700;flex:1">' + esc(z.label) + '</span>' +
           '<span class="small dim">1RM ' + Math.round(z.one_rm) + '</span></div>';
       }).join('');
-      var setOpts = '';
-      for (var si = 1; si <= 20; si++) setOpts += '<option value="' + si + '"' + (si === 3 ? ' selected' : '') + '>' + si + '</option>';
       var cw0 = Math.round(cur.total_lb || 0), cr0 = cur.reps || 0;
       return '<div class="card"><div class="small dim">NEXT TOP-SET TARGETS</div>' + rows +
         '<div class="small dim" style="margin-top:4px">From your last top set ' + esc(lastLabel) +
@@ -605,11 +603,8 @@ function vExercise(name) {
         '<div style="display:flex;gap:8px;margin-top:6px">' +
         '<label style="flex:1;min-width:0"><span class="small dim">Weight (lb)</span><input type="text" id="calcw" inputmode="decimal" autocomplete="off" value="' + cw0 + '"></label>' +
         '<label style="flex:1;min-width:0"><span class="small dim">Reps</span><input type="text" id="calcr" inputmode="numeric" autocomplete="off" value="' + cr0 + '"></label>' +
-        '<label style="flex:1;min-width:0"><span class="small dim">Sets</span><select id="calcs">' + setOpts + '</select></label>' +
         '</div>' +
-        '<div style="display:flex;justify-content:space-between;align-items:baseline;margin-top:8px">' +
-        '<span style="font-size:20px;font-weight:700">1RM <span id="calconerm">—</span></span>' +
-        '<span class="small dim">Volume <span id="calcvol">—</span></span></div>' +
+        '<div style="margin-top:8px"><span style="font-size:20px;font-weight:700">1RM <span id="calconerm">—</span></span></div>' +
         '</div></div>';
     }
     function paintTarget() {
@@ -618,21 +613,16 @@ function vExercise(name) {
         el.innerHTML = targetHTML();
         var cwEl = document.getElementById('calcw');
         if (cwEl) {
-          var crEl = document.getElementById('calcr'), csEl = document.getElementById('calcs');
+          var crEl = document.getElementById('calcr');
           var calcUpdate = function () {
-            var w = parseFloat(cwEl.value), r = parseInt(crEl.value, 10), s = parseInt(csEl.value, 10);
-            var oEl = document.getElementById('calconerm'), vEl = document.getElementById('calcvol');
-            if (!(w > 0) || !(r > 0)) {
-              if (oEl) oEl.textContent = '—';
-              if (vEl) vEl.textContent = '—';
-              return;
-            }
-            if (oEl) oEl.textContent = Math.round(epLb(w, r)) + ' lb';
-            if (vEl) vEl.textContent = Math.round(w * r * (s > 0 ? s : 1)) + ' lb';
+            var w = parseFloat(cwEl.value), r = parseInt(crEl.value, 10);
+            var oEl = document.getElementById('calconerm');
+            if (!oEl) return;
+            if (!(w > 0) || !(r > 0)) { oEl.textContent = '—'; return; }
+            oEl.textContent = Math.round(epLb(w, r)) + ' lb';
           };
           cwEl.addEventListener('input', calcUpdate);
           crEl.addEventListener('input', calcUpdate);
-          csEl.addEventListener('change', calcUpdate);
           calcUpdate();
         }
         var btn = document.getElementById('aitake');
