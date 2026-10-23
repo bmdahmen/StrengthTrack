@@ -493,7 +493,7 @@ function vExercise(name) {
         nDates++;
         var gcls = nDates % 2 ? ' galt' : '';
         var vol = 0;
-        sets.forEach(function (s) { if (s.total_lb != null && s.reps != null) vol += s.total_lb * s.reps; });
+        sets.forEach(function (s) { if (s.load_lb != null && s.reps != null) vol += s.load_lb * s.reps; });
         vol = Math.round(vol);
         sets.forEach(function (s, i) {
           var loadTxt;
