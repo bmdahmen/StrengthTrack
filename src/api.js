@@ -642,9 +642,9 @@ async function handleApiInner(request, env, url) {
     const prog = Object.values(byDate).map(function (g) {
       let top = null, vol = 0;
       for (const s of g.sets) {
-        if (s.total_lb != null && s.reps != null) {
-          vol += s.total_lb * s.reps;
-          if (!top || s.total_lb > top.total_lb) top = s;
+        if (s.load_lb != null && s.reps != null) {
+          vol += s.load_lb * s.reps;
+          if (!top || s.load_lb > top.load_lb) top = s;
         }
       }
       return { date: g.date, sets: g.sets, first_of_day: !!g.first_of_day, top: top, volume_lb: Math.round(vol) };
