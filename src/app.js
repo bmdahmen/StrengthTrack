@@ -432,6 +432,7 @@ function vExercise(name) {
       return true;
     }
     var series = [];
+    var calcMode = { bw: false, dbHand: false, db: false, perHand: false };
     function trendPoints() {
       var tops = [];
       prog.forEach(function (p) {
@@ -591,7 +592,35 @@ function vExercise(name) {
           '<span style="font-size:16px;font-weight:700;flex:1">' + esc(z.label) + '</span>' +
           '<span class="small dim">1RM ' + Math.round(z.one_rm) + '</span></div>';
       }).join('');
-      var cw0 = Math.round(cur.total_lb || 0), cr0 = cur.reps || 0;
+      var cr0 = cur.reps || 0;
+      // 1RM calculator mode follows the last top set. Bodyweight sets get a
+      // body weight input: the estimate runs on effective load (BW + added)
+      // and stays in lb. Dumbbell sets take kg in and still estimate in lb.
+      // Bulgarian Split Squat, Calf Raise and Lunge are bodyweight moves done
+      // with kg dumbbells, so their added weight is kg/hand even though the
+      // set row carries no kg unit.
+      var calcBw = !!cur.bodyweight;
+      var calcDbHand = calcBw
+        ? (d.name === 'Bulgarian Split Squat' || d.name === 'Calf Raise' || d.name === 'Lunge')
+        : (cur.unit === 'kg' && !!cur.per_hand);
+      var calcDb = calcBw ? calcDbHand : cur.unit === 'kg';
+      calcMode = { bw: calcBw, dbHand: calcDbHand, db: calcDb, perHand: !!cur.per_hand };
+      var calcInputs = '';
+      if (calcBw) {
+        var aLb = cur.added_weight_lb || 0;
+        var bw0 = (cur.load_lb != null) ? Math.round((cur.load_lb - aLb) * 10) / 10 : '';
+        var add0 = calcDbHand ? Math.round((aLb / 2 / 2.20462) * 10) / 10 : Math.round(aLb * 10) / 10;
+        calcInputs =
+          '<label style="flex:1;min-width:0"><span class="small dim">Body weight (lb)</span><input type="text" id="calcbw" inputmode="decimal" autocomplete="off" value="' + bw0 + '"></label>' +
+          '<label style="flex:1;min-width:0"><span class="small dim">Added (' + (calcDbHand ? 'kg/hand' : 'lb') + ')</span><input type="text" id="calcw" inputmode="decimal" autocomplete="off" value="' + add0 + '"></label>' +
+          '<label style="flex:1;min-width:0"><span class="small dim">Reps</span><input type="text" id="calcr" inputmode="numeric" autocomplete="off" value="' + cr0 + '"></label>';
+      } else {
+        var wLabel = calcDb ? ('Weight (kg' + (calcMode.perHand ? '/hand' : '') + ')') : 'Weight (lb)';
+        var w0 = calcDb ? cur.weight : Math.round(cur.total_lb || 0);
+        calcInputs =
+          '<label style="flex:1;min-width:0"><span class="small dim">' + wLabel + '</span><input type="text" id="calcw" inputmode="decimal" autocomplete="off" value="' + w0 + '"></label>' +
+          '<label style="flex:1;min-width:0"><span class="small dim">Reps</span><input type="text" id="calcr" inputmode="numeric" autocomplete="off" value="' + cr0 + '"></label>';
+      }
       return '<div class="card"><div class="small dim">NEXT TOP-SET TARGETS</div>' + rows +
         '<div class="small dim" style="margin-top:4px">From your last top set ' + esc(lastLabel) +
         ' (1RM ' + Math.round(cur.one_rm) + ') — each option targets ~' + Math.round(cur.one_rm * 1.02) +
@@ -601,10 +630,9 @@ function vExercise(name) {
         '<div style="margin-top:10px;border-top:1px solid var(--line);padding-top:8px">' +
         '<div class="small dim">1RM CALCULATOR</div>' +
         '<div style="display:flex;gap:8px;margin-top:6px">' +
-        '<label style="flex:1;min-width:0"><span class="small dim">Weight (lb)</span><input type="text" id="calcw" inputmode="decimal" autocomplete="off" value="' + cw0 + '"></label>' +
-        '<label style="flex:1;min-width:0"><span class="small dim">Reps</span><input type="text" id="calcr" inputmode="numeric" autocomplete="off" value="' + cr0 + '"></label>' +
-        '</div>' +
+        calcInputs + '</div>' +
         '<div style="margin-top:8px"><span style="font-size:20px;font-weight:700">1RM <span id="calconerm">—</span></span></div>' +
+        '<div class="small dim" id="calcsub"></div>' +
         '</div></div>';
     }
     function paintTarget() {
@@ -615,14 +643,42 @@ function vExercise(name) {
         if (cwEl) {
           var crEl = document.getElementById('calcr');
           var calcUpdate = function () {
-            var w = parseFloat(cwEl.value), r = parseInt(crEl.value, 10);
+            var r = parseInt(crEl.value, 10);
             var oEl = document.getElementById('calconerm');
+            var sEl = document.getElementById('calcsub');
             if (!oEl) return;
-            if (!(w > 0) || !(r > 0)) { oEl.textContent = '—'; return; }
-            oEl.textContent = Math.round(epLb(w, r)) + ' lb';
+            var bad = function () { oEl.textContent = '—'; if (sEl) sEl.textContent = ''; };
+            if (!(r > 0)) { bad(); return; }
+            var eff = null, bw = null;
+            if (calcMode.bw) {
+              var bwEl = document.getElementById('calcbw');
+              bw = bwEl ? parseFloat(bwEl.value) : NaN;
+              var a = parseFloat(cwEl.value);
+              if (!(bw > 0) || !(a >= 0)) { bad(); return; }
+              eff = bw + (calcMode.dbHand ? a * 2 * 2.20462 : a);
+            } else if (calcMode.db) {
+              var w = parseFloat(cwEl.value);
+              if (!(w > 0)) { bad(); return; }
+              eff = w * (calcMode.perHand ? 2 : 1) * 2.20462;
+            } else {
+              var wl = parseFloat(cwEl.value);
+              if (!(wl > 0)) { bad(); return; }
+              eff = wl;
+            }
+            var e1 = epLb(eff, r);
+            oEl.textContent = Math.round(e1) + ' lb';
+            if (sEl) {
+              if (calcMode.bw) {
+                var addEq = e1 - bw;
+                sEl.textContent = '≈ ' + Math.round(addEq) + ' lb added' +
+                  (calcMode.dbHand ? ' (≈ ' + (Math.round(addEq / 2 / 2.20462 * 10) / 10) + ' kg/hand)' : '');
+              } else sEl.textContent = '';
+            }
           };
           cwEl.addEventListener('input', calcUpdate);
           crEl.addEventListener('input', calcUpdate);
+          var bwEl0 = document.getElementById('calcbw');
+          if (bwEl0) bwEl0.addEventListener('input', calcUpdate);
           calcUpdate();
         }
         var btn = document.getElementById('aitake');
