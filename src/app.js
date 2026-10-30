@@ -3,6 +3,33 @@
 
 function $(sel) { return document.querySelector(sel); }
 
+/* Select-all on first focus for number inputs, site-wide. Clicking (or
+   tabbing) into a prefilled number highlights it so typing replaces it; a
+   later click in the same field places the caret normally. Number inputs do
+   not support text selection, so selection runs while briefly typed as text
+   and the type is restored right away. */
+document.addEventListener('focusin', function (ev) {
+  var t = ev.target;
+  if (!t || t.tagName !== 'INPUT' || t.type !== 'number') return;
+  try {
+    t.type = 'text';
+    t.select();
+    t.type = 'number';
+  } catch (e) {}
+  t.dataset.selJust = '1';
+});
+document.addEventListener('mouseup', function (ev) {
+  var t = ev.target;
+  if (t && t.dataset && t.dataset.selJust === '1') {
+    ev.preventDefault();
+    delete t.dataset.selJust;
+  }
+});
+document.addEventListener('focusout', function (ev) {
+  var t = ev.target;
+  if (t && t.dataset) delete t.dataset.selJust;
+});
+
 function api(path, opts) {
   var headers = { 'Authorization': 'Bearer ' + (sessionToken() || '') };
   var o = Object.assign({ credentials: 'same-origin', headers: headers }, opts || {});
@@ -611,15 +638,15 @@ function vExercise(name) {
         var bw0 = (cur.load_lb != null) ? Math.round((cur.load_lb - aLb) * 10) / 10 : '';
         var add0 = calcDbHand ? Math.round((aLb / 2 / 2.20462) * 10) / 10 : Math.round(aLb * 10) / 10;
         calcInputs =
-          '<label style="flex:1;min-width:0"><span class="small dim">Body weight (lb)</span><input type="text" id="calcbw" inputmode="decimal" autocomplete="off" value="' + bw0 + '"></label>' +
-          '<label style="flex:1;min-width:0"><span class="small dim">Added (' + (calcDbHand ? 'kg/hand' : 'lb') + ')</span><input type="text" id="calcw" inputmode="decimal" autocomplete="off" value="' + add0 + '"></label>' +
-          '<label style="flex:1;min-width:0"><span class="small dim">Reps</span><input type="text" id="calcr" inputmode="numeric" autocomplete="off" value="' + cr0 + '"></label>';
+          '<label style="flex:1;min-width:0"><span class="small dim">Body weight (lb)</span><input type="number" step="any" id="calcbw" inputmode="decimal" autocomplete="off" value="' + bw0 + '"></label>' +
+          '<label style="flex:1;min-width:0"><span class="small dim">Added (' + (calcDbHand ? 'kg/hand' : 'lb') + ')</span><input type="number" step="any" id="calcw" inputmode="decimal" autocomplete="off" value="' + add0 + '"></label>' +
+          '<label style="flex:1;min-width:0"><span class="small dim">Reps</span><input type="number" step="1" id="calcr" inputmode="numeric" autocomplete="off" value="' + cr0 + '"></label>';
       } else {
         var wLabel = calcDb ? ('Weight (kg' + (calcMode.perHand ? '/hand' : '') + ')') : 'Weight (lb)';
         var w0 = calcDb ? cur.weight : Math.round(cur.total_lb || 0);
         calcInputs =
-          '<label style="flex:1;min-width:0"><span class="small dim">' + wLabel + '</span><input type="text" id="calcw" inputmode="decimal" autocomplete="off" value="' + w0 + '"></label>' +
-          '<label style="flex:1;min-width:0"><span class="small dim">Reps</span><input type="text" id="calcr" inputmode="numeric" autocomplete="off" value="' + cr0 + '"></label>';
+          '<label style="flex:1;min-width:0"><span class="small dim">' + wLabel + '</span><input type="number" step="any" id="calcw" inputmode="decimal" autocomplete="off" value="' + w0 + '"></label>' +
+          '<label style="flex:1;min-width:0"><span class="small dim">Reps</span><input type="number" step="1" id="calcr" inputmode="numeric" autocomplete="off" value="' + cr0 + '"></label>';
       }
       return '<div class="card"><div class="small dim">NEXT TOP-SET TARGETS</div>' + rows +
         '<div class="small dim" style="margin-top:4px">From your last top set ' + esc(lastLabel) +
